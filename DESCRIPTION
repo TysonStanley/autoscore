@@ -1,0 +1,34 @@
+Package: autoscore
+Type: Package
+Title: Automatically Score Perception Data
+Version: 0.1.0
+Date: 2018-06-07
+Authors@R: c(person("Tyson S.", "Barrett",  
+                    role=c("aut","cre"), 
+                    email = "t.barrett@aggiemail.usu.edu", 
+                    comment = c(ORCID = "0000-0002-2137-1391")),
+ 	         person("Stephanie", "Borrie", role="ctr"),
+ 	         person("Sarah", "Leopold", role="ctr"))
+Maintainer: Tyson S. Barrett <t.barrett@aggiemail.usu.edu>
+Description: Describe it
+License: GPL-3 + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends:
+    R (>= 2.10)
+Imports:
+    knitr,
+    magrittr,
+    cli,
+    crayon,
+    dplyr,
+    rstudioapi,
+    tibble
+Suggests:
+    tidyverse,
+    rmarkdown,
+    testthat,
+    MASS,
+    sjmisc,
+    covr
+RoxygenNote: 6.0.1
