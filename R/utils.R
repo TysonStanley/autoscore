@@ -1,8 +1,44 @@
 ## Utilities for the package
 
+## Read in and select the appropriate columns for the analysis
+select_cols <- function(d){
+  d <- d %>%
+    dplyr::select(contains("[I|i][D|d]"), contains("[T|t]arget"), contains("[R|r]esponse"), contains("[H|h]uman")) %>%
+    dplyr::rename_all(tolower)
+
+  if (ncols(d) > 4){
+    stop("More than 4 columns were selected containing 'id', 'target', 'response', or 'human'", call. = FALSE)
+  } else if (ncols(d) < 3){
+    stop(paste0("Less than 3 columns were selected containing 'id', 'target', 'response', or 'human'\n",
+                   " - One column should be named 'id', another named 'target', another named 'response', and",
+                   "optionally one named 'human'. Check your CSV to upload again."), call. = FALSE)
+  }
+
+  d
+}
+
+format_output <- function(final_table) {
 
 
 
+}
+
+
+
+
+
+#' if helper operator
+#'
+#' @name %||%
+#' @rdname if_operator
+#' @export
+`%||%` <- function(lhs, rhs) {
+  if (!is.null(lhs)) {
+    lhs
+  } else {
+    rhs
+  }
+}
 
 
 #' re-export magrittr pipe operator
