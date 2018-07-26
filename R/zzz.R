@@ -4,7 +4,7 @@
   confs <- search_conflicts() %>%
     do.call("rbind", .) %>%
     .[(!grepl("%>%", rownames(.))) &
-        (!grepl("group_by", rownames(.))) &
+        (!grepl("%||%", rownames(.))) &
         (.$rowname != ".GlobalEnv"),] %>%
     data.frame
   if (dim(confs)[1] == 0){

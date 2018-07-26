@@ -27,19 +27,13 @@ format_output <- function(final_table) {
 
 
 
-#' if helper operator
+#' null-default re-export from purrr
 #'
+#' @importFrom purrr %||%
 #' @name %||%
-#' @rdname if_operator
+#' @rdname null-default
 #' @export
-`%||%` <- function(lhs, rhs) {
-  if (!is.null(lhs)) {
-    lhs
-  } else {
-    rhs
-  }
-}
-
+NULL
 
 #' re-export magrittr pipe operator
 #'
@@ -76,12 +70,12 @@ search_conflicts <- function(path = search()){
   ## Search for conflicts
   confs <- conflicts(path,TRUE)
   ## Grab those with the autoscore package
-  furniture_conflicts <- confs$`package:autoscore`
+  autoscore_conflicts <- confs$`package:autoscore`
 
   ## Find which packages have those functions that are conflicted
-  if (length(furniture_conflicts) != 0){
+  if (length(autoscore_conflicts) != 0){
     other_conflicts <- list()
-    for (i in furniture_conflicts){
+    for (i in autoscore_conflicts){
       other_conflicts[[i]] <- lapply(confs, function(x) any(grepl(i, x))) %>%
         do.call("rbind", .) %>%
         data.frame %>%

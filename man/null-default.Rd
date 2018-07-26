@@ -2,10 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{\%||\%}
 \alias{\%||\%}
-\title{if helper operator}
-\usage{
-lhs \%||\% rhs
-}
+\title{null-default re-export from purrr}
 \description{
-if helper operator
+null-default re-export from purrr
 }
