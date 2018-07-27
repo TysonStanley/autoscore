@@ -123,7 +123,7 @@ Next, let’s change some of the rules.
 
 ``` r
 example_data %>%
-  autoscore(position_rule = 1, stemmed_rule = FALSE) %>%
+  autoscore(position_rule = 2, stemmed_rule = FALSE) %>%
   as.tibble()
 #> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
@@ -131,7 +131,7 @@ example_data %>%
 #>    <dbl> <fct>                  <fct>                    <dbl> <int> <lgl>
 #>  1     5 mate denotes a judgem… made the dinner in it        1     1 TRUE 
 #>  2     5 its harmful note abou… it's not for the bounce      1     1 TRUE 
-#>  3     5 butcher in the middle  the shirt in the middle      3     2 FALSE
+#>  3     5 butcher in the middle  the shirt in the middle      3     3 TRUE 
 #>  4     5 rampant boasting capt… rubbed against the capt…     1     1 TRUE 
 #>  5     5 avoid or beat command  advert the beat commend      1     1 TRUE 
 #>  6     5 rocking modern poster  wrecking minor poacher       0     0 TRUE 
