@@ -16,27 +16,59 @@ knitr::opts_chunk$set(
 
 # autoscore
 
-The goal of autoscore is to score the correctness of speech perception.
+The goal of autoscore is to score the accuracy of speech perception (often in several situations such as noise, dysarthria, hearing loss, etc.). It uses a flexible number of rules that help decide if a response set of words match a target set of words. Each rule can be applied or removed in each situation to best meet the needs of the reseearcher.
 
+The rules are:
+
+1. `position_rule` = how close the word has to be in the order of the target (e.g., `c("one", "two") with c("three", "one", "two")` has "one" match one position off of where it should be and same with "two")
+2. `homophone_rule` = should we use homophone list (`TRUE` or `FALSE`)
+3. `stemmed_rule` = should we stem all words (i.e., remove all suffixes); default is `TRUE`
+3. `pasttense_rule` = -d and -ed removed (is not applied when `stemmed_rule` is applied); default is `TRUE`
+4. `a_the_rule` = a and the are the same
+5. `plural_rule` = remove plurals (is not applied when `stemmed_rule` is applied); default is `TRUE`
+6. `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic
+7. `alternate_spell_rule` = user provided alternate spellings of words in the target
 
 ## Design
 
+The API of the `R` package is simple. A single call to `autoscore()` with the formatted data will run everything for you. This function is a composite of several sub-functions that do various jobs:
 
-
-
+- `select_cols()` -- The first function which takes the data and gets it in the right format for analysis.
+- `split_clean()` -- Using the cleaned data from `select_cols()`, this uses `stringr` to turn the phrases into individual words.
+- `homophones_fun()` -- If homophones are used (according to the `homophone_rule`), this function finds and normalizes all homophones as found in the `data(homophones)` found in this package.
+- `match_position_basic()` -- This function is the workhorse of the package. It takes the cleaned (and possibly homophone normalized) data and does three main things: 1) applies all the rules except for the `position_rule`, 2) finds the matches between the responses and the targets, and 3) reports how far away the matches are from each other.
+- `count_matches()` -- Finally, this function takes the information from `match_position_basic()` and counts the number of matches based on the `position_rule`.
 
 
 ## Use of the Online Tool
 
-
-
+The online tool will be developed shortly...
 
 
 
 
 ## Use of the R Package
 
+An example of the use of `autoscore` is below. We will use the example data set provided in the package.
+
+```{r}
+library(tidyverse)
+library(autoscore)
+
+data("example_data")
+example_data
+```
 
 
+```{r}
+example_data %>%
+  autoscore() %>%   ## using all the defaults
+  as.tibble()       ## to shorted output
+```
+
+
+```{r}
+devtools::session_info()
+```
 
 
