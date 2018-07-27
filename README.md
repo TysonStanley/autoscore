@@ -123,7 +123,7 @@ Next, let’s change some of the rules.
 
 ``` r
 example_data %>%
-  autoscore(position_rule = 2, stemmed_rule = FALSE) %>%
+  autoscore(position_rule = 2, stemmed_rule = FALSE, plurals_rule = FALSE) %>%
   as.tibble()
 #> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
@@ -167,7 +167,7 @@ example_data %>%
 #> #   count_target <int>, count_response <int>
 ```
 
-In each of these exapmles, it is clear that the human and “robot” agree
+In each of these examples, it is clear that the human and “robot” agree
 the majority of the time. The times that they disagree, it is usually
 predictably a human error or a subjective judgement that the researcher
 will have to consider (for example by including alternate spellings of
@@ -178,7 +178,6 @@ tutorial.
 
 ``` r
 devtools::session_info("autoscore")
-#> Session info -------------------------------------------------------------
 #>  setting  value                       
 #>  version  R version 3.5.0 (2018-04-23)
 #>  system   x86_64, darwin15.6.0        
