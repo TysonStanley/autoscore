@@ -7,12 +7,14 @@
 \alias{autoscore}
 \title{AutoScore}
 \usage{
-autoscore(.data, ...)
+autoscore(.data, ..., output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
 
 \item{...}{the list of rules to apply}
+
+\item{output}{the output type for the autoscore table; current options are "text" ...}
 }
 \description{
 Description of the package and how to use it...

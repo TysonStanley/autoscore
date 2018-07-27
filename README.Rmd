@@ -16,12 +16,27 @@ knitr::opts_chunk$set(
 
 # autoscore
 
-The goal of autoscore is to ...
+The goal of autoscore is to score the correctness of speech perception.
 
-## Example
 
-This is a basic example which shows you how to solve a common problem:
+## Design
 
-```{r example}
-## basic example code
-```
+
+
+
+
+
+## Use of the Online Tool
+
+
+
+
+
+
+
+## Use of the R Package
+
+
+
+
+
