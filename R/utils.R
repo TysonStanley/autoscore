@@ -222,14 +222,14 @@ format_output <- function(final_table, output, original_data) {
 
   if (isTRUE("human" %in% names(final_table))){
     ft <- final_table %>%
-      select(human, count_response) %>%
-      mutate(equal = human == count_response)
+      select(human, count_target) %>%
+      mutate(equal = human == count_target)
     ft <- cbind(original_data$id, original_data$target, original_data$response,
                 ft) %>%
       setNames(c("id", "target", "response", "human", "robot", "equal"))
   } else {
     ft <- final_table %>%
-      select(count_response)
+      select(count_target)
     ft <- cbind(original_data$id, original_data$target, original_data$response,
                 ft) %>%
       setNames(c("id", "target", "response", "robot"))
