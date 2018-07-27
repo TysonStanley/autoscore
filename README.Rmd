@@ -59,16 +59,29 @@ data("example_data")
 example_data
 ```
 
-
+First, let's use all the defaults and look at the first 10 rows of the output.
 ```{r}
 example_data %>%
   autoscore() %>%   ## using all the defaults
   as.tibble()       ## to shorted output
 ```
 
-
+Next, let's change some of the rules.
 ```{r}
-devtools::session_info()
+example_data %>%
+  autoscore(position_rule = 1, stemmed_rule = FALSE) %>%
+  as.tibble()
+```
+
+We can also change the output type to "none" to get all the data from the computation.
+```{r}
+example_data %>%
+  autoscore(output = "none")
+```
+
+Finally, the session information from the computer that ran this short tutorial.
+```{r}
+devtools::session_info("autoscore")
 ```
 
 

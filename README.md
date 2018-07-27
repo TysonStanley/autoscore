@@ -95,6 +95,9 @@ example_data
 #> # ... with 30 more rows
 ```
 
+First, let’s use all the defaults and look at the first 10 rows of the
+output.
+
 ``` r
 example_data %>%
   autoscore() %>%   ## using all the defaults
@@ -116,8 +119,59 @@ example_data %>%
 #> # ... with 30 more rows
 ```
 
+Next, let’s change some of the rules.
+
 ``` r
-devtools::session_info()
+example_data %>%
+  autoscore(position_rule = 1, stemmed_rule = FALSE) %>%
+  as.tibble()
+#> Note: Homophones in data(homophones) were used.
+#> # A tibble: 40 x 6
+#>       id target                 response                 human robot equal
+#>    <dbl> <fct>                  <fct>                    <dbl> <int> <lgl>
+#>  1     5 mate denotes a judgem… made the dinner in it        1     1 TRUE 
+#>  2     5 its harmful note abou… it's not for the bounce      1     1 TRUE 
+#>  3     5 butcher in the middle  the shirt in the middle      3     3 TRUE 
+#>  4     5 rampant boasting capt… rubbed against the capt…     1     1 TRUE 
+#>  5     5 avoid or beat command  advert the beat commend      1     1 TRUE 
+#>  6     5 rocking modern poster  wrecking minor poacher       0     0 TRUE 
+#>  7     5 resting older earring  resting alert hearing        1     1 TRUE 
+#>  8     5 indeed a tax ascent    indeed the dash was sent     2     2 TRUE 
+#>  9     5 pain can follow agents thank for guidance           0     0 TRUE 
+#> 10     5 remove and name for s… remember the name for s…     3     3 TRUE 
+#> # ... with 30 more rows
+```
+
+We can also change the output type to “none” to get all the data from
+the computation.
+
+``` r
+example_data %>%
+  autoscore(output = "none")
+#> Note: Homophones in data(homophones) were used.
+#> # A tibble: 40 x 12
+#>       id target response human homophone_target homophone_respo…
+#>    <dbl> <list> <list>   <dbl> <list>           <list>          
+#>  1     5 <chr … <chr [5…     1 <chr [4]>        <chr [5]>       
+#>  2     5 <chr … <chr [5…     1 <chr [4]>        <chr [5]>       
+#>  3     5 <chr … <chr [5…     3 <chr [4]>        <chr [5]>       
+#>  4     5 <chr … <chr [4…     1 <chr [3]>        <chr [4]>       
+#>  5     5 <chr … <chr [4…     1 <chr [4]>        <chr [4]>       
+#>  6     5 <chr … <chr [3…     0 <chr [3]>        <chr [3]>       
+#>  7     5 <chr … <chr [3…     1 <chr [3]>        <chr [3]>       
+#>  8     5 <chr … <chr [5…     2 <chr [4]>        <chr [5]>       
+#>  9     5 <chr … <chr [3…     0 <chr [4]>        <chr [3]>       
+#> 10     5 <chr … <chr [5…     3 <chr [5]>        <chr [5]>       
+#> # ... with 30 more rows, and 6 more variables: diff_target_pre <list>,
+#> #   diff_response_pre <list>, diff_target <list>, diff_response <list>,
+#> #   count_target <int>, count_response <int>
+```
+
+Finally, the session information from the computer that ran this short
+tutorial.
+
+``` r
+devtools::session_info("autoscore")
 #> Session info -------------------------------------------------------------
 #>  setting  value                       
 #>  version  R version 3.5.0 (2018-04-23)
