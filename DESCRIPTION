@@ -1,8 +1,8 @@
 Package: autoscore
 Type: Package
 Title: Automatically Score Perception Data
-Version: 0.1.0
-Date: 2018-06-07
+Version: 0.1.1
+Date: 2018-07-27
 Authors@R: c(person("Tyson S.", "Barrett",  
                     role=c("aut","cre"), 
                     email = "t.barrett@aggiemail.usu.edu", 

@@ -28,135 +28,190 @@ homophones_fun <- function(d){
   homophones <- autoscore::homophones %>%
     dplyr::mutate(homophone_string = stringr::str_split(homophone, pattern = ", "))
 
+  .h = homophones %>% tidyr::unnest(.)
+
   d %>%
     dplyr::mutate(homophone_target = purrr::map(target, ~{
-      .h = homophones %>% tidyr::unnest(.)
+
+      names(.x) = .x
+
       replace = .h %>%
-        dplyr::filter(homophone_string %in% .x) %>%
-        dplyr::pull(rowname)
-      any_phones = homophones %>%
-        .[replace, ]
+        dplyr::filter(homophone_string %in% .x)
+      any_phones = homophones[replace$rowname, ]
 
-      if (length(any_phones) > 0){
-        replace_it = any_phones %>%
-          dplyr::mutate(replacement = str_replace(homophone, pattern = ", .*$", replacement = "")) %>%
-          dplyr::pull(replacement)
+      what_to_replace = .h %>%
+        mutate(in_it = homophone_string %in% .x) %>%
+        filter(in_it) %>%
+        dplyr::pull(homophone_string)
 
-        .x[.x %in% (.h %>% dplyr::pull(homophone_string))] = replace_it
-        .x
-      } else {
-        .x
-      }
+      replace$what_to_replace = what_to_replace
+
+      replace = replace %>%
+        dplyr::mutate(replacement = str_replace(homophone, pattern = ", .*$", replacement = ""))
+
+      .x[replace$what_to_replace] = replace$replacement
+      .x
 
     })) %>%
     dplyr::mutate(homophone_response = purrr::map(response, ~{
-      .h = homophones %>% tidyr::unnest(.)
+
+      names(.x) = .x
+
       replace = .h %>%
-        dplyr::filter(homophone_string %in% .x) %>%
-        dplyr::pull(rowname)
-      any_phones = homophones %>%
-        .[replace, ]
+        dplyr::filter(homophone_string %in% .x)
+      any_phones = homophones[replace$rowname, ]
 
-      if (length(any_phones) > 0){
-        replace_it = any_phones %>%
-          dplyr::mutate(replacement = str_replace(homophone, pattern = ", .*$", replacement = "")) %>%
-          dplyr::pull(replacement)
+      what_to_replace = .h %>%
+        mutate(in_it = homophone_string %in% .x) %>%
+        filter(in_it) %>%
+        dplyr::pull(homophone_string)
 
-        .x[.x %in% (.h %>% dplyr::pull(homophone_string))] = replace_it
-        .x
-      } else {
-        .x
-      }
+      replace$what_to_replace = what_to_replace
+
+      replace = replace %>%
+        dplyr::mutate(replacement = str_replace(homophone, pattern = ", .*$", replacement = ""))
+
+      .x[replace$what_to_replace] = replace$replacement
+      .x
     }))
 
 }
 
-match_position_basic <- function(d, rules = NULL){
+match_fun <- function(x, y, firstpart_rule) {
+  switch(firstpart_rule,
+         firstpart = pmatch(x, y),
+         no_firstpart = match(x, y))
+}
 
-  homophone_rule <- rules[["homophone_rule"]] %||% TRUE
+match_position_basic <- function(d, homophone_rule, pasttense_rule, plurals_rule, a_the_rule, firstpart_rule, stemmed_rule){
+
+  homophone_rule <- homophone_rule %||% TRUE
+  a_the_rule     <- a_the_rule %||% TRUE
+  stemmed_rule   <- stemmed_rule %||% TRUE
+  firstpart_rule <- firstpart_rule %||% FALSE
+
+  if (isTRUE(stemmed_rule)){
+    pasttense_rule <- FALSE
+    plurals_rule   <- FALSE
+  } else {
+    pasttense_rule <- pasttense_rule %||% TRUE
+    plurals_rule   <- plurals_rule %||% TRUE
+  }
+
+  if (isTRUE(firstpart_rule))
+    firstpart_rule <- "firstpart"
+  else
+    firstpart_rule <- "no_firstpart"
 
   if (isTRUE(homophone_rule)){
     message("Note: Homophones in data(homophones) were used.")
     d <- homophones_fun(d)
 
-    d %>%
+    d <- d %>%
       dplyr::mutate(homophone_target = purrr::map(homophone_target, ~{
         stringr::str_replace(.x, pattern = "[[:punct:]]", replacement = "") %>%
-          stringr::str_replace(pattern = "s$", replacement = "") %>%
-          stringr::str_replace(pattern = "^a$", replacement = "the") %>%
-          stringr::str_replace(pattern = "ed$", replacement = "")
+          a_the_fun(a_the_rule) %>%
+          stemmed_fun(stemmed_rule) %>%
+          plurals_fun(plurals_rule) %>%
+          pasttense_fun(pasttense_rule)
 
       })) %>%
       dplyr::mutate(homophone_response = purrr::map(homophone_response, ~{
         stringr::str_replace(.x, pattern = "[[:punct:]]", replacement = "") %>%
-          stringr::str_replace(pattern = "s$", replacement = "") %>%
-          stringr::str_replace(pattern = "^a$", replacement = "the") %>%
-          stringr::str_replace(pattern = "ed$", replacement = "")
+          a_the_fun(a_the_rule) %>%
+          stemmed_fun(stemmed_rule) %>%
+          plurals_fun(plurals_rule) %>%
+          pasttense_fun(pasttense_rule)
       })) %>%
-      dplyr::mutate(pos_target = purrr::map2(homophone_target, homophone_response, ~{
-        which(.x %in% .y)
-      }),
-      pos_response = purrr::map2(homophone_response, homophone_target, ~{
-        which(.x %in% .y)
+      dplyr::mutate(diff_target_pre = purrr::map2(homophone_target, homophone_response, ~{
+        match_fun(.x, .y, firstpart_rule)
       })) %>%
-      dplyr::mutate(pos_target_word = purrr::map2(homophone_target, pos_target, ~.x[.y]),
-                    pos_response_word = purrr::map2(homophone_response, pos_response, ~.x[.y])) %>%
-      dplyr::mutate(diff_target = purrr::map2(pos_target_word, pos_response_word, ~{
-        pmatch(.x, .y)
-      })) %>%
-      dplyr::mutate(diff_response = purrr::map2(pos_response_word, pos_target_word, ~{
-        pmatch(.x, .y)
-      })) %>%
-      dplyr::mutate(diff_target = purrr::map(diff_target, ~.x - 1:length(.x))) %>%
-      dplyr::mutate(diff_response = purrr::map(diff_response, ~.x - 1:length(.x)))
+      dplyr::mutate(diff_response_pre = purrr::map2(homophone_response, homophone_target, ~{
+        match_fun(.x, .y, firstpart_rule)
+      }))
 
   } else {
 
-    d %>%
+    d <- d %>%
       dplyr::mutate(target = purrr::map(target, ~{
         stringr::str_replace(.x, pattern = "[[:punct:]]", replacement = "") %>%
-          stringr::str_replace(pattern = "s$", replacement = "") %>%
-          stringr::str_replace(pattern = "^a$", replacement = "the") %>%
-          stringr::str_replace(pattern = "ed$", replacement = "")
+          a_the_fun(a_the_rule) %>%
+          stemmed_fun(stemmed_rule) %>%
+          plurals_fun(plurals_rule) %>%
+          pasttense_fun(pasttense_rule)
 
       })) %>%
       dplyr::mutate(response = purrr::map(response, ~{
         stringr::str_replace(.x, pattern = "[[:punct:]]", replacement = "") %>%
-          stringr::str_replace(pattern = "s$", replacement = "") %>%
-          stringr::str_replace(pattern = "^a$", replacement = "the") %>%
-          stringr::str_replace(pattern = "ed$", replacement = "")
+          a_the_fun(a_the_rule) %>%
+          stemmed_fun(stemmed_rule) %>%
+          plurals_fun(plurals_rule) %>%
+          pasttense_fun(pasttense_rule)
       })) %>%
-      dplyr::mutate(pos_target = purrr::map2(target, response, ~{
-        which(.x %in% .y)
-      }),
-      pos_response = purrr::map2(response, target, ~{
-        which(.x %in% .y)
+      dplyr::mutate(diff_target_pre = purrr::map2(target, response, ~{
+        match_fun(.x, .y, firstpart_rule)
       })) %>%
-      dplyr::mutate(pos_target_word = purrr::map2(target, pos_target, ~.x[.y]),
-                    pos_response_word = purrr::map2(response, pos_response, ~.x[.y])) %>%
-      dplyr::mutate(diff_target = purrr::map2(pos_target_word, pos_response_word, ~{
-        pmatch(.x, .y)
-      })) %>%
-      dplyr::mutate(diff_response = purrr::map2(pos_response_word, pos_target_word, ~{
-        pmatch(.x, .y)
-      })) %>%
-      dplyr::mutate(diff_target = purrr::map(diff_target, ~.x - 1:length(.x))) %>%
-      dplyr::mutate(diff_response = purrr::map(diff_response, ~.x - 1:length(.x)))
+      dplyr::mutate(diff_response_pre = purrr::map2(response, target, ~{
+        match_fun(.x, .y, firstpart_rule)
+      }))
   }
 
+  d %>%
+    dplyr::mutate(diff_target = purrr::map(diff_target_pre, ~.x - 1:length(.x))) %>%
+    dplyr::mutate(diff_response = purrr::map(diff_response_pre, ~.x - 1:length(.x)))
 }
 
-count_matches <- function(d, rules = NULL) {
 
-  position_rule <- rules[["position_rule"]] %||% 1
+
+
+stemmed_fun <- function(chr, use = TRUE){
+  if (isTRUE(use)){
+    tm::stemDocument(chr)
+  } else {
+    chr
+  }
+}
+
+pasttense_fun <- function(chr, use = TRUE){
+  if (isTRUE(use)){
+    stringr::str_replace(chr, pattern = "ed$", replacement = "") %>%
+      stringr::str_replace(pattern = "d$", replacement = "")
+  } else {
+    chr
+  }
+}
+
+plurals_fun <- function(chr, use = TRUE){
+  if (isTRUE(use)){
+    stringr::str_replace(chr, pattern = "es$", replacement = "") %>%
+      stringr::str_replace(pattern = "s$", replacement = "")
+  } else {
+    chr
+  }
+}
+
+a_the_fun <- function(chr, use = TRUE){
+  if (isTRUE(use)){
+    stringr::str_replace(chr, pattern = "^a$", replacement = "the")
+  } else {
+    chr
+  }
+}
+
+
+count_matches <- function(d, position_rule) {
+
+  position_rule <- position_rule %||% 99
 
   d %>%
-    dplyr::mutate(match_target = purrr::map(diff_target, ~ifelse(abs(.x) <= position_rule, .x, NA))) %>%
-    dplyr::mutate(match_response = purrr::map(diff_response, ~ifelse(abs(.x) <= position_rule, .x, NA))) %>%
-    dplyr::mutate(match_target = purrr::map(match_target, ~.x[complete.cases(.x)])) %>%
-    dplyr::mutate(match_response = purrr::map(match_response, ~.x[complete.cases(.x)])) %>%
-    dplyr::mutate(count_target = purrr::map(match_target, ~length(.x)) %>% unlist,
-                  count_response = purrr::map(match_target, ~length(.x)) %>% unlist)
+    dplyr::mutate(count_target = purrr::map(diff_target,
+                                            ~ifelse(abs(.x) <= position_rule, 1, NA)) %>%
+                    purrr::map(~.x[complete.cases(.x)]) %>%
+                    purrr::map(~length(.x)) %>% unlist) %>%
+    dplyr::mutate(count_response = purrr::map(diff_response,
+                                              ~ifelse(abs(.x) <= position_rule, 1, NA)) %>%
+                    purrr::map(~.x[complete.cases(.x)]) %>%
+                    purrr::map(~length(.x)) %>% unlist)
 }
 
 

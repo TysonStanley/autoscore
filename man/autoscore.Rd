@@ -7,14 +7,28 @@
 \alias{autoscore}
 \title{AutoScore}
 \usage{
-autoscore(.data, ..., output = "text")
+autoscore(.data, position_rule = NULL, homophone_rule = NULL,
+  stemmed_rule = NULL, plurals_rule = NULL, pasttense_rule = NULL,
+  a_the_rule = NULL, firstpart_rule = NULL, output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
 
-\item{...}{the list of rules to apply}
+\item{position_rule}{the amount a word can vary from the correct position in the phrase and still be correct (default = 99)}
 
-\item{output}{the output type for the autoscore table; current options are "text" ...}
+\item{homophone_rule}{should homophones be used? (default = TRUE)}
+
+\item{stemmed_rule}{should the words be stemmed (all suffix characters removed)? (default = TRUE); if TRUE, plurals_rule and pasttense_rule are FALSE}
+
+\item{plurals_rule}{should the plural suffix (-s, -es) be removed? (default = TRUE)}
+
+\item{pasttense_rule}{should the past tense suffix (-d, -ed) be removed? (default = TRUE)}
+
+\item{a_the_rule}{should "a" and "the" be considered the same? (default = TRUE)}
+
+\item{firstpart_rule}{should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)}
+
+\item{output}{the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon}
 }
 \description{
 Description of the package and how to use it...
