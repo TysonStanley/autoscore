@@ -10,8 +10,8 @@
 #' @param pasttense_rule should the past tense suffix (-d, -ed) be removed? (default = TRUE)
 #' @param a_the_rule should "a" and "the" be considered the same? (default = TRUE)
 #' @param firstpart_rule should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)
+#' @param alternative_spell_rule user can provide a data frame of alternate spellings for words in the target/response lists; currently not implemented...
 #' @param output the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon
-#'
 #' @import dplyr
 #' @import purrr
 #' @import stringr
@@ -28,6 +28,7 @@ autoscore <- function(.data,
                       pasttense_rule = NULL,
                       a_the_rule = NULL,
                       firstpart_rule = NULL,
+                      alternative_spell_rule = NULL,
                       output = "text") {
 
   counts <- split_clean(.data) %>%
@@ -36,7 +37,8 @@ autoscore <- function(.data,
                          pasttense_rule = pasttense_rule,
                          a_the_rule = a_the_rule,
                          firstpart_rule = firstpart_rule,
-                         stemmed_rule = stemmed_rule) %>%
+                         stemmed_rule = stemmed_rule,
+                         alternative_spell_rule = alternative_spell_rule) %>%
     count_matches(position_rule = position_rule)
 
   if (output == "none"){

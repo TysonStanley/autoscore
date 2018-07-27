@@ -83,7 +83,7 @@ match_fun <- function(x, y, firstpart_rule) {
          no_firstpart = match(x, y))
 }
 
-match_position_basic <- function(d, homophone_rule, pasttense_rule, plurals_rule, a_the_rule, firstpart_rule, stemmed_rule){
+match_position_basic <- function(d, homophone_rule, pasttense_rule, plurals_rule, a_the_rule, firstpart_rule, stemmed_rule, alternative_spell_rule){
 
   homophone_rule <- homophone_rule %||% TRUE
   a_the_rule     <- a_the_rule %||% TRUE

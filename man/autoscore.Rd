@@ -9,7 +9,8 @@
 \usage{
 autoscore(.data, position_rule = NULL, homophone_rule = NULL,
   stemmed_rule = NULL, plurals_rule = NULL, pasttense_rule = NULL,
-  a_the_rule = NULL, firstpart_rule = NULL, output = "text")
+  a_the_rule = NULL, firstpart_rule = NULL, alternative_spell_rule = NULL,
+  output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
@@ -27,6 +28,8 @@ autoscore(.data, position_rule = NULL, homophone_rule = NULL,
 \item{a_the_rule}{should "a" and "the" be considered the same? (default = TRUE)}
 
 \item{firstpart_rule}{should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)}
+
+\item{alternative_spell_rule}{user can provide a data frame of alternate spellings for words in the target/response lists; currently not implemented...}
 
 \item{output}{the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon}
 }

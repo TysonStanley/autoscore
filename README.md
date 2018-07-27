@@ -108,7 +108,7 @@ example_data %>%
 #>    <dbl> <fct>                  <fct>                    <dbl> <int> <lgl>
 #>  1     5 mate denotes a judgem… made the dinner in it        1     1 TRUE 
 #>  2     5 its harmful note abou… it's not for the bounce      1     1 TRUE 
-#>  3     5 butcher in the middle  the shirt in the middle      3     4 FALSE
+#>  3     5 butcher in the middle  the shirt in the middle      3     3 TRUE 
 #>  4     5 rampant boasting capt… rubbed against the capt…     1     1 TRUE 
 #>  5     5 avoid or beat command  advert the beat commend      1     1 TRUE 
 #>  6     5 rocking modern poster  wrecking minor poacher       0     0 TRUE 
@@ -131,7 +131,7 @@ example_data %>%
 #>    <dbl> <fct>                  <fct>                    <dbl> <int> <lgl>
 #>  1     5 mate denotes a judgem… made the dinner in it        1     1 TRUE 
 #>  2     5 its harmful note abou… it's not for the bounce      1     1 TRUE 
-#>  3     5 butcher in the middle  the shirt in the middle      3     3 TRUE 
+#>  3     5 butcher in the middle  the shirt in the middle      3     2 FALSE
 #>  4     5 rampant boasting capt… rubbed against the capt…     1     1 TRUE 
 #>  5     5 avoid or beat command  advert the beat commend      1     1 TRUE 
 #>  6     5 rocking modern poster  wrecking minor poacher       0     0 TRUE 
@@ -166,6 +166,12 @@ example_data %>%
 #> #   diff_response_pre <list>, diff_target <list>, diff_response <list>,
 #> #   count_target <int>, count_response <int>
 ```
+
+In each of these exapmles, it is clear that the human and “robot” agree
+the majority of the time. The times that they disagree, it is usually
+predictably a human error or a subjective judgement that the researcher
+will have to consider (for example by including alternate spellings of
+words; see `alternate_spell_rule`).
 
 Finally, the session information from the computer that ran this short
 tutorial.
