@@ -23,6 +23,63 @@ split_clean <- function(d){
                   response = stringr::str_split(response, pattern = " "))
 }
 
+alternate_fun <- function(d, alternate_df){
+
+  if (is.null(alternate_df)){
+    return(d)
+
+  } else {
+
+    alternate_df <- alternate_df %>%
+      dplyr::mutate(rowname = row_number(original)) %>%
+      dplyr::mutate(alternate_string = stringr::str_split(alternate, pattern = ", "))
+
+    .a = alternate_df %>% tidyr::unnest(.)
+
+    d %>%
+      dplyr::mutate(target = purrr::map(target, ~{
+
+        names(.x) = .x
+
+        replace = .a %>%
+          dplyr::filter(alternate_string %in% .x)
+        any_phones = alternate_df[replace$rowname, ]
+
+        what_to_replace = .a %>%
+          dplyr::mutate(in_it = alternate_string %in% .x) %>%
+          dplyr::filter(in_it) %>%
+          dplyr::pull(alternate_string)
+
+        replace$what_to_replace = what_to_replace
+
+        .x[replace$what_to_replace] = replace$original
+        .x
+
+      })) %>%
+      dplyr::mutate(response = purrr::map(response, ~{
+
+        names(.x) = .x
+
+        replace = .a %>%
+          dplyr::filter(alternate_string %in% .x)
+        any_phones = alternate_df[replace$rowname, ]
+
+        what_to_replace = .a %>%
+          dplyr::mutate(in_it = alternate_string %in% .x) %>%
+          dplyr::filter(in_it) %>%
+          dplyr::pull(alternate_string)
+
+        replace$what_to_replace = what_to_replace
+
+        .x[replace$what_to_replace] = replace$original
+        .x
+
+      }))
+  }
+}
+
+
+
 homophones_fun <- function(d){
 
   homophones <- autoscore::homophones %>%
@@ -40,8 +97,8 @@ homophones_fun <- function(d){
       any_phones = homophones[replace$rowname, ]
 
       what_to_replace = .h %>%
-        mutate(in_it = homophone_string %in% .x) %>%
-        filter(in_it) %>%
+        dplyr::mutate(in_it = homophone_string %in% .x) %>%
+        dplyr::filter(in_it) %>%
         dplyr::pull(homophone_string)
 
       replace$what_to_replace = what_to_replace
@@ -62,8 +119,8 @@ homophones_fun <- function(d){
       any_phones = homophones[replace$rowname, ]
 
       what_to_replace = .h %>%
-        mutate(in_it = homophone_string %in% .x) %>%
-        filter(in_it) %>%
+        dplyr::mutate(in_it = homophone_string %in% .x) %>%
+        dplyr::filter(in_it) %>%
         dplyr::pull(homophone_string)
 
       replace$what_to_replace = what_to_replace
@@ -83,7 +140,7 @@ match_fun <- function(x, y, firstpart_rule) {
          no_firstpart = match(x, y))
 }
 
-match_position_basic <- function(d, homophone_rule, pasttense_rule, plurals_rule, a_the_rule, firstpart_rule, stemmed_rule, alternative_spell_rule){
+match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule, plurals_rule, a_the_rule, firstpart_rule, stemmed_rule){
 
   homophone_rule <- homophone_rule %||% TRUE
   a_the_rule     <- a_the_rule %||% TRUE
@@ -103,6 +160,10 @@ match_position_basic <- function(d, homophone_rule, pasttense_rule, plurals_rule
   else
     firstpart_rule <- "no_firstpart"
 
+  ## alternate_spell_rule
+  d <- alternate_fun(d, alternate_df)
+
+  ## homophone_rule
   if (isTRUE(homophone_rule)){
     message("Note: Homophones in data(homophones) were used.")
     d <- homophones_fun(d)

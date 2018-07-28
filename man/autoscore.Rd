@@ -7,13 +7,15 @@
 \alias{autoscore}
 \title{AutoScore}
 \usage{
-autoscore(.data, position_rule = NULL, homophone_rule = NULL,
-  stemmed_rule = NULL, plurals_rule = NULL, pasttense_rule = NULL,
-  a_the_rule = NULL, firstpart_rule = NULL, alternative_spell_rule = NULL,
+autoscore(.data, alternate_df = NULL, position_rule = NULL,
+  homophone_rule = NULL, stemmed_rule = NULL, plurals_rule = NULL,
+  pasttense_rule = NULL, a_the_rule = NULL, firstpart_rule = NULL,
   output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
+
+\item{alternate_df}{optional data.frame of original and alternate spellings for words in the target/response lists (this is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
 
 \item{position_rule}{the amount a word can vary from the correct position in the phrase and still be correct (default = 99)}
 
@@ -29,14 +31,12 @@ autoscore(.data, position_rule = NULL, homophone_rule = NULL,
 
 \item{firstpart_rule}{should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)}
 
-\item{alternative_spell_rule}{user can provide a data frame of alternate spellings for words in the target/response lists; currently not implemented...}
-
 \item{output}{the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon}
 }
 \description{
 Description of the package and how to use it...
 
-Function stuff
+Takes a data frame with target words and response words and calculates the number of matches based on a number of rules.
 }
 \examples{
 \dontrun{

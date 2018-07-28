@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # autoscore
 
-The goal of autoscore is to score the accuracy of speech perception (often in several situations such as noise, dysarthria, hearing loss, etc.). It uses a flexible number of rules that help decide if a response set of words match a target set of words. Each rule can be applied or removed in each situation to best meet the needs of the reseearcher.
+The goal of autoscore is to score the accuracy of speech perception (often in several situations such as noise, dysarthria, hearing loss, etc.). It uses a flexible number of rules that help decide if a response set of words match a target set of words. Each rule can be applied or removed in each situation to best meet the needs of the researcher.
 
 The rules are:
 
@@ -27,7 +27,7 @@ The rules are:
 4. `a_the_rule` = a and the are the same
 5. `plural_rule` = remove plurals (is not applied when `stemmed_rule` is applied); default is `TRUE`
 6. `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic
-7. `alternate_spell_rule` = user provided alternate spellings of words in the target
+7. `alternate_spell_rule` = a researcher provided alternate spellings of words in the target; is triggered when the researcher provides a data frame of original and alternate spellings
 
 ## Design
 
@@ -35,6 +35,7 @@ The API of the `R` package is simple. A single call to `autoscore()` with the fo
 
 - `select_cols()` -- The first function which takes the data and gets it in the right format for analysis.
 - `split_clean()` -- Using the cleaned data from `select_cols()`, this uses `stringr` to turn the phrases into individual words.
+- `alternate_fun()` -- If a data.frame of alternate spellings is provided, this function will find and normalize all alternate spellings to match the original spelling as defined by the researcher.
 - `homophones_fun()` -- If homophones are used (according to the `homophone_rule`), this function finds and normalizes all homophones as found in the `data(homophones)` found in this package.
 - `match_position_basic()` -- This function is the workhorse of the package. It takes the cleaned (and possibly homophone normalized) data and does three main things: 1) applies all the rules except for the `position_rule`, 2) finds the matches between the responses and the targets, and 3) reports how far away the matches are from each other.
 - `count_matches()` -- Finally, this function takes the information from `match_position_basic()` and counts the number of matches based on the `position_rule`.
@@ -79,7 +80,30 @@ example_data %>%
   autoscore(output = "none")
 ```
 
-In each of these examples, it is clear that the human and "robot" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words; see `alternate_spell_rule`).
+To use the alternate spelling, let's create a small `data.frame` that we can provide `autoscore()`. In the data frame below, the original spellings are the generally accepted spellings while the alternate spellings are those that may be misspelled or otherwise not generally used.
+
+```{r}
+alternate_df <- data_frame(
+  original = c("model",
+               "treason",
+               "duck"),
+  alternate = c("modal, moddel",
+                "treeson",
+                "dock")
+)
+alternate_df
+```
+
+Using this, we can provide it to the `autoscore()` function with the `alternate_df` argument.
+
+```{r}
+example_data %>%
+  autoscore::autoscore(alternate_df = alternate_df) %>%
+  as.tibble()
+```
+
+
+In each of these examples, it is clear that the human and "robot" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
 
 Finally, the session information from the computer that ran this short tutorial.
 ```{r}
