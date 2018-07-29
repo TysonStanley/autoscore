@@ -10,12 +10,12 @@
 autoscore(.data, alternate_df = NULL, position_rule = NULL,
   homophone_rule = NULL, stemmed_rule = NULL, plurals_rule = NULL,
   pasttense_rule = NULL, a_the_rule = NULL, firstpart_rule = NULL,
-  output = "text")
+  common_misspell_rule = NULL, output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
 
-\item{alternate_df}{three options to use alternate spellings: 1) \code{alternate_df = "default"} uses a large common mispellings list (); 2) a user-provided data.frame of original and alternate spellings for words in the target/response lists (this is in addition to built-in homophone list that can be seen with \code{data(homophones)}); or 3) NULL (the default) that doesn't use any alternate spellings.}
+\item{alternate_df}{A user-provided data.frame of original and alternate spellings for words in the target/response lists (this is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
 
 \item{position_rule}{the amount a word can vary from the correct position in the phrase and still be correct (default = 99)}
 
@@ -30,6 +30,8 @@ autoscore(.data, alternate_df = NULL, position_rule = NULL,
 \item{a_the_rule}{should "a" and "the" be considered the same? (default = TRUE)}
 
 \item{firstpart_rule}{should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)}
+
+\item{common_misspell_rule}{should a large common misspellings list be used to correct spelling? default is TRUE}
 
 \item{output}{the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon}
 }

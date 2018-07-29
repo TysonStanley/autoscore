@@ -23,22 +23,36 @@ split_clean <- function(d){
                   response = stringr::str_split(response, pattern = " "))
 }
 
-alternate_fun <- function(d, alternate_df){
+combine_alts <- function(alternate_df, common_misspell_rule){
+  if (!is.null(alternate_df)){
+    ## user provided list
+    alternate_df <- alternate_df %>%
+      dplyr::rename_all(tolower)
 
-  if (is.null(alternate_df)){
+    if (isTRUE(common_misspell_rule)){
+      ## list of 4268 common misspellings
+      alternate_df <- dplyr::bind_rows(alternate_df, autoscore::alternate_df_default)
+    }
+  } else {
+
+    if (isTRUE(common_misspell_rule)){
+      ## list of 4268 common misspellings
+      alternate_df <- autoscore::alternate_df_default
+    }
+  }
+  alternate_df
+}
+
+alternate_fun <- function(d, alternate_df, common_misspell_rule){
+
+  common_misspell_rule <- common_misspell_rule %||% TRUE
+
+  if (is.null(alternate_df) & !isTRUE(common_misspell_rule)){
     return(d)
 
   } else {
 
-    if (is.data.frame(alternate_df)){
-      ## user provided list
-      alternate_df <- alternate_df
-
-    } else if (alternate_df == "default"){
-      ## a list of 4268 alternate spellings (common mispellings)
-      alternate_df <- autoscore::alternate_df_default
-    }
-
+    alternate_df <- combine_alts(alternate_df, common_misspell_rule)
     alternate_df <- alternate_df %>%
       dplyr::mutate(rowname = row_number(original)) %>%
       dplyr::mutate(alternate_string = stringr::str_split(alternate, pattern = ", "))
@@ -149,7 +163,7 @@ match_fun <- function(x, y, firstpart_rule) {
          no_firstpart = match(x, y))
 }
 
-match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule, plurals_rule, a_the_rule, firstpart_rule, stemmed_rule){
+match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule, plurals_rule, a_the_rule, firstpart_rule, stemmed_rule, common_misspell_rule){
 
   homophone_rule <- homophone_rule %||% TRUE
   a_the_rule     <- a_the_rule %||% TRUE
@@ -170,7 +184,7 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
     firstpart_rule <- "no_firstpart"
 
   ## alternate_spell_rule
-  d <- alternate_fun(d, alternate_df)
+  d <- alternate_fun(d, alternate_df, common_misspell_rule)
 
   ## homophone_rule
   if (isTRUE(homophone_rule)){

@@ -27,7 +27,8 @@ The rule options are:
 4. `a_the_rule` = a and the are the same
 5. `plural_rule` = remove plurals (is not applied when `stemmed_rule` is applied); default is `TRUE`
 6. `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic
-7. `alternate_spell_rule` = either the default list of [common mispellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines) or a researcher provided alternate spellings of words in the target; is triggered by setting using the rule or by providing a data frame of original and alternate spellings
+7. `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines)
+8. `alternate_spell_rule` = a researcher provided alternate spellings of words in the target; is triggered by setting using the rule or by providing a data frame of original and alternate spellings
 
 ## Design
 
@@ -102,11 +103,20 @@ example_data %>%
   as.tibble()
 ```
 
-We can also say `alternate_df = "default"` if we want to use the list of 4,268 common mispellings.
+We can also say `common_misspell_rule = TRUE` in conjunction with `alternate_df = alternate_df` if we want to use the list of 4,268 common misspellings in addition to the user provided list.
 
 ```{r}
 example_data %>%
-  autoscore::autoscore(alternate_df = "default") %>%
+  autoscore::autoscore(alternate_df = alternate_df,
+                       common_misspell_rule = TRUE) %>%
+  as.tibble()
+```
+
+If the researcher doesn't have a list of words, we can just use the common misspell rule.
+
+```{r}
+example_data %>%
+  autoscore::autoscore(common_misspell_rule = TRUE) %>%
   as.tibble()
 ```
 
