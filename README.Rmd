@@ -51,6 +51,11 @@ The online tool will be developed shortly...
 
 ## Use of the R Package
 
+To install the package use the developmental version as it is not yet on CRAN.
+```{r, eval = FALSE}
+devtools::install_github("tysonstanley/autoscore_package")
+```
+
 An example of the use of `autoscore` is below. We will use the example data set provided in the package.
 
 ```{r}

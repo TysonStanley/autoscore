@@ -30,12 +30,14 @@ combine_alts <- function(alternate_df, common_misspell_rule){
       dplyr::rename_all(tolower)
 
     if (isTRUE(common_misspell_rule)){
+      message("Note: List of common misspellings in data(alternate_df_default) were used.")
       ## list of 4268 common misspellings
       alternate_df <- dplyr::bind_rows(alternate_df, autoscore::alternate_df_default)
     }
   } else {
 
     if (isTRUE(common_misspell_rule)){
+      message("Note: List of common misspellings in data(alternate_df_default) were used.")
       ## list of 4268 common misspellings
       alternate_df <- autoscore::alternate_df_default
     }
@@ -324,7 +326,17 @@ format_output <- function(final_table, output, original_data) {
   }
 }
 
+error_check_alternate_df <- function(alternate_df){
+  if (!is.null(alternate_df)){
+    stopifnot(is.data.frame(alternate_df))
+  }
+}
 
+error_check_position <- function(position_rule){
+  if (!is.null(alternate_df)){
+    stopifnot(is.numeric(position_rule) & position_rule > 0)
+  }
+}
 
 
 

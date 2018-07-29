@@ -13,7 +13,8 @@ The rule options are:
 5.  `a_the_rule` = a and the are the same
 6.  `plural_rule` = remove plurals (is not applied when `stemmed_rule` is applied); default is `TRUE`
 7.  `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic
-8.  `alternate_spell_rule` = either the default list of [common mispellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines) or a researcher provided alternate spellings of words in the target; is triggered by setting using the rule or by providing a data frame of original and alternate spellings
+8.  `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines)
+9.  `alternate_spell_rule` = a researcher provided alternate spellings of words in the target; is triggered by setting using the rule or by providing a data frame of original and alternate spellings
 
 Design
 ------
@@ -34,6 +35,12 @@ The online tool will be developed shortly...
 
 Use of the R Package
 --------------------
+
+To install the package use the developmental version as it is not yet on CRAN.
+
+``` r
+devtools::install_github("tysonstanley/autoscore_package")
+```
 
 An example of the use of `autoscore` is below. We will use the example data set provided in the package.
 
@@ -184,11 +191,35 @@ example_data %>%
 #> # ... with 30 more rows
 ```
 
-We can also say `alternate_df = "default"` if we want to use the list of 4,268 common mispellings.
+We can also say `common_misspell_rule = TRUE` in conjunction with `alternate_df = alternate_df` if we want to use the list of 4,268 common misspellings in addition to the user provided list.
 
 ``` r
 example_data %>%
-  autoscore::autoscore(alternate_df = "default") %>%
+  autoscore::autoscore(alternate_df = alternate_df,
+                       common_misspell_rule = TRUE) %>%
+  as.tibble()
+#> Note: Homophones in data(homophones) were used.
+#> # A tibble: 40 x 6
+#>       id target                    response              human robot equal
+#>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
+#>  1     5 mate denotes a judgement  made the dinner in it     1     1 TRUE 
+#>  2     5 its harmful note abounds  it's not for the bou…     1     1 TRUE 
+#>  3     5 butcher in the middle     the shirt in the mid…     3     3 TRUE 
+#>  4     5 rampant boasting captain  rubbed against the c…     1     1 TRUE 
+#>  5     5 avoid or beat command     advert the beat comm…     1     1 TRUE 
+#>  6     5 rocking modern poster     wrecking minor poach…     0     0 TRUE 
+#>  7     5 resting older earring     resting alert hearing     1     1 TRUE 
+#>  8     5 indeed a tax ascent       indeed the dash was …     2     2 TRUE 
+#>  9     5 pain can follow agents    thank for guidance        0     0 TRUE 
+#> 10     5 remove and name for stake remember the name fo…     3     3 TRUE 
+#> # ... with 30 more rows
+```
+
+If the researcher doesn't have a list of words, we can just use the common misspell rule.
+
+``` r
+example_data %>%
+  autoscore::autoscore(common_misspell_rule = TRUE) %>%
   as.tibble()
 #> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6

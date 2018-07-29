@@ -34,6 +34,10 @@ autoscore <- function(.data,
                       common_misspell_rule = NULL,
                       output = "text") {
 
+  error_check_alternate_df(alternate_df)
+  error_check_position(position_rule)
+
+
   counts <- split_clean(.data) %>%
     match_position_basic(alternate_df,
                          homophone_rule = homophone_rule,
