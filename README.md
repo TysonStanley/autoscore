@@ -1,10 +1,10 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-autoscore
-=========
+`autoscore`
+===========
 
-The goal of autoscore is to score the accuracy of speech perception (often in several situations such as noise, dysarthria, hearing loss, etc.). It uses a flexible number of rules that help decide if a response set of words match a target set of words. Each rule can be applied or removed in each situation to best meet the needs of the researcher.
+The purpose of `autoscore` is to automatically score word identification in speech perception research, such as studies involving listener understanding of speech in background noise or disordered speech. The program uses a flexible number of rules that determine whether a response set of words (i.e., listener transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore counts words in the listener transcript as correct if they match the words in the target phrase exactly (regardless of word order), or match a homophone or common misspelling of the target word. Individual rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules can be added by the researcher as needed.
 
-The rules are:
+The rule options are:
 
 1.  `position_rule` = how close the word has to be in the order of the target (e.g., `c("one", "two") with c("three", "one", "two")` has "one" match one position off of where it should be and same with "two")
 2.  `homophone_rule` = should we use homophone list (`TRUE` or `FALSE`)
@@ -13,7 +13,7 @@ The rules are:
 5.  `a_the_rule` = a and the are the same
 6.  `plural_rule` = remove plurals (is not applied when `stemmed_rule` is applied); default is `TRUE`
 7.  `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic
-8.  `alternate_spell_rule` = a researcher provided alternate spellings of words in the target; is triggered when the researcher provides a data frame of original and alternate spellings
+8.  `alternate_spell_rule` = either the default list of [common mispellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines) or a researcher provided alternate spellings of words in the target; is triggered by setting using the rule or by providing a data frame of original and alternate spellings
 
 Design
 ------
@@ -39,17 +39,17 @@ An example of the use of `autoscore` is below. We will use the example data set 
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ─────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
+#> ── Attaching packages ───────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
 #> ✔ ggplot2 2.2.1.9000     ✔ purrr   0.2.5     
 #> ✔ tibble  1.4.2          ✔ dplyr   0.7.6     
 #> ✔ tidyr   0.8.1          ✔ stringr 1.3.1     
 #> ✔ readr   1.1.1          ✔ forcats 0.3.0
 #> Warning: package 'dplyr' was built under R version 3.5.1
-#> ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)
-#> ── autoscore 0.1.0 ──────────────────────────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+#> ── autoscore 0.1.1 ────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
 #> ✔ autoscore attached
 #> ✔ No potential conflicts found
 
@@ -123,7 +123,7 @@ We can also change the output type to "none" to get all the data from the comput
 example_data %>%
   autoscore(output = "none")
 #> Note: Homophones in data(homophones) were used.
-#> # A tibble: 40 x 16
+#> # A tibble: 40 x 12
 #>       id target    response  human homophone_target homophone_response
 #>    <dbl> <list>    <list>    <dbl> <list>           <list>            
 #>  1     5 <chr [4]> <chr [5]>     1 <chr [4]>        <chr [5]>         
@@ -136,10 +136,9 @@ example_data %>%
 #>  8     5 <chr [4]> <chr [5]>     2 <chr [4]>        <chr [5]>         
 #>  9     5 <chr [4]> <chr [3]>     0 <chr [4]>        <chr [3]>         
 #> 10     5 <chr [5]> <chr [5]>     3 <chr [5]>        <chr [5]>         
-#> # ... with 30 more rows, and 10 more variables: pos_target <list>,
-#> #   pos_response <list>, pos_target_word <list>, pos_response_word <list>,
-#> #   diff_target <list>, diff_response <list>, match_target <list>,
-#> #   match_response <list>, count_target <int>, count_response <int>
+#> # ... with 30 more rows, and 6 more variables: diff_target_pre <list>,
+#> #   diff_response_pre <list>, diff_target <list>, diff_response <list>,
+#> #   count_target <int>, count_response <int>
 ```
 
 To use the alternate spelling, let's create a small `data.frame` that we can provide `autoscore()`. In the data frame below, the original spellings are the generally accepted spellings while the alternate spellings are those that may be misspelled or otherwise not generally used.
@@ -185,6 +184,29 @@ example_data %>%
 #> # ... with 30 more rows
 ```
 
+We can also say `alternate_df = "default"` if we want to use the list of 4,268 common mispellings.
+
+``` r
+example_data %>%
+  autoscore::autoscore(alternate_df = "default") %>%
+  as.tibble()
+#> Note: Homophones in data(homophones) were used.
+#> # A tibble: 40 x 6
+#>       id target                    response              human robot equal
+#>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
+#>  1     5 mate denotes a judgement  made the dinner in it     1     1 TRUE 
+#>  2     5 its harmful note abounds  it's not for the bou…     1     1 TRUE 
+#>  3     5 butcher in the middle     the shirt in the mid…     3     3 TRUE 
+#>  4     5 rampant boasting captain  rubbed against the c…     1     1 TRUE 
+#>  5     5 avoid or beat command     advert the beat comm…     1     1 TRUE 
+#>  6     5 rocking modern poster     wrecking minor poach…     0     0 TRUE 
+#>  7     5 resting older earring     resting alert hearing     1     1 TRUE 
+#>  8     5 indeed a tax ascent       indeed the dash was …     2     2 TRUE 
+#>  9     5 pain can follow agents    thank for guidance        0     0 TRUE 
+#> 10     5 remove and name for stake remember the name fo…     3     3 TRUE 
+#> # ... with 30 more rows
+```
+
 In each of these examples, it is clear that the human and "robot" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
 
 Finally, the session information from the computer that ran this short tutorial.
@@ -198,5 +220,5 @@ devtools::session_info("autoscore")
 #>  language (EN)                        
 #>  collate  en_US.UTF-8                 
 #>  tz       America/Denver              
-#>  date     2018-07-28
+#>  date     2018-07-29
 ```
