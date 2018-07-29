@@ -333,7 +333,7 @@ error_check_alternate_df <- function(alternate_df){
 }
 
 error_check_position <- function(position_rule){
-  if (!is.null(alternate_df)){
+  if (!is.null(position_rule)){
     stopifnot(is.numeric(position_rule) & position_rule > 0)
   }
 }
