@@ -30,14 +30,14 @@ combine_alts <- function(alternate_df, common_misspell_rule){
       dplyr::rename_all(tolower)
 
     if (isTRUE(common_misspell_rule)){
-      message("Note: List of common misspellings in data(alternate_df_default) were used.")
+      #message("Note: List of common misspellings in data(alternate_df_default) were used.")
       ## list of 4268 common misspellings
       alternate_df <- dplyr::bind_rows(alternate_df, autoscore::alternate_df_default)
     }
   } else {
 
     if (isTRUE(common_misspell_rule)){
-      message("Note: List of common misspellings in data(alternate_df_default) were used.")
+      #message("Note: List of common misspellings in data(alternate_df_default) were used.")
       ## list of 4268 common misspellings
       alternate_df <- autoscore::alternate_df_default
     }
@@ -190,7 +190,7 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
 
   ## homophone_rule
   if (isTRUE(homophone_rule)){
-    message("Note: Homophones in data(homophones) were used.")
+    #message("Note: Homophones in data(homophones) were used.")
     d <- homophones_fun(d)
 
     d <- d %>%
