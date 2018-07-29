@@ -6,14 +6,14 @@ The purpose of `autoscore` is to automatically score word identification in spee
 
 The rule options are:
 
-1.  `position_rule` = how close the word has to be in the order of the target (e.g., `c("one", "two") with c("three", "one", "two")` has "one" match one position off of where it should be and same with "two")
-2.  `homophone_rule` = should we use homophone list (`TRUE` or `FALSE`)
+1.  `position_rule` = a positive number about how close the word has to be in the order of the target (e.g., `c("first", "second") with c("third", "first", "second")` has "one" match 1 position off of where it should be and same with "two")
+2.  `homophone_rule` = should we use homophone list; default is `TRUE`
 3.  `stemmed_rule` = should we stem all words (i.e., remove all suffixes); default is `TRUE`
 4.  `pasttense_rule` = -d and -ed removed (is not applied when `stemmed_rule` is applied); default is `TRUE`
-5.  `a_the_rule` = a and the are the same
+5.  `a_the_rule` = a and the are the same; default is `TRUE`
 6.  `plural_rule` = remove plurals (is not applied when `stemmed_rule` is applied); default is `TRUE`
-7.  `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic
-8.  `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines)
+7.  `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic; default is `FALSE`
+8.  `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines); default is `TRUE`
 9.  `alternate_spell_rule` = a researcher provided alternate spellings of words in the target; is triggered by setting using the rule or by providing a data frame of original and alternate spellings
 
 Design
@@ -84,6 +84,7 @@ First, let's use all the defaults and look at the first 10 rows of the output.
 example_data %>%
   autoscore() %>%   ## using all the defaults
   as.tibble()       ## to shorted output
+#> Note: List of common misspellings in data(alternate_df_default) were used.
 #> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
@@ -107,6 +108,7 @@ Next, let's change some of the rules.
 example_data %>%
   autoscore(position_rule = 2, stemmed_rule = FALSE, plurals_rule = FALSE) %>%
   as.tibble()
+#> Note: List of common misspellings in data(alternate_df_default) were used.
 #> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
@@ -129,6 +131,7 @@ We can also change the output type to "none" to get all the data from the comput
 ``` r
 example_data %>%
   autoscore(output = "none")
+#> Note: List of common misspellings in data(alternate_df_default) were used.
 #> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 12
 #>       id target    response  human homophone_target homophone_response
@@ -174,6 +177,7 @@ Using this, we can provide it to the `autoscore()` function with the `alternate_
 example_data %>%
   autoscore::autoscore(alternate_df = alternate_df) %>%
   as.tibble()
+#> Note: List of common misspellings in data(alternate_df_default) were used.
 #> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
@@ -198,6 +202,7 @@ example_data %>%
   autoscore::autoscore(alternate_df = alternate_df,
                        common_misspell_rule = TRUE) %>%
   as.tibble()
+#> Note: List of common misspellings in data(alternate_df_default) were used.
 #> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
@@ -221,6 +226,7 @@ If the researcher doesn't have a list of words, we can just use the common missp
 example_data %>%
   autoscore::autoscore(common_misspell_rule = TRUE) %>%
   as.tibble()
+#> Note: List of common misspellings in data(alternate_df_default) were used.
 #> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
@@ -244,6 +250,7 @@ Finally, the session information from the computer that ran this short tutorial.
 
 ``` r
 devtools::session_info("autoscore")
+#> Session info -------------------------------------------------------------
 #>  setting  value                       
 #>  version  R version 3.5.0 (2018-04-23)
 #>  system   x86_64, darwin15.6.0        
@@ -252,4 +259,77 @@ devtools::session_info("autoscore")
 #>  collate  en_US.UTF-8                 
 #>  tz       America/Denver              
 #>  date     2018-07-29
+#> Packages -----------------------------------------------------------------
+#>  package    * version  date      
+#>  assertthat   0.2.0    2017-04-11
+#>  autoscore  * 0.1.1    2018-07-29
+#>  BH           1.66.0-1 2018-02-13
+#>  bindr        0.1.1    2018-03-13
+#>  bindrcpp   * 0.2.2    2018-03-29
+#>  cli          1.0.0    2017-11-05
+#>  crayon       1.3.4    2017-09-16
+#>  dplyr      * 0.7.6    2018-06-29
+#>  evaluate     0.10.1   2017-06-24
+#>  glue         1.2.0    2017-10-29
+#>  graphics   * 3.5.0    2018-04-24
+#>  grDevices  * 3.5.0    2018-04-24
+#>  highr        0.6      2016-05-09
+#>  knitr        1.20     2018-02-20
+#>  magrittr     1.5      2014-11-22
+#>  markdown     0.8      2017-04-20
+#>  methods    * 3.5.0    2018-04-24
+#>  mime         0.5      2016-07-07
+#>  pillar       1.2.3    2018-05-25
+#>  pkgconfig    2.0.1    2017-03-21
+#>  plogr        0.2.0    2018-03-25
+#>  purrr      * 0.2.5    2018-05-29
+#>  R6           2.2.2    2017-06-17
+#>  Rcpp         0.12.17  2018-05-18
+#>  rlang        0.2.1    2018-05-30
+#>  rstudioapi   0.7      2017-09-07
+#>  stats      * 3.5.0    2018-04-24
+#>  stringi      1.2.2    2018-05-02
+#>  stringr    * 1.3.1    2018-05-10
+#>  tibble     * 1.4.2    2018-01-22
+#>  tidyselect   0.2.4    2018-02-26
+#>  tools        3.5.0    2018-04-24
+#>  utf8         1.1.4    2018-05-24
+#>  utils      * 3.5.0    2018-04-24
+#>  yaml         2.1.19   2018-05-01
+#>  source                                         
+#>  cran (@0.2.0)                                  
+#>  Github (tysonstanley/autoscore_package@2d99cfe)
+#>  cran (@1.66.0-)                                
+#>  cran (@0.1.1)                                  
+#>  cran (@0.2.2)                                  
+#>  cran (@1.0.0)                                  
+#>  cran (@1.3.4)                                  
+#>  CRAN (R 3.5.1)                                 
+#>  CRAN (R 3.5.0)                                 
+#>  cran (@1.2.0)                                  
+#>  local                                          
+#>  local                                          
+#>  CRAN (R 3.5.0)                                 
+#>  CRAN (R 3.5.0)                                 
+#>  cran (@1.5)                                    
+#>  CRAN (R 3.5.0)                                 
+#>  local                                          
+#>  CRAN (R 3.5.0)                                 
+#>  cran (@1.2.3)                                  
+#>  cran (@2.0.1)                                  
+#>  cran (@0.2.0)                                  
+#>  cran (@0.2.5)                                  
+#>  CRAN (R 3.5.0)                                 
+#>  cran (@0.12.17)                                
+#>  cran (@0.2.1)                                  
+#>  CRAN (R 3.5.0)                                 
+#>  local                                          
+#>  CRAN (R 3.5.0)                                 
+#>  CRAN (R 3.5.0)                                 
+#>  cran (@1.4.2)                                  
+#>  cran (@0.2.4)                                  
+#>  local                                          
+#>  cran (@1.1.4)                                  
+#>  local                                          
+#>  CRAN (R 3.5.0)
 ```
