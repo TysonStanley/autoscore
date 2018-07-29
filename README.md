@@ -1,8 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-[![Travis-CI Build Status](https://travis-ci.org/TysonStanley/autoscore_package.svg?branch=master)](https://travis-ci.org/TysonStanley/autoscore_package)
-
-![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+[![Travis-CI Build Status](https://travis-ci.org/TysonStanley/autoscore_package.svg?branch=master)](https://travis-ci.org/TysonStanley/autoscore_package) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
 `autoscore`
 ===========
@@ -89,8 +86,6 @@ First, let's use all the defaults and look at the first 10 rows of the output.
 example_data %>%
   autoscore() %>%   ## using all the defaults
   as.tibble()       ## to shorted output
-#> Note: List of common misspellings in data(alternate_df_default) were used.
-#> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
 #>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
@@ -113,8 +108,6 @@ Next, let's change some of the rules.
 example_data %>%
   autoscore(position_rule = 2, stemmed_rule = FALSE, plurals_rule = FALSE) %>%
   as.tibble()
-#> Note: List of common misspellings in data(alternate_df_default) were used.
-#> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
 #>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
@@ -136,8 +129,6 @@ We can also change the output type to "none" to get all the data from the comput
 ``` r
 example_data %>%
   autoscore(output = "none")
-#> Note: List of common misspellings in data(alternate_df_default) were used.
-#> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 12
 #>       id target    response  human homophone_target homophone_response
 #>    <dbl> <list>    <list>    <dbl> <list>           <list>            
@@ -182,8 +173,6 @@ Using this, we can provide it to the `autoscore()` function with the `alternate_
 example_data %>%
   autoscore::autoscore(alternate_df = alternate_df) %>%
   as.tibble()
-#> Note: List of common misspellings in data(alternate_df_default) were used.
-#> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
 #>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
@@ -207,8 +196,6 @@ example_data %>%
   autoscore::autoscore(alternate_df = alternate_df,
                        common_misspell_rule = TRUE) %>%
   as.tibble()
-#> Note: List of common misspellings in data(alternate_df_default) were used.
-#> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
 #>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
@@ -231,8 +218,6 @@ If the researcher doesn't have a list of words, we can just use the common missp
 example_data %>%
   autoscore::autoscore(common_misspell_rule = TRUE) %>%
   as.tibble()
-#> Note: List of common misspellings in data(alternate_df_default) were used.
-#> Note: Homophones in data(homophones) were used.
 #> # A tibble: 40 x 6
 #>       id target                    response              human robot equal
 #>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
