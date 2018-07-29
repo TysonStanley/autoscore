@@ -37,9 +37,8 @@ autoscore <- function(.data,
   error_check_alternate_df(alternate_df)
   error_check_position(position_rule)
 
-
   counts <- split_clean(.data) %>%
-    match_position_basic(alternate_df,
+    match_position_basic(alternate_df = alternate_df,
                          homophone_rule = homophone_rule,
                          plurals_rule = plurals_rule,
                          pasttense_rule = pasttense_rule,

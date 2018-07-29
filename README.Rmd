@@ -20,14 +20,14 @@ The purpose of `autoscore` is to automatically score word identification in spee
 
 The rule options are:
 
-1. `position_rule` = how close the word has to be in the order of the target (e.g., `c("one", "two") with c("three", "one", "two")` has "one" match one position off of where it should be and same with "two")
-2. `homophone_rule` = should we use homophone list (`TRUE` or `FALSE`)
+1. `position_rule` = a positive number about how close the word has to be in the order of the target (e.g., `c("first", "second") with c("third", "first", "second")` has "one" match 1 position off of where it should be and same with "two")
+2. `homophone_rule` = should we use homophone list; default is `TRUE`
 3. `stemmed_rule` = should we stem all words (i.e., remove all suffixes); default is `TRUE`
 3. `pasttense_rule` = -d and -ed removed (is not applied when `stemmed_rule` is applied); default is `TRUE`
-4. `a_the_rule` = a and the are the same
+4. `a_the_rule` = a and the are the same; default is `TRUE`
 5. `plural_rule` = remove plurals (is not applied when `stemmed_rule` is applied); default is `TRUE`
-6. `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic
-7. `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines)
+6. `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic; default is `FALSE`
+7. `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines); default is `TRUE`
 8. `alternate_spell_rule` = a researcher provided alternate spellings of words in the target; is triggered by setting using the rule or by providing a data frame of original and alternate spellings
 
 ## Design
