@@ -15,11 +15,8 @@
 #' @param output the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon
 #'
 #' @import dplyr
-#' @import purrr
-#' @import stringr
-#' @import tidyr
 #' @import tibble
-#' @import tm
+#' @importFrom stats setNames
 #'
 #' @export
 autoscore <- function(.data,
