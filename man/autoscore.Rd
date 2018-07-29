@@ -15,7 +15,7 @@ autoscore(.data, alternate_df = NULL, position_rule = NULL,
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
 
-\item{alternate_df}{optional data.frame of original and alternate spellings for words in the target/response lists (this is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
+\item{alternate_df}{three options to use alternate spellings: 1) \code{alternate_df = "default"} uses a large common mispellings list (); 2) a user-provided data.frame of original and alternate spellings for words in the target/response lists (this is in addition to built-in homophone list that can be seen with \code{data(homophones)}); or 3) NULL (the default) that doesn't use any alternate spellings.}
 
 \item{position_rule}{the amount a word can vary from the correct position in the phrase and still be correct (default = 99)}
 

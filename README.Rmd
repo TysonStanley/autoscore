@@ -14,11 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-# autoscore
+# `autoscore`
 
-The goal of autoscore is to score the accuracy of speech perception (often in several situations such as noise, dysarthria, hearing loss, etc.). It uses a flexible number of rules that help decide if a response set of words match a target set of words. Each rule can be applied or removed in each situation to best meet the needs of the researcher.
+The purpose of `autoscore` is to automatically score word identification in speech perception research, such as studies involving listener understanding of speech in background noise or disordered speech. The program uses a flexible number of rules that determine whether a response set of words (i.e., listener transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore counts words in the listener transcript as correct if they match the words in the target phrase exactly (regardless of word order), or match a homophone or common misspelling of the target word. Individual rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules can be added by the researcher as needed.
 
-The rules are:
+The rule options are:
 
 1. `position_rule` = how close the word has to be in the order of the target (e.g., `c("one", "two") with c("three", "one", "two")` has "one" match one position off of where it should be and same with "two")
 2. `homophone_rule` = should we use homophone list (`TRUE` or `FALSE`)
@@ -27,7 +27,7 @@ The rules are:
 4. `a_the_rule` = a and the are the same
 5. `plural_rule` = remove plurals (is not applied when `stemmed_rule` is applied); default is `TRUE`
 6. `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic
-7. `alternate_spell_rule` = a researcher provided alternate spellings of words in the target; is triggered when the researcher provides a data frame of original and alternate spellings
+7. `alternate_spell_rule` = either the default list of [common mispellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines) or a researcher provided alternate spellings of words in the target; is triggered by setting using the rule or by providing a data frame of original and alternate spellings
 
 ## Design
 
@@ -102,6 +102,13 @@ example_data %>%
   as.tibble()
 ```
 
+We can also say `alternate_df = "default"` if we want to use the list of 4,268 common mispellings.
+
+```{r}
+example_data %>%
+  autoscore::autoscore(alternate_df = "default") %>%
+  as.tibble()
+```
 
 In each of these examples, it is clear that the human and "robot" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
 

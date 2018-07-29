@@ -3,7 +3,7 @@
 #' Takes a data frame with target words and response words and calculates the number of matches based on a number of rules.
 #'
 #' @param .data The data.frame (or tbl_df) to be used to autoscore
-#' @param alternate_df optional data.frame of original and alternate spellings for words in the target/response lists (this is in addition to built-in homophone list that can be seen with \code{data(homophones)})
+#' @param alternate_df three options to use alternate spellings: 1) \code{alternate_df = "default"} uses a large common mispellings list (); 2) a user-provided data.frame of original and alternate spellings for words in the target/response lists (this is in addition to built-in homophone list that can be seen with \code{data(homophones)}); or 3) NULL (the default) that doesn't use any alternate spellings.
 #' @param position_rule the amount a word can vary from the correct position in the phrase and still be correct (default = 99)
 #' @param homophone_rule should homophones be used? (default = TRUE)
 #' @param stemmed_rule should the words be stemmed (all suffix characters removed)? (default = TRUE); if TRUE, plurals_rule and pasttense_rule are FALSE

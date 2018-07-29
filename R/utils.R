@@ -30,6 +30,15 @@ alternate_fun <- function(d, alternate_df){
 
   } else {
 
+    if (is.data.frame(alternate_df)){
+      ## user provided list
+      alternate_df <- alternate_df
+
+    } else if (alternate_df == "default"){
+      ## a list of 4268 alternate spellings (common mispellings)
+      alternate_df <- autoscore::alternate_df_default
+    }
+
     alternate_df <- alternate_df %>%
       dplyr::mutate(rowname = row_number(original)) %>%
       dplyr::mutate(alternate_string = stringr::str_split(alternate, pattern = ", "))
