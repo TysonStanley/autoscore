@@ -129,7 +129,7 @@ homophones_fun <- function(d){
       replace$what_to_replace = what_to_replace
 
       replace = replace %>%
-        dplyr::mutate(replacement = str_replace(homophone, pattern = ", .*$", replacement = ""))
+        dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
 
       .x[replace$what_to_replace] = replace$replacement
       .x
@@ -151,7 +151,7 @@ homophones_fun <- function(d){
       replace$what_to_replace = what_to_replace
 
       replace = replace %>%
-        dplyr::mutate(replacement = str_replace(homophone, pattern = ", .*$", replacement = ""))
+        dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
 
       .x[replace$what_to_replace] = replace$replacement
       .x

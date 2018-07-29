@@ -1,6 +1,6 @@
 
 df <- autoscore::example_data
-alternate_df <- data_frame(
+alternate_df <- tibble::data_frame(
   original = c("model",
                "treason",
                "duck"),
