@@ -39,6 +39,7 @@ Imports:
     tm,
     stringr
 Suggests:
+    SnowballC,
     tidyverse,
     rmarkdown,
     testthat,
