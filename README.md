@@ -1,8 +1,8 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 [![Travis-CI Build Status](https://travis-ci.org/TysonStanley/autoscore_package.svg?branch=master)](https://travis-ci.org/TysonStanley/autoscore_package) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
-`autoscore`
-===========
+`autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
+===============================================================================================
 
 ### R Package Version: 0.1.2
 
@@ -240,16 +240,6 @@ example_data %>%
 
 In each of these examples, it is clear that the human and "robot" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
 
-Finally, the session information from the computer that ran this short tutorial.
+### Learn More
 
-``` r
-devtools::session_info("autoscore")
-#>  setting  value                       
-#>  version  R version 3.5.0 (2018-04-23)
-#>  system   x86_64, darwin15.6.0        
-#>  ui       X11                         
-#>  language (EN)                        
-#>  collate  en_US.UTF-8                 
-#>  tz       America/Denver              
-#>  date     2018-07-29
-```
+Publications are forthcoming. For more information, contact Tyson S. Barrett (<t.barrett@aggiemail.usu.edu>).

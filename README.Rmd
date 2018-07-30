@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 [![Travis-CI Build Status](https://travis-ci.org/TysonStanley/autoscore_package.svg?branch=master)](https://travis-ci.org/TysonStanley/autoscore_package)
 ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
-# `autoscore`
+# `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ### R Package Version: `r packageVersion("autoscore")`
 ### Shiny Version: In development
 
@@ -132,9 +132,8 @@ example_data %>%
 
 In each of these examples, it is clear that the human and "robot" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
 
-Finally, the session information from the computer that ran this short tutorial.
-```{r}
-devtools::session_info("autoscore")
-```
+### Learn More
+
+Publications are forthcoming. For more information, contact Tyson S. Barrett (t.barrett@aggiemail.usu.edu).
 
 
