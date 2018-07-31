@@ -1,7 +1,7 @@
 Package: autoscore
 Type: Package
 Title: Automatically Score Word Identification in Speech Perception
-Version: 0.1.2
+Version: 0.1.3
 Date: 2018-07-27
 Authors@R: c(person("Tyson S.", "Barrett",  
                     role=c("aut","cre"), 
@@ -10,7 +10,7 @@ Authors@R: c(person("Tyson S.", "Barrett",
  	         person("Stephanie", "Borrie", role="ctr"),
  	         person("Sarah", "Leopold", role="ctr"))
 Maintainer: Tyson S. Barrett <t.barrett@aggiemail.usu.edu>
-Description: automatically score word identification in speech 
+Description: Automatically score word identification in speech 
     perception research, such as studies involving listener understanding 
     of speech in background noise or disordered speech. The program uses a 
     flexible number of rules that determine whether a response set of words 
