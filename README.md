@@ -4,7 +4,7 @@
 `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
 
--   `R Package: 0.1.4`
+-   `R Package: 0.1.5`
 -   `Shiny App: temporary location at https://tysonstanley.shinyapps.io/autoscore/`
 
 The purpose of `autoscore` is to automatically score word identification in speech perception research, such as studies involving listener understanding of speech in background noise or disordered speech. The program uses a flexible number of rules that determine whether a response set of words (i.e., listener transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore counts words in the listener transcript as correct if they match the words in the target phrase exactly (regardless of word order), or match a homophone or common misspelling of the target word. Individual rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules can be added by the researcher as needed.
@@ -39,7 +39,7 @@ Use of the Online Tool
 
 Visit <https://tysonstanley.shinyapps.io/autoscore/> to use the online tool. Instructions for its use are found there.
 
-[![](%22Data/Figures/online_autoscore_snapshot.png%22)](https://tysonstanley.shinyapps.io/autoscore/)
+[![](%22man/figures/online_autoscore_snapshot.png%22)](https://tysonstanley.shinyapps.io/autoscore/)
 
 Use of the R Package
 --------------------
@@ -64,7 +64,7 @@ library(tidyverse)
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)
-#> ── autoscore 0.1.4 ───────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+#> ── autoscore 0.1.5 ───────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
 #> ✔ autoscore attached
 #> ✔ No potential conflicts found
 
