@@ -4,8 +4,8 @@
 `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
 
--   `R Package Version: 0.1.2`
--   `Shiny Version: In development`
+-   `R Package: 0.1.4`
+-   `Shiny App: https://tysonstanley.shinyapps.io/autoscore/`
 
 The purpose of `autoscore` is to automatically score word identification in speech perception research, such as studies involving listener understanding of speech in background noise or disordered speech. The program uses a flexible number of rules that determine whether a response set of words (i.e., listener transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore counts words in the listener transcript as correct if they match the words in the target phrase exactly (regardless of word order), or match a homophone or common misspelling of the target word. Individual rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules can be added by the researcher as needed.
 
@@ -61,25 +61,25 @@ library(tidyverse)
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)
-#> ── autoscore 0.1.2 ────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+#> ── autoscore 0.1.4 ────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
 #> ✔ autoscore attached
 #> ✔ No potential conflicts found
 
 data("example_data")
 example_data
 #> # A tibble: 40 x 4
-#>       Id Target                    Response                    human
-#>    <dbl> <chr>                     <chr>                       <dbl>
-#>  1     5 mate denotes a judgement  made the dinner in it           1
-#>  2     5 its harmful note abounds  it's not for the bounce         1
-#>  3     5 butcher in the middle     the shirt in the middle         3
-#>  4     5 rampant boasting captain  rubbed against the captain      1
-#>  5     5 avoid or beat command     advert the beat commend         1
-#>  6     5 rocking modern poster     wrecking minor poacher          0
-#>  7     5 resting older earring     resting alert hearing           1
-#>  8     5 indeed a tax ascent       indeed the dash was sent        2
-#>  9     5 pain can follow agents    thank for guidance              0
-#> 10     5 remove and name for stake remember the name for steak     3
+#>       Id Target                      Response                    human
+#>    <dbl> <chr>                       <chr>                       <dbl>
+#>  1     1 mate denotes a judgement    made the dinner in it           1
+#>  2     1 rampant boasting captain    rubbed against the captain      1
+#>  3     1 resting older earring       resting alert hearing           1
+#>  4     1 bolder ground from justice  boulder down from dresses       2
+#>  5     1 remove and name for stake   remember the name for steak     3
+#>  6     1 done with finest handle     dinner finished handle          1
+#>  7     1 support with dock and cheer she put the duck in chair       1
+#>  8     1 or spent sincere aside      earth bent spent her aside      2
+#>  9     1 account for who could knock i can for hookah knock          2
+#> 10     1 connect the beer device     connected beard kindle bus      1
 #> # ... with 30 more rows
 ```
 
@@ -90,18 +90,18 @@ example_data %>%
   autoscore() %>%   ## using all the defaults
   as.tibble()       ## to shorted output
 #> # A tibble: 40 x 6
-#>       id target                    response              human robot equal
-#>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
-#>  1     5 mate denotes a judgement  made the dinner in it     1     1 TRUE 
-#>  2     5 its harmful note abounds  it's not for the bou…     1     1 TRUE 
-#>  3     5 butcher in the middle     the shirt in the mid…     3     3 TRUE 
-#>  4     5 rampant boasting captain  rubbed against the c…     1     1 TRUE 
-#>  5     5 avoid or beat command     advert the beat comm…     1     1 TRUE 
-#>  6     5 rocking modern poster     wrecking minor poach…     0     0 TRUE 
-#>  7     5 resting older earring     resting alert hearing     1     1 TRUE 
-#>  8     5 indeed a tax ascent       indeed the dash was …     2     2 TRUE 
-#>  9     5 pain can follow agents    thank for guidance        0     0 TRUE 
-#> 10     5 remove and name for stake remember the name fo…     3     3 TRUE 
+#>       id target                      response        human autoscore equal
+#>    <dbl> <fct>                       <fct>           <dbl>     <int> <lgl>
+#>  1     1 mate denotes a judgement    made the dinne…     1         1 TRUE 
+#>  2     1 rampant boasting captain    rubbed against…     1         1 TRUE 
+#>  3     1 resting older earring       resting alert …     1         1 TRUE 
+#>  4     1 bolder ground from justice  boulder down f…     2         2 TRUE 
+#>  5     1 remove and name for stake   remember the n…     3         3 TRUE 
+#>  6     1 done with finest handle     dinner finishe…     1         1 TRUE 
+#>  7     1 support with dock and cheer she put the du…     1         0 FALSE
+#>  8     1 or spent sincere aside      earth bent spe…     2         2 TRUE 
+#>  9     1 account for who could knock i can for hook…     2         2 TRUE 
+#> 10     1 connect the beer device     connected bear…     1         1 TRUE 
 #> # ... with 30 more rows
 ```
 
@@ -112,18 +112,18 @@ example_data %>%
   autoscore(position_rule = 2, stemmed_rule = FALSE, plurals_rule = FALSE) %>%
   as.tibble()
 #> # A tibble: 40 x 6
-#>       id target                    response              human robot equal
-#>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
-#>  1     5 mate denotes a judgement  made the dinner in it     1     1 TRUE 
-#>  2     5 its harmful note abounds  it's not for the bou…     1     1 TRUE 
-#>  3     5 butcher in the middle     the shirt in the mid…     3     3 TRUE 
-#>  4     5 rampant boasting captain  rubbed against the c…     1     1 TRUE 
-#>  5     5 avoid or beat command     advert the beat comm…     1     1 TRUE 
-#>  6     5 rocking modern poster     wrecking minor poach…     0     0 TRUE 
-#>  7     5 resting older earring     resting alert hearing     1     1 TRUE 
-#>  8     5 indeed a tax ascent       indeed the dash was …     2     2 TRUE 
-#>  9     5 pain can follow agents    thank for guidance        0     0 TRUE 
-#> 10     5 remove and name for stake remember the name fo…     3     3 TRUE 
+#>       id target                      response        human autoscore equal
+#>    <dbl> <fct>                       <fct>           <dbl>     <int> <lgl>
+#>  1     1 mate denotes a judgement    made the dinne…     1         1 TRUE 
+#>  2     1 rampant boasting captain    rubbed against…     1         1 TRUE 
+#>  3     1 resting older earring       resting alert …     1         1 TRUE 
+#>  4     1 bolder ground from justice  boulder down f…     2         2 TRUE 
+#>  5     1 remove and name for stake   remember the n…     3         3 TRUE 
+#>  6     1 done with finest handle     dinner finishe…     1         1 TRUE 
+#>  7     1 support with dock and cheer she put the du…     1         0 FALSE
+#>  8     1 or spent sincere aside      earth bent spe…     2         2 TRUE 
+#>  9     1 account for who could knock i can for hook…     2         2 TRUE 
+#> 10     1 connect the beer device     connected bear…     1         1 TRUE 
 #> # ... with 30 more rows
 ```
 
@@ -135,16 +135,16 @@ example_data %>%
 #> # A tibble: 40 x 12
 #>       id target    response  human homophone_target homophone_response
 #>    <dbl> <list>    <list>    <dbl> <list>           <list>            
-#>  1     5 <chr [4]> <chr [5]>     1 <chr [4]>        <chr [5]>         
-#>  2     5 <chr [4]> <chr [5]>     1 <chr [4]>        <chr [5]>         
-#>  3     5 <chr [4]> <chr [5]>     3 <chr [4]>        <chr [5]>         
-#>  4     5 <chr [3]> <chr [4]>     1 <chr [3]>        <chr [4]>         
-#>  5     5 <chr [4]> <chr [4]>     1 <chr [4]>        <chr [4]>         
-#>  6     5 <chr [3]> <chr [3]>     0 <chr [3]>        <chr [3]>         
-#>  7     5 <chr [3]> <chr [3]>     1 <chr [3]>        <chr [3]>         
-#>  8     5 <chr [4]> <chr [5]>     2 <chr [4]>        <chr [5]>         
-#>  9     5 <chr [4]> <chr [3]>     0 <chr [4]>        <chr [3]>         
-#> 10     5 <chr [5]> <chr [5]>     3 <chr [5]>        <chr [5]>         
+#>  1     1 <chr [4]> <chr [5]>     1 <chr [4]>        <chr [5]>         
+#>  2     1 <chr [3]> <chr [4]>     1 <chr [3]>        <chr [4]>         
+#>  3     1 <chr [3]> <chr [3]>     1 <chr [3]>        <chr [3]>         
+#>  4     1 <chr [4]> <chr [4]>     2 <chr [4]>        <chr [4]>         
+#>  5     1 <chr [5]> <chr [5]>     3 <chr [5]>        <chr [5]>         
+#>  6     1 <chr [4]> <chr [3]>     1 <chr [4]>        <chr [3]>         
+#>  7     1 <chr [5]> <chr [6]>     1 <chr [5]>        <chr [6]>         
+#>  8     1 <chr [4]> <chr [5]>     2 <chr [4]>        <chr [5]>         
+#>  9     1 <chr [5]> <chr [5]>     2 <chr [5]>        <chr [5]>         
+#> 10     1 <chr [4]> <chr [4]>     1 <chr [4]>        <chr [4]>         
 #> # ... with 30 more rows, and 6 more variables: diff_target_pre <list>,
 #> #   diff_response_pre <list>, diff_target <list>, diff_response <list>,
 #> #   count_target <int>, count_response <int>
@@ -177,18 +177,18 @@ example_data %>%
   autoscore::autoscore(alternate_df = alternate_df) %>%
   as.tibble()
 #> # A tibble: 40 x 6
-#>       id target                    response              human robot equal
-#>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
-#>  1     5 mate denotes a judgement  made the dinner in it     1     1 TRUE 
-#>  2     5 its harmful note abounds  it's not for the bou…     1     1 TRUE 
-#>  3     5 butcher in the middle     the shirt in the mid…     3     3 TRUE 
-#>  4     5 rampant boasting captain  rubbed against the c…     1     1 TRUE 
-#>  5     5 avoid or beat command     advert the beat comm…     1     1 TRUE 
-#>  6     5 rocking modern poster     wrecking minor poach…     0     0 TRUE 
-#>  7     5 resting older earring     resting alert hearing     1     1 TRUE 
-#>  8     5 indeed a tax ascent       indeed the dash was …     2     2 TRUE 
-#>  9     5 pain can follow agents    thank for guidance        0     0 TRUE 
-#> 10     5 remove and name for stake remember the name fo…     3     3 TRUE 
+#>       id target                      response        human autoscore equal
+#>    <dbl> <fct>                       <fct>           <dbl>     <int> <lgl>
+#>  1     1 mate denotes a judgement    made the dinne…     1         1 TRUE 
+#>  2     1 rampant boasting captain    rubbed against…     1         1 TRUE 
+#>  3     1 resting older earring       resting alert …     1         1 TRUE 
+#>  4     1 bolder ground from justice  boulder down f…     2         2 TRUE 
+#>  5     1 remove and name for stake   remember the n…     3         3 TRUE 
+#>  6     1 done with finest handle     dinner finishe…     1         1 TRUE 
+#>  7     1 support with dock and cheer she put the du…     1         1 TRUE 
+#>  8     1 or spent sincere aside      earth bent spe…     2         2 TRUE 
+#>  9     1 account for who could knock i can for hook…     2         2 TRUE 
+#> 10     1 connect the beer device     connected bear…     1         1 TRUE 
 #> # ... with 30 more rows
 ```
 
@@ -200,18 +200,18 @@ example_data %>%
                        common_misspell_rule = TRUE) %>%
   as.tibble()
 #> # A tibble: 40 x 6
-#>       id target                    response              human robot equal
-#>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
-#>  1     5 mate denotes a judgement  made the dinner in it     1     1 TRUE 
-#>  2     5 its harmful note abounds  it's not for the bou…     1     1 TRUE 
-#>  3     5 butcher in the middle     the shirt in the mid…     3     3 TRUE 
-#>  4     5 rampant boasting captain  rubbed against the c…     1     1 TRUE 
-#>  5     5 avoid or beat command     advert the beat comm…     1     1 TRUE 
-#>  6     5 rocking modern poster     wrecking minor poach…     0     0 TRUE 
-#>  7     5 resting older earring     resting alert hearing     1     1 TRUE 
-#>  8     5 indeed a tax ascent       indeed the dash was …     2     2 TRUE 
-#>  9     5 pain can follow agents    thank for guidance        0     0 TRUE 
-#> 10     5 remove and name for stake remember the name fo…     3     3 TRUE 
+#>       id target                      response        human autoscore equal
+#>    <dbl> <fct>                       <fct>           <dbl>     <int> <lgl>
+#>  1     1 mate denotes a judgement    made the dinne…     1         1 TRUE 
+#>  2     1 rampant boasting captain    rubbed against…     1         1 TRUE 
+#>  3     1 resting older earring       resting alert …     1         1 TRUE 
+#>  4     1 bolder ground from justice  boulder down f…     2         2 TRUE 
+#>  5     1 remove and name for stake   remember the n…     3         3 TRUE 
+#>  6     1 done with finest handle     dinner finishe…     1         1 TRUE 
+#>  7     1 support with dock and cheer she put the du…     1         1 TRUE 
+#>  8     1 or spent sincere aside      earth bent spe…     2         2 TRUE 
+#>  9     1 account for who could knock i can for hook…     2         2 TRUE 
+#> 10     1 connect the beer device     connected bear…     1         1 TRUE 
 #> # ... with 30 more rows
 ```
 
@@ -222,18 +222,18 @@ example_data %>%
   autoscore::autoscore(common_misspell_rule = TRUE) %>%
   as.tibble()
 #> # A tibble: 40 x 6
-#>       id target                    response              human robot equal
-#>    <dbl> <fct>                     <fct>                 <dbl> <int> <lgl>
-#>  1     5 mate denotes a judgement  made the dinner in it     1     1 TRUE 
-#>  2     5 its harmful note abounds  it's not for the bou…     1     1 TRUE 
-#>  3     5 butcher in the middle     the shirt in the mid…     3     3 TRUE 
-#>  4     5 rampant boasting captain  rubbed against the c…     1     1 TRUE 
-#>  5     5 avoid or beat command     advert the beat comm…     1     1 TRUE 
-#>  6     5 rocking modern poster     wrecking minor poach…     0     0 TRUE 
-#>  7     5 resting older earring     resting alert hearing     1     1 TRUE 
-#>  8     5 indeed a tax ascent       indeed the dash was …     2     2 TRUE 
-#>  9     5 pain can follow agents    thank for guidance        0     0 TRUE 
-#> 10     5 remove and name for stake remember the name fo…     3     3 TRUE 
+#>       id target                      response        human autoscore equal
+#>    <dbl> <fct>                       <fct>           <dbl>     <int> <lgl>
+#>  1     1 mate denotes a judgement    made the dinne…     1         1 TRUE 
+#>  2     1 rampant boasting captain    rubbed against…     1         1 TRUE 
+#>  3     1 resting older earring       resting alert …     1         1 TRUE 
+#>  4     1 bolder ground from justice  boulder down f…     2         2 TRUE 
+#>  5     1 remove and name for stake   remember the n…     3         3 TRUE 
+#>  6     1 done with finest handle     dinner finishe…     1         1 TRUE 
+#>  7     1 support with dock and cheer she put the du…     1         0 FALSE
+#>  8     1 or spent sincere aside      earth bent spe…     2         2 TRUE 
+#>  9     1 account for who could knock i can for hook…     2         2 TRUE 
+#> 10     1 connect the beer device     connected bear…     1         1 TRUE 
 #> # ... with 30 more rows
 ```
 
