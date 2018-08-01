@@ -39,7 +39,7 @@ Use of the Online Tool
 
 Visit <https://tysonstanley.shinyapps.io/autoscore/> to use the online tool. Instructions for its use are found there.
 
-<img src="man/figures/online_autoscore_snapshot.png" align="center" width="50%" height="50%" />
+<img src="man/figures/online_autoscore_snapshot.png" align="center" width="70%" height="70%" />
 
 Use of the R Package
 --------------------
