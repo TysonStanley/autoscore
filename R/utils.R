@@ -165,19 +165,14 @@ match_fun <- function(x, y, firstpart_rule) {
          no_firstpart = match(x, y))
 }
 
-match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule, plurals_rule, a_the_rule, firstpart_rule, stemmed_rule, common_misspell_rule){
+match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule,
+                                 plurals_rule, a_the_rule, firstpart_rule, stemmed_rule,
+                                 common_misspell_rule, double_letter_rule){
 
-  homophone_rule <- homophone_rule %||% TRUE
-  a_the_rule     <- a_the_rule %||% TRUE
-  stemmed_rule   <- stemmed_rule %||% TRUE
-  firstpart_rule <- firstpart_rule %||% FALSE
 
   if (isTRUE(stemmed_rule)){
     pasttense_rule <- FALSE
     plurals_rule   <- FALSE
-  } else {
-    pasttense_rule <- pasttense_rule %||% TRUE
-    plurals_rule   <- plurals_rule %||% TRUE
   }
 
   if (isTRUE(firstpart_rule))
@@ -199,7 +194,8 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
           a_the_fun(a_the_rule) %>%
           stemmed_fun(stemmed_rule) %>%
           plurals_fun(plurals_rule) %>%
-          pasttense_fun(pasttense_rule)
+          pasttense_fun(pasttense_rule) %>%
+          double_letter_fun(double_letter_rule)
 
       })) %>%
       dplyr::mutate(homophone_response = purrr::map(homophone_response, ~{
@@ -207,7 +203,8 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
           a_the_fun(a_the_rule) %>%
           stemmed_fun(stemmed_rule) %>%
           plurals_fun(plurals_rule) %>%
-          pasttense_fun(pasttense_rule)
+          pasttense_fun(pasttense_rule) %>%
+          double_letter_fun(double_letter_rule)
       })) %>%
       dplyr::mutate(diff_target_pre = purrr::map2(homophone_target, homophone_response, ~{
         match_fun(.x, .y, firstpart_rule)
@@ -224,7 +221,8 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
           a_the_fun(a_the_rule) %>%
           stemmed_fun(stemmed_rule) %>%
           plurals_fun(plurals_rule) %>%
-          pasttense_fun(pasttense_rule)
+          pasttense_fun(pasttense_rule) %>%
+          double_letter_fun(double_letter_rule)
 
       })) %>%
       dplyr::mutate(response = purrr::map(response, ~{
@@ -232,7 +230,8 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
           a_the_fun(a_the_rule) %>%
           stemmed_fun(stemmed_rule) %>%
           plurals_fun(plurals_rule) %>%
-          pasttense_fun(pasttense_rule)
+          pasttense_fun(pasttense_rule) %>%
+          double_letter_fun(double_letter_rule)
       })) %>%
       dplyr::mutate(diff_target_pre = purrr::map2(target, response, ~{
         match_fun(.x, .y, firstpart_rule)
@@ -279,6 +278,14 @@ plurals_fun <- function(chr, use = TRUE){
 a_the_fun <- function(chr, use = TRUE){
   if (isTRUE(use)){
     stringr::str_replace(chr, pattern = "^a$", replacement = "the")
+  } else {
+    chr
+  }
+}
+
+double_letter_fun <- function(chr, use = FALSE){
+  if (isTRUE(use)){
+    stringr::str_replace_all(chr, pattern = "([[:alpha:]])\\1+", replacement = "\\1")
   } else {
     chr
   }
@@ -348,6 +355,15 @@ error_check_position <- function(position_rule){
   }
 }
 
+error_check_rules <- function(...){
+  rules <- list(...)
+
+  for (i in seq_along(rules)){
+    if (!is.logical(rules[[i]])){
+      stop(paste(names(rules)[i], "must be either TRUE or FALSE"), call. = FALSE)
+    }
+  }
+}
 
 
 ## Infix operator (null-default)

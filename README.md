@@ -5,7 +5,7 @@
 ===============================================================================================
 
 -   `R Package: 0.1.4`
--   `Shiny App: https://tysonstanley.shinyapps.io/autoscore/`
+-   `Shiny App: temporary location at https://tysonstanley.shinyapps.io/autoscore/`
 
 The purpose of `autoscore` is to automatically score word identification in speech perception research, such as studies involving listener understanding of speech in background noise or disordered speech. The program uses a flexible number of rules that determine whether a response set of words (i.e., listener transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore counts words in the listener transcript as correct if they match the words in the target phrase exactly (regardless of word order), or match a homophone or common misspelling of the target word. Individual rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules can be added by the researcher as needed.
 
@@ -14,12 +14,13 @@ The rule options are:
 1.  `position_rule` = a positive number about how close the word has to be in the order of the target (e.g., `c("first", "second") with c("third", "first", "second")` has "one" match 1 position off of where it should be and same with "two")
 2.  `homophone_rule` = should we use homophone list; default is `TRUE`
 3.  `stemmed_rule` = should we stem all words (i.e., remove all suffixes); default is `TRUE`
-4.  `pasttense_rule` = -d and -ed removed (is not applied when `stemmed_rule` is applied); default is `TRUE`
-5.  `a_the_rule` = a and the are the same; default is `TRUE`
-6.  `plural_rule` = remove plurals (is not applied when `stemmed_rule` is applied); default is `TRUE`
+4.  `pasttense_rule` = should -d and -ed removed (is not applied when `stemmed_rule` is applied); default is `TRUE`
+5.  `a_the_rule` = should a and the be considered the the same; default is `TRUE`
+6.  `plural_rule` = should we remove -s and -es at the end of words (plurals); default is `TRUE`
 7.  `firstpart_rule` = embedded at beginning of word or at the end of the word ("bat" :: "batman"); uses a partial matching heuristic; default is `FALSE`
 8.  `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines); default is `TRUE`
 9.  `alternate_spell_rule` = a researcher provided alternate spellings of words in the target; is triggered by setting using the rule or by providing a data frame of original and alternate spellings
+10. `double_letter_rule` = should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; default = TRUE
 
 Design
 ------
@@ -36,7 +37,9 @@ The API of the `R` package is simple. A single call to `autoscore()` with the fo
 Use of the Online Tool
 ----------------------
 
-The online tool will be developed shortly...
+Visit <https://tysonstanley.shinyapps.io/autoscore/> to use the online tool. Instructions for its use are found there.
+
+[![](%22Data/Figures/online_autoscore_snapshot.png%22)](https://tysonstanley.shinyapps.io/autoscore/)
 
 Use of the R Package
 --------------------
@@ -51,17 +54,17 @@ An example of the use of `autoscore` is below. We will use the example data set 
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ───────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
+#> ── Attaching packages ──────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
 #> ✔ ggplot2 2.2.1.9000     ✔ purrr   0.2.5     
 #> ✔ tibble  1.4.2          ✔ dplyr   0.7.6     
 #> ✔ tidyr   0.8.1          ✔ stringr 1.3.1     
 #> ✔ readr   1.1.1          ✔ forcats 0.3.0
 #> Warning: package 'dplyr' was built under R version 3.5.1
-#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)
-#> ── autoscore 0.1.4 ────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+#> ── autoscore 0.1.4 ───────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
 #> ✔ autoscore attached
 #> ✔ No potential conflicts found
 

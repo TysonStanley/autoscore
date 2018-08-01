@@ -7,10 +7,10 @@
 \alias{autoscore}
 \title{AutoScore}
 \usage{
-autoscore(.data, alternate_df = NULL, position_rule = NULL,
-  homophone_rule = NULL, stemmed_rule = NULL, plurals_rule = NULL,
-  pasttense_rule = NULL, a_the_rule = NULL, firstpart_rule = NULL,
-  common_misspell_rule = NULL, output = "text")
+autoscore(.data, alternate_df = NULL, position_rule = 99,
+  homophone_rule = TRUE, stemmed_rule = FALSE, plurals_rule = TRUE,
+  pasttense_rule = TRUE, a_the_rule = TRUE, firstpart_rule = FALSE,
+  common_misspell_rule = TRUE, double_letter_rule = TRUE, output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
@@ -21,7 +21,7 @@ autoscore(.data, alternate_df = NULL, position_rule = NULL,
 
 \item{homophone_rule}{should homophones be used? (default = TRUE)}
 
-\item{stemmed_rule}{should the words be stemmed (all suffix characters removed)? (default = TRUE); if TRUE, plurals_rule and pasttense_rule are FALSE}
+\item{stemmed_rule}{should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, plurals_rule and pasttense_rule are FALSE}
 
 \item{plurals_rule}{should the plural suffix (-s, -es) be removed? (default = TRUE)}
 
@@ -32,6 +32,8 @@ autoscore(.data, alternate_df = NULL, position_rule = NULL,
 \item{firstpart_rule}{should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)}
 
 \item{common_misspell_rule}{should a large common misspellings list be used to correct spelling? default is TRUE}
+
+\item{double_letter_rule}{should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = TRUE}
 
 \item{output}{the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon}
 }
