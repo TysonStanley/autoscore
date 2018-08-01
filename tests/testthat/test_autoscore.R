@@ -1,6 +1,6 @@
 
 df <- autoscore::example_data
-alternate_df <- tibble::data_frame(
+acceptable_df <- tibble::data_frame(
   original = c("model",
                "treason",
                "duck"),
@@ -9,20 +9,23 @@ alternate_df <- tibble::data_frame(
                 "dock")
 )
 
-testthat::expect_error(autoscore::autoscore(df, alternate_df = "default"))
+testthat::expect_error(autoscore::autoscore(df, acceptable_df = "default"))
 testthat::expect_s3_class(autoscore::autoscore(df), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
                                                position_rule = 1), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
                                                common_misspell_rule = TRUE), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
-                                               alternate_df = alternate_df), "data.frame")
+                                               acceptable_df = acceptable_df), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
-                                               alternate_df = alternate_df,
+                                               acceptable_df = acceptable_df,
                                                common_misspell_rule = TRUE), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
-                                               alternate_df = alternate_df,
+                                               acceptable_df = acceptable_df,
                                                common_misspell_rule = FALSE), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
                                                homophone_rule = FALSE,
                                                common_misspell_rule = FALSE), "data.frame")
+testthat::expect_s3_class(autoscore::autoscore(df,
+                                               rootword_rule = FALSE,
+                                               double_letter_rule = FALSE), "data.frame")

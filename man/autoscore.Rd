@@ -7,15 +7,15 @@
 \alias{autoscore}
 \title{AutoScore}
 \usage{
-autoscore(.data, alternate_df = NULL, position_rule = 99,
+autoscore(.data, acceptable_df = NULL, position_rule = 99,
   homophone_rule = TRUE, stemmed_rule = FALSE, plurals_rule = TRUE,
-  pasttense_rule = TRUE, a_the_rule = TRUE, firstpart_rule = FALSE,
+  pasttense_rule = TRUE, a_the_rule = TRUE, rootword_rule = FALSE,
   common_misspell_rule = TRUE, double_letter_rule = TRUE, output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
 
-\item{alternate_df}{A user-provided data.frame of original and alternate spellings for words in the target/response lists (this is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
+\item{acceptable_df}{A user-provided data.frame of original and alternate spellings for words in the target/response lists (this is the \code{acceptable_spell_rule} and is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
 
 \item{position_rule}{the amount a word can vary from the correct position in the phrase and still be correct (default = 99)}
 
@@ -29,7 +29,7 @@ autoscore(.data, alternate_df = NULL, position_rule = 99,
 
 \item{a_the_rule}{should "a" and "the" be considered the same? (default = TRUE)}
 
-\item{firstpart_rule}{should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)}
+\item{rootword_rule}{should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)}
 
 \item{common_misspell_rule}{should a large common misspellings list be used to correct spelling? default is TRUE}
 
