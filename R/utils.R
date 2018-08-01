@@ -316,7 +316,7 @@ format_output <- function(final_table, output, original_data) {
       dplyr::mutate(equal = human == count_target)
     ft <- cbind(original_data$id, original_data$target, original_data$response,
                 ft, orig_d2) %>%
-      stats::setNames(c("id", "target", "response", "human", "robot", "equal",
+      stats::setNames(c("id", "target", "response", "human", "autoscore", "equal",
                         names(orig_d2)))
   } else {
 
@@ -327,7 +327,7 @@ format_output <- function(final_table, output, original_data) {
       dplyr::select(count_target)
     ft <- cbind(original_data$id, original_data$target, original_data$response,
                 ft, orig_d2) %>%
-      stats::setNames(c("id", "target", "response", "robot",
+      stats::setNames(c("id", "target", "response", "autoscore",
                         names(orig_d2)))
   }
 
