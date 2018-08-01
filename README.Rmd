@@ -100,10 +100,10 @@ example_data %>%
   autoscore(output = "none")
 ```
 
-To use the alternate spelling, let's create a small `data.frame` that we can provide `autoscore()`. In the data frame below, the original spellings are the generally accepted spellings while the alternate spellings are those that may be misspelled or otherwise not generally used.
+To use the acceptable spelling rule, let's create a small `data.frame` that we can provide `autoscore()`. In the data frame below, the original spellings are the generally accepted spellings while the alternate spellings are those that may be misspelled or otherwise not generally used.
 
 ```{r}
-alternate_df <- data_frame(
+acceptable_df <- data_frame(
   original = c("model",
                "treason",
                "duck"),
@@ -111,22 +111,22 @@ alternate_df <- data_frame(
                 "treeson",
                 "dock")
 )
-alternate_df
+acceptable_df
 ```
 
-Using this, we can provide it to the `autoscore()` function with the `alternate_df` argument.
+Using this, we can provide it to the `autoscore()` function with the `acceptable_df` argument.
 
 ```{r}
 example_data %>%
-  autoscore::autoscore(alternate_df = alternate_df) %>%
+  autoscore::autoscore(acceptable_df = acceptable_df) %>%
   as.tibble()
 ```
 
-We can also say `common_misspell_rule = TRUE` in conjunction with `alternate_df = alternate_df` if we want to use the list of 4,268 common misspellings in addition to the user provided list.
+We can also say `common_misspell_rule = TRUE` in conjunction with `acceptable_df = acceptable_df` if we want to use the list of 4,268 common misspellings in addition to the user provided list.
 
 ```{r}
 example_data %>%
-  autoscore::autoscore(alternate_df = alternate_df,
+  autoscore::autoscore(acceptable_df = acceptable_df,
                        common_misspell_rule = TRUE) %>%
   as.tibble()
 ```
@@ -139,7 +139,7 @@ example_data %>%
   as.tibble()
 ```
 
-In each of these examples, it is clear that the human and "robot" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
+In each of these examples, it is clear that the human and "autoscore" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
 
 ### Learn More
 

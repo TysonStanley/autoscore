@@ -4,7 +4,7 @@
 `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
 
--   `R Package: 0.1.5`
+-   `R Package: 0.1.6`
 -   `Shiny App: temporary location at https://tysonstanley.shinyapps.io/autoscore/`
 
 The purpose of `autoscore` is to automatically score word identification in speech perception research, such as studies involving listener understanding of speech in background noise or disordered speech. The program uses a flexible number of rules that determine whether a response set of words (i.e., listener transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore counts words in the listener transcript as correct if they match the words in the target phrase exactly (regardless of word order), or match a homophone or common misspelling of the target word. Individual rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules can be added by the researcher as needed.
@@ -68,7 +68,7 @@ library(tidyverse)
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)
-#> ── autoscore 0.1.5 ───────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+#> ── autoscore 0.1.6 ───────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
 #> ✔ autoscore attached
 #> ✔ No potential conflicts found
 
@@ -157,10 +157,10 @@ example_data %>%
 #> #   count_target <int>, count_response <int>
 ```
 
-To use the alternate spelling, let's create a small `data.frame` that we can provide `autoscore()`. In the data frame below, the original spellings are the generally accepted spellings while the alternate spellings are those that may be misspelled or otherwise not generally used.
+To use the acceptable spelling rule, let's create a small `data.frame` that we can provide `autoscore()`. In the data frame below, the original spellings are the generally accepted spellings while the alternate spellings are those that may be misspelled or otherwise not generally used.
 
 ``` r
-alternate_df <- data_frame(
+acceptable_df <- data_frame(
   original = c("model",
                "treason",
                "duck"),
@@ -168,7 +168,7 @@ alternate_df <- data_frame(
                 "treeson",
                 "dock")
 )
-alternate_df
+acceptable_df
 #> # A tibble: 3 x 2
 #>   original alternate    
 #>   <chr>    <chr>        
@@ -177,11 +177,11 @@ alternate_df
 #> 3 duck     dock
 ```
 
-Using this, we can provide it to the `autoscore()` function with the `alternate_df` argument.
+Using this, we can provide it to the `autoscore()` function with the `acceptable_df` argument.
 
 ``` r
 example_data %>%
-  autoscore::autoscore(alternate_df = alternate_df) %>%
+  autoscore::autoscore(acceptable_df = acceptable_df) %>%
   as.tibble()
 #> # A tibble: 40 x 6
 #>       id target                      response        human autoscore equal
@@ -199,11 +199,11 @@ example_data %>%
 #> # ... with 30 more rows
 ```
 
-We can also say `common_misspell_rule = TRUE` in conjunction with `alternate_df = alternate_df` if we want to use the list of 4,268 common misspellings in addition to the user provided list.
+We can also say `common_misspell_rule = TRUE` in conjunction with `acceptable_df = acceptable_df` if we want to use the list of 4,268 common misspellings in addition to the user provided list.
 
 ``` r
 example_data %>%
-  autoscore::autoscore(alternate_df = alternate_df,
+  autoscore::autoscore(acceptable_df = acceptable_df,
                        common_misspell_rule = TRUE) %>%
   as.tibble()
 #> # A tibble: 40 x 6
@@ -244,7 +244,7 @@ example_data %>%
 #> # ... with 30 more rows
 ```
 
-In each of these examples, it is clear that the human and "robot" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
+In each of these examples, it is clear that the human and "autoscore" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
 
 ### Learn More
 
