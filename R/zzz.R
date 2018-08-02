@@ -29,7 +29,7 @@
 
 .onLoad <- function(libname = find.package("autoscore"), pkgname = "autoscore"){
   if(getRversion() >= "2.15.1") {
-    utils::globalVariables(c(".", "target", "response", "original", "alternate", "diff_target",
+    utils::globalVariables(c(".", "target", "response", "original", "alternate", "acceptable_response", "diff_target",
                              "diff_response", "human", "count_target", "homophone", "diff_target_pre",
                              "diff_response_pre", "count_target", "homophone_target", "homophone_response"))
   }

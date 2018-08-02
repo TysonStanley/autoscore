@@ -1,12 +1,12 @@
 
 df <- autoscore::example_data
 acceptable_df <- tibble::data_frame(
-  original = c("model",
-               "treason",
-               "duck"),
-  alternate = c("modal, moddel",
-                "treeson",
-                "dock")
+  target = c("model",
+             "treason",
+             "duck"),
+  acceptable_response = c("modal, moddel",
+                          "treeson",
+                          "dock")
 )
 
 testthat::expect_error(autoscore::autoscore(df, acceptable_df = "default"))

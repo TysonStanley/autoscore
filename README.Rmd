@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
+devtools::load_all()
 ```
 
 [![Travis-CI Build Status](https://travis-ci.org/TysonStanley/autoscore_package.svg?branch=master)](https://travis-ci.org/TysonStanley/autoscore_package)
@@ -100,16 +101,16 @@ example_data %>%
   autoscore(output = "none")
 ```
 
-To use the acceptable spelling rule, let's create a small `data.frame` that we can provide `autoscore()`. In the data frame below, the original spellings are the generally accepted spellings while the alternate spellings are those that may be misspelled or otherwise not generally used.
+To use the acceptable spelling rule, let's create a small `data.frame` that we can provide `autoscore()`. In the data frame below, the target spellings are the generally accepted spellings that are in the target list of words while the acceptable_response spellings are those that should also be counted as correct.
 
 ```{r}
 acceptable_df <- data_frame(
-  original = c("model",
-               "treason",
-               "duck"),
-  alternate = c("modal, moddel",
-                "treeson",
-                "dock")
+  target = c("model",
+             "treason",
+             "duck"),
+  acceptable_response = c("modal, moddel",
+                          "treeson",
+                          "dock")
 )
 acceptable_df
 ```

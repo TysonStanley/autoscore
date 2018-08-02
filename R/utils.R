@@ -27,7 +27,9 @@ combine_alts <- function(alternate_df, common_misspell_rule){
   if (!is.null(alternate_df)){
     ## user provided list
     alternate_df <- alternate_df %>%
-      dplyr::rename_all(tolower)
+      dplyr::rename_all(tolower) %>%
+      dplyr::rename("original" = "target",
+                    "alternate" = "acceptable_response")
 
     if (isTRUE(common_misspell_rule)){
       #message("Note: List of common misspellings in data(alternate_df_default) were used.")
@@ -59,7 +61,7 @@ alternate_fun <- function(d, alternate_df, common_misspell_rule){
       dplyr::mutate(rowname = row_number(original)) %>%
       dplyr::mutate(alternate_string = stringr::str_split(alternate, pattern = ", "))
 
-    .a = alternate_df %>% tidyr::unnest(.)
+    .a = alternate_df %>% tidyr::unnest(.) %>% distinct(.)
 
     d %>%
       dplyr::mutate(target = purrr::map(target, ~{
