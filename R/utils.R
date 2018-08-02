@@ -161,14 +161,14 @@ homophones_fun <- function(d){
 
 }
 
-match_fun <- function(x, y, firstpart_rule) {
-  switch(firstpart_rule,
+match_fun <- function(x, y, rootword_rule) {
+  switch(rootword_rule,
          firstpart = pmatch(x, y),
          no_firstpart = match(x, y))
 }
 
 match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule,
-                                 plurals_rule, a_the_rule, firstpart_rule, stemmed_rule,
+                                 plurals_rule, a_the_rule, rootword_rule, stemmed_rule,
                                  common_misspell_rule, double_letter_rule){
 
 
@@ -177,10 +177,10 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
     plurals_rule   <- FALSE
   }
 
-  if (isTRUE(firstpart_rule))
-    firstpart_rule <- "firstpart"
+  if (isTRUE(rootword_rule))
+    rootword_rule <- "firstpart"
   else
-    firstpart_rule <- "no_firstpart"
+    rootword_rule <- "no_firstpart"
 
   ## alternate_spell_rule
   d <- alternate_fun(d, alternate_df, common_misspell_rule)
@@ -209,10 +209,10 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
           double_letter_fun(double_letter_rule)
       })) %>%
       dplyr::mutate(diff_target_pre = purrr::map2(homophone_target, homophone_response, ~{
-        match_fun(.x, .y, firstpart_rule)
+        match_fun(.x, .y, rootword_rule)
       })) %>%
       dplyr::mutate(diff_response_pre = purrr::map2(homophone_response, homophone_target, ~{
-        match_fun(.x, .y, firstpart_rule)
+        match_fun(.x, .y, rootword_rule)
       }))
 
   } else {
@@ -236,10 +236,10 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
           double_letter_fun(double_letter_rule)
       })) %>%
       dplyr::mutate(diff_target_pre = purrr::map2(target, response, ~{
-        match_fun(.x, .y, firstpart_rule)
+        match_fun(.x, .y, rootword_rule)
       })) %>%
       dplyr::mutate(diff_response_pre = purrr::map2(response, target, ~{
-        match_fun(.x, .y, firstpart_rule)
+        match_fun(.x, .y, rootword_rule)
       }))
   }
 

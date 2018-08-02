@@ -45,7 +45,7 @@ autoscore <- function(.data,
                          plurals_rule = plurals_rule,
                          pasttense_rule = pasttense_rule,
                          a_the_rule = a_the_rule,
-                         firstpart_rule = rootword_rule,
+                         rootword_rule = rootword_rule,
                          stemmed_rule = stemmed_rule,
                          common_misspell_rule = common_misspell_rule,
                          double_letter_rule = double_letter_rule) %>%
