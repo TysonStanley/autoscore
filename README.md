@@ -9,7 +9,7 @@
 Status](https://travis-ci.org/TysonStanley/autoscore_package.svg?branch=master)](https://travis-ci.org/TysonStanley/autoscore_package)
 ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
-`autoscore`💬 <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
+`autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
 
 -   `R Package: 0.1.7`
