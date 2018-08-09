@@ -8,7 +8,7 @@
 \title{AutoScore}
 \usage{
 autoscore(.data, acceptable_df = NULL, position_rule = 99,
-  homophone_rule = TRUE, stemmed_rule = FALSE, plurals_rule = TRUE,
+  homophone_rule = TRUE, suffix_rule = FALSE, plurals_rule = TRUE,
   pasttense_rule = TRUE, a_the_rule = TRUE, rootword_rule = FALSE,
   common_misspell_rule = TRUE, double_letter_rule = TRUE, output = "text")
 }
@@ -21,7 +21,7 @@ autoscore(.data, acceptable_df = NULL, position_rule = 99,
 
 \item{homophone_rule}{should homophones be used? (default = TRUE)}
 
-\item{stemmed_rule}{should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, plurals_rule and pasttense_rule are FALSE}
+\item{suffix_rule}{should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, plurals_rule and pasttense_rule are FALSE}
 
 \item{plurals_rule}{should the plural suffix (-s, -es) be removed? (default = TRUE)}
 

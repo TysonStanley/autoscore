@@ -6,7 +6,7 @@
 #' @param acceptable_df A user-provided data.frame of original and alternate spellings for words in the target/response lists (this is the \code{acceptable_spell_rule} and is in addition to built-in homophone list that can be seen with \code{data(homophones)})
 #' @param position_rule the amount a word can vary from the correct position in the phrase and still be correct (default = 99)
 #' @param homophone_rule should homophones be used? (default = TRUE)
-#' @param stemmed_rule should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, plurals_rule and pasttense_rule are FALSE
+#' @param suffix_rule should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, plurals_rule and pasttense_rule are FALSE
 #' @param plurals_rule should the plural suffix (-s, -es) be removed? (default = TRUE)
 #' @param pasttense_rule should the past tense suffix (-d, -ed) be removed? (default = TRUE)
 #' @param a_the_rule should "a" and "the" be considered the same? (default = TRUE)
@@ -24,7 +24,7 @@ autoscore <- function(.data,
                       acceptable_df = NULL,
                       position_rule = 99,
                       homophone_rule = TRUE,
-                      stemmed_rule = FALSE,
+                      suffix_rule = FALSE,
                       plurals_rule = TRUE,
                       pasttense_rule = TRUE,
                       a_the_rule = TRUE,
@@ -33,7 +33,7 @@ autoscore <- function(.data,
                       double_letter_rule = TRUE,
                       output = "text") {
 
-  error_check_rules(homophone_rule, stemmed_rule, plurals_rule, pasttense_rule,
+  error_check_rules(homophone_rule, suffix_rule, plurals_rule, pasttense_rule,
                     a_the_rule, rootword_rule, common_misspell_rule,
                     double_letter_rule)
   error_check_alternate_df(acceptable_df)
@@ -46,7 +46,7 @@ autoscore <- function(.data,
                          pasttense_rule = pasttense_rule,
                          a_the_rule = a_the_rule,
                          rootword_rule = rootword_rule,
-                         stemmed_rule = stemmed_rule,
+                         suffix_rule = suffix_rule,
                          common_misspell_rule = common_misspell_rule,
                          double_letter_rule = double_letter_rule) %>%
     count_matches(position_rule = position_rule)

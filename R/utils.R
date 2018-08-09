@@ -168,11 +168,11 @@ match_fun <- function(x, y, rootword_rule) {
 }
 
 match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule,
-                                 plurals_rule, a_the_rule, rootword_rule, stemmed_rule,
+                                 plurals_rule, a_the_rule, rootword_rule, suffix_rule,
                                  common_misspell_rule, double_letter_rule){
 
 
-  if (isTRUE(stemmed_rule)){
+  if (isTRUE(suffix_rule)){
     pasttense_rule <- FALSE
     plurals_rule   <- FALSE
   }
@@ -194,7 +194,7 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
       dplyr::mutate(homophone_target = purrr::map(homophone_target, ~{
         stringr::str_replace(.x, pattern = "[[:punct:]]", replacement = "") %>%
           a_the_fun(a_the_rule) %>%
-          stemmed_fun(stemmed_rule) %>%
+          suffix_fun(suffix_rule) %>%
           plurals_fun(plurals_rule) %>%
           pasttense_fun(pasttense_rule) %>%
           double_letter_fun(double_letter_rule)
@@ -203,7 +203,7 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
       dplyr::mutate(homophone_response = purrr::map(homophone_response, ~{
         stringr::str_replace(.x, pattern = "[[:punct:]]", replacement = "") %>%
           a_the_fun(a_the_rule) %>%
-          stemmed_fun(stemmed_rule) %>%
+          suffix_fun(suffix_rule) %>%
           plurals_fun(plurals_rule) %>%
           pasttense_fun(pasttense_rule) %>%
           double_letter_fun(double_letter_rule)
@@ -221,7 +221,7 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
       dplyr::mutate(target = purrr::map(target, ~{
         stringr::str_replace(.x, pattern = "[[:punct:]]", replacement = "") %>%
           a_the_fun(a_the_rule) %>%
-          stemmed_fun(stemmed_rule) %>%
+          suffix_fun(suffix_rule) %>%
           plurals_fun(plurals_rule) %>%
           pasttense_fun(pasttense_rule) %>%
           double_letter_fun(double_letter_rule)
@@ -230,7 +230,7 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
       dplyr::mutate(response = purrr::map(response, ~{
         stringr::str_replace(.x, pattern = "[[:punct:]]", replacement = "") %>%
           a_the_fun(a_the_rule) %>%
-          stemmed_fun(stemmed_rule) %>%
+          suffix_fun(suffix_rule) %>%
           plurals_fun(plurals_rule) %>%
           pasttense_fun(pasttense_rule) %>%
           double_letter_fun(double_letter_rule)
@@ -251,7 +251,7 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
 
 
 
-stemmed_fun <- function(chr, use = TRUE){
+suffix_fun <- function(chr, use = TRUE){
   if (isTRUE(use)){
     tm::stemDocument(chr)
   } else {
@@ -261,8 +261,8 @@ stemmed_fun <- function(chr, use = TRUE){
 
 pasttense_fun <- function(chr, use = TRUE){
   if (isTRUE(use)){
-    stringr::str_replace(chr, pattern = "ed$", replacement = "") %>%
-      stringr::str_replace(pattern = "d$", replacement = "")
+    stringr::str_replace(chr, pattern = "ed$", replacement = "e") %>%
+      stringr::str_replace(pattern = "e$", replacement = "")
   } else {
     chr
   }

@@ -20,8 +20,8 @@ devtools::load_all()
 
 # `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 
-- `R Package: `r packageVersion("autoscore")``
-- `Shiny App: temporary location at https://tysonstanley.shinyapps.io/autoscore/`
+- R Package: `r packageVersion("autoscore")`
+- Shiny App: temporary location at [https://tysonstanley.shinyapps.io/autoscore/](https://tysonstanley.shinyapps.io/autoscore/)
 
 The purpose of `autoscore` is to automatically score word identification in speech perception research, such as studies involving listener understanding of speech in background noise or disordered speech. The program uses a flexible number of rules that determine whether a response set of words (i.e., listener transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore counts words in the listener transcript as correct if they match the words in the target phrase exactly (regardless of word order), or match a homophone or common misspelling of the target word. Individual rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules can be added by the researcher as needed.
 
@@ -33,7 +33,7 @@ The rule options are categorized into either spelling rules or grammar rules.
 1. `homophone_rule` = response word counted correct if it is a homophone of the target word; default is to use this rule (`default = TRUE`)
 2. `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines) to be scored as correct; `default = TRUE`
 3. `acceptable_spell_rule` = use a researcher uploaded acceptable spelling list to be scored as correct; this rule is triggered when the researcher provides a data file
-4. `stemmed_rule` = stem all words (i.e., remove all suffixes); `default is TRUE`
+4. `suffix_rule` = stem all words (i.e., remove all suffixes); `default is TRUE`
 5. `rootword_rule` = response word counted correct if the target word (e.g., bat, day) is embedded at either the beginning (e.g., batman) or end (e.g., monday) of the word; uses a partial matching heuristic; `default is FALSE`
 6. `double_letter_rule` = should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; `default = TRUE`
 
@@ -55,6 +55,8 @@ The API of the `R` package is simple. A single call to `autoscore()` with the fo
 - `homophones_fun()` -- If homophones are used (according to the `homophone_rule`), this function finds and normalizes all homophones as found in the `data(homophones)` found in this package.
 - `match_position_basic()` -- This function is the workhorse of the package. It takes the cleaned (and possibly homophone normalized) data and does three main things: 1) applies all the rules except for the `position_rule`, 2) finds the matches between the responses and the targets, and 3) reports how far away the matches are from each other.
 - `count_matches()` -- Finally, this function takes the information from `match_position_basic()` and counts the number of matches based on the `position_rule`.
+
+Beyond the main analysis when using `autoscore()`, we can also call `pwc()` to get the percent words correct (based on the number of target words) for each observation.
 
 
 ## Use of the Online Tool
@@ -91,7 +93,7 @@ example_data %>%
 Next, let's change some of the rules.
 ```{r}
 example_data %>%
-  autoscore(position_rule = 2, stemmed_rule = FALSE, plurals_rule = FALSE) %>%
+  autoscore(position_rule = 2, suffix_rule = FALSE, plurals_rule = FALSE) %>%
   as.tibble()
 ```
 
