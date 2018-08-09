@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
     ## Loading autoscore
 
-    ## ── autoscore 0.1.8 ─────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+    ## ── autoscore 0.1.8 ─────────────────────────── learn more at tysonbarrett.com ──
     ## ✔ autoscore attached
     ## ✔ No potential conflicts found
 
@@ -24,7 +24,7 @@ The rule options are categorized into either spelling rules or grammar rules.
 3.  `acceptable_spell_rule` = use a researcher uploaded acceptable spelling list to be scored as correct; this rule is triggered when the researcher provides a data file
 4.  `suffix_rule` = stem all words (i.e., remove all suffixes); `default is TRUE`
 5.  `rootword_rule` = response word counted correct if the target word (e.g., bat, day) is embedded at either the beginning (e.g., batman) or end (e.g., monday) of the word; uses a partial matching heuristic; `default is FALSE`
-6.  `double_letter_rule` = should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; `default = TRUE`
+6.  `double_letter_rule` = should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; `default = FALSE`
 
 #### Grammar Rules
 
@@ -66,13 +66,13 @@ An example of the use of `autoscore` is below. We will use the example data set 
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
+#> ── Attaching packages ────────────────────────────────── tidyverse 1.2.1.9000 ──
 #> ✔ ggplot2 2.2.1.9000     ✔ purrr   0.2.5     
 #> ✔ tibble  1.4.2          ✔ dplyr   0.7.6     
 #> ✔ tidyr   0.8.1          ✔ stringr 1.3.1     
 #> ✔ readr   1.1.1          ✔ forcats 0.3.0
 #> Warning: package 'dplyr' was built under R version 3.5.1
-#> ── Conflicts ────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)

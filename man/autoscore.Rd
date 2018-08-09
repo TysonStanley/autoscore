@@ -10,7 +10,8 @@
 autoscore(.data, acceptable_df = NULL, position_rule = 99,
   homophone_rule = TRUE, suffix_rule = FALSE, plurals_rule = TRUE,
   pasttense_rule = TRUE, a_the_rule = TRUE, rootword_rule = FALSE,
-  common_misspell_rule = TRUE, double_letter_rule = TRUE, output = "text")
+  common_misspell_rule = TRUE, double_letter_rule = FALSE,
+  output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
@@ -33,7 +34,7 @@ autoscore(.data, acceptable_df = NULL, position_rule = 99,
 
 \item{common_misspell_rule}{should a large common misspellings list be used to correct spelling? default is TRUE}
 
-\item{double_letter_rule}{should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = TRUE}
+\item{double_letter_rule}{should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = FALSE}
 
 \item{output}{the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon}
 }

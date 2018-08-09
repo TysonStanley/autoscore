@@ -12,7 +12,7 @@
 #' @param a_the_rule should "a" and "the" be considered the same? (default = TRUE)
 #' @param rootword_rule should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)
 #' @param common_misspell_rule should a large common misspellings list be used to correct spelling? default is TRUE
-#' @param double_letter_rule should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = TRUE
+#' @param double_letter_rule should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = FALSE
 #' @param output the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon
 #'
 #' @import dplyr
@@ -30,7 +30,7 @@ autoscore <- function(.data,
                       a_the_rule = TRUE,
                       rootword_rule = FALSE,
                       common_misspell_rule = TRUE,
-                      double_letter_rule = TRUE,
+                      double_letter_rule = FALSE,
                       output = "text") {
 
   error_check_rules(homophone_rule, suffix_rule, plurals_rule, pasttense_rule,
