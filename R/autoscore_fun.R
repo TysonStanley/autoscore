@@ -18,6 +18,7 @@
 #' @import dplyr
 #' @import tibble
 #' @importFrom stats setNames
+#' @importFrom stats na.omit
 #'
 #' @export
 autoscore <- function(.data,
