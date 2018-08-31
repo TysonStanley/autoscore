@@ -70,7 +70,6 @@ alternate_fun <- function(d, alternate_df, common_misspell_rule){
 
         replace = .a %>%
           dplyr::filter(alternate_string %in% .x)
-        any_phones = alternate_df[replace$rowname, ]
 
         what_to_replace = .a %>%
           dplyr::mutate(in_it = alternate_string %in% .x) %>%
@@ -89,7 +88,6 @@ alternate_fun <- function(d, alternate_df, common_misspell_rule){
 
         replace = .a %>%
           dplyr::filter(alternate_string %in% .x)
-        any_phones = alternate_df[replace$rowname, ]
 
         what_to_replace = .a %>%
           dplyr::mutate(in_it = alternate_string %in% .x) %>%
@@ -121,7 +119,6 @@ homophones_fun <- function(d){
 
       replace = .h %>%
         dplyr::filter(homophone_string %in% .x)
-      any_phones = homophones[replace$rowname, ]
 
       what_to_replace = .h %>%
         dplyr::mutate(in_it = homophone_string %in% .x) %>%
@@ -143,7 +140,6 @@ homophones_fun <- function(d){
 
       replace = .h %>%
         dplyr::filter(homophone_string %in% .x)
-      any_phones = homophones[replace$rowname, ]
 
       what_to_replace = .h %>%
         dplyr::mutate(in_it = homophone_string %in% .x) %>%
