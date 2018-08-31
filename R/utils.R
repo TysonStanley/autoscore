@@ -107,7 +107,6 @@ alternate_fun <- function(d, alternate_df, common_misspell_rule){
 
 
 
-
 homophones_fun <- function(d){
 
   homophones <- autoscore::homophones %>%
@@ -126,19 +125,11 @@ homophones_fun <- function(d){
                         paste0(homophone_string, "s")  %in% .x |
                         paste0(homophone_string, "ed") %in% .x |
                         paste0(homophone_string, "s")  %in% .x)
-      which_one = c(replace$homophone_string,
-                    paste0(replace$homophone_string, "es"),
-                    paste0(replace$homophone_string, "s"),
-                    paste0(replace$homophone_string, "ed"),
-                    paste0(replace$homophone_string, "d")) %in% .x
-      suffix = c("", "es", "s", "ed", "d")[which_one]
-
-      replace$what_to_replace = paste0(replace$homophone_string, suffix)
 
       replace = replace %>%
         dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
 
-      .x[replace$what_to_replace] = paste0(replace$replacement, suffix)
+      .x[replace$homophone_string] = replace$replacement
       .x
 
     })) %>%
@@ -152,19 +143,11 @@ homophones_fun <- function(d){
                         paste0(homophone_string, "s")  %in% .x |
                         paste0(homophone_string, "ed") %in% .x |
                         paste0(homophone_string, "s")  %in% .x)
-      which_one = c(replace$homophone_string,
-                    paste0(replace$homophone_string, "es"),
-                    paste0(replace$homophone_string, "s"),
-                    paste0(replace$homophone_string, "ed"),
-                    paste0(replace$homophone_string, "d")) %in% .x
-      suffix = c("", "es", "s", "ed", "d")[which_one]
-
-      replace$what_to_replace = paste0(replace$homophone_string, suffix)
 
       replace = replace %>%
         dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
 
-      .x[replace$what_to_replace] = paste0(replace$replacement, suffix)
+      .x[replace$homophone_string] = replace$replacement
       .x
 
     }))
