@@ -120,16 +120,20 @@ homophones_fun <- function(d){
       names(.x) = .x
 
       replace = .h %>%
-        dplyr::filter(homophone_string %in% .x |
-                        paste0(homophone_string, "es") %in% .x |
-                        paste0(homophone_string, "s")  %in% .x |
-                        paste0(homophone_string, "ed") %in% .x |
-                        paste0(homophone_string, "s")  %in% .x)
+        dplyr::filter(homophone_string %in% .x)
+      any_phones = homophones[replace$rowname, ]
+
+      what_to_replace = .h %>%
+        dplyr::mutate(in_it = homophone_string %in% .x) %>%
+        dplyr::filter(in_it) %>%
+        dplyr::pull(homophone_string)
+
+      replace$what_to_replace = what_to_replace
 
       replace = replace %>%
         dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
 
-      .x[replace$homophone_string] = replace$replacement
+      .x[replace$what_to_replace] = replace$replacement
       .x
 
     })) %>%
@@ -138,16 +142,20 @@ homophones_fun <- function(d){
       names(.x) = .x
 
       replace = .h %>%
-        dplyr::filter(homophone_string %in% .x |
-                        paste0(homophone_string, "es") %in% .x |
-                        paste0(homophone_string, "s")  %in% .x |
-                        paste0(homophone_string, "ed") %in% .x |
-                        paste0(homophone_string, "s")  %in% .x)
+        dplyr::filter(homophone_string %in% .x)
+      any_phones = homophones[replace$rowname, ]
+
+      what_to_replace = .h %>%
+        dplyr::mutate(in_it = homophone_string %in% .x) %>%
+        dplyr::filter(in_it) %>%
+        dplyr::pull(homophone_string)
+
+      replace$what_to_replace = what_to_replace
 
       replace = replace %>%
         dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
 
-      .x[replace$homophone_string] = replace$replacement
+      .x[replace$what_to_replace] = replace$replacement
       .x
 
     }))
