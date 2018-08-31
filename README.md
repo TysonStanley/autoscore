@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
     ## Loading autoscore
 
-    ## ── autoscore 0.1.9 ──────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+    ## ── autoscore 0.1.11 ───────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
     ## ✔ autoscore attached
     ## ✔ No potential conflicts found
 
@@ -10,15 +10,15 @@
 `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
 
-> R Package: 0.1.9
+> R Package: 0.1.11
 
 > Shiny App: temporary location at <https://tysonstanley.shinyapps.io/autoscore/>
 
 *Authors:*
 
 -   *Tyson S. Barrett*
--   *Sarah Leopold*
 -   *Stephanie A. Borrie*
+-   *Sarah Leopold*
 
 The purpose of `autoscore` is to automatically score word identification in speech perception research, such as studies involving listener understanding of speech in background noise or disordered speech. The program uses a flexible number of rules that determine whether a response set of words (i.e., listener transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore counts words in the listener transcript as correct if they match the words in the target phrase exactly (regardless of word order), or match a homophone or common misspelling of the target word. Individual rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules can be added by the researcher as needed.
 
@@ -73,13 +73,13 @@ An example of the use of `autoscore` is below. We will use the example data set 
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ─────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
+#> ── Attaching packages ───────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
 #> ✔ ggplot2 3.0.0.9000     ✔ purrr   0.2.5     
 #> ✔ tibble  1.4.2          ✔ dplyr   0.7.6     
 #> ✔ tidyr   0.8.1          ✔ stringr 1.3.1     
 #> ✔ readr   1.1.1          ✔ forcats 0.3.0
 #> Warning: package 'dplyr' was built under R version 3.5.1
-#> ── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)
@@ -134,14 +134,14 @@ example_data %>%
 #>       id target                      response        human autoscore equal
 #>    <dbl> <fct>                       <fct>           <dbl>     <int> <lgl>
 #>  1     1 mate denotes a judgement    made the dinne…     1         1 TRUE 
-#>  2     1 rampant boasting captain    rubbed against…     1         1 TRUE 
+#>  2     1 rampant boasting captain    rubbed against…     1         0 FALSE
 #>  3     1 resting older earring       resting alert …     1         1 TRUE 
 #>  4     1 bolder ground from justice  boulder down f…     2         2 TRUE 
 #>  5     1 remove and name for stake   remember the n…     3         3 TRUE 
 #>  6     1 done with finest handle     dinner finishe…     1         1 TRUE 
 #>  7     1 support with dock and cheer she put the du…     1         0 FALSE
-#>  8     1 or spent sincere aside      earth bent spe…     2         2 TRUE 
-#>  9     1 account for who could knock i can for hook…     2         2 TRUE 
+#>  8     1 or spent sincere aside      earth bent spe…     2         1 FALSE
+#>  9     1 account for who could knock i can for hook…     2         1 FALSE
 #> 10     1 connect the beer device     connected bear…     1         1 TRUE 
 #> # ... with 30 more rows
 ```
