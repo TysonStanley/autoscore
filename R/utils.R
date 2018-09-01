@@ -105,11 +105,13 @@ alternate_fun <- function(d, alternate_df, common_misspell_rule){
 
 homophones_fun <- function(d){
 
+  ## grabs the list of homophones
   homophones <- autoscore::homophones %>%
     dplyr::mutate(homophone_string = stringr::str_split(homophone, pattern = ", "))
 
   .h = homophones %>% tidyr::unnest(.)
 
+  ## Applies the homophones
   d %>%
     dplyr::mutate(homophone_target = purrr::map(target, ~{
 
@@ -159,12 +161,15 @@ homophones_fun <- function(d){
 
 match_fun <- function(x, y, rootword_rule) {
 
+  ## depending on rootword_rule should pmatch or match be used
   switch(rootword_rule,
          firstpart = pmatch(x, y),
          no_firstpart = match(x, y))
 
 }
 
+
+## Main work horse function
 match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule,
                                  plurals_rule, a_the_rule, rootword_rule, suffix_rule,
                                  common_misspell_rule, double_letter_rule){
