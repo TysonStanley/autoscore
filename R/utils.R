@@ -103,8 +103,6 @@ alternate_fun <- function(d, alternate_df, common_misspell_rule){
   }
 }
 
-
-
 homophones_fun <- function(d){
 
   homophones <- autoscore::homophones %>%
@@ -118,19 +116,26 @@ homophones_fun <- function(d){
       names(.x) = .x
 
       replace = .h %>%
-        dplyr::filter(homophone_string %in% .x)
+        dplyr::filter(homophone_string %in% .x |
+                      paste0(homophone_string, "es") %in% .x |
+                      paste0(homophone_string, "s")  %in% .x |
+                      paste0(homophone_string, "ed") %in% .x |
+                      paste0(homophone_string, "d")  %in% .x)
 
-      what_to_replace = .h %>%
-        dplyr::mutate(in_it = homophone_string %in% .x) %>%
-        dplyr::filter(in_it) %>%
-        dplyr::pull(homophone_string)
+      suffix = rep(c("", "es", "s", "ed", "d"), each = nrow(replace))
+      which_ones = c(replace$homophone_string %in% .x,
+                         paste0(replace$homophone_string, "es") %in% .x,
+                         paste0(replace$homophone_string, "s")  %in% .x,
+                         paste0(replace$homophone_string, "ed") %in% .x,
+                         paste0(replace$homophone_string, "d")  %in% .x)
+      suffix = suffix[which_ones]
 
-      replace$what_to_replace = what_to_replace
+      replace$what_to_replace = paste0(replace$homophone_string, suffix)
 
       replace = replace %>%
         dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
 
-      .x[replace$what_to_replace] = replace$replacement
+      .x[replace$what_to_replace] = paste0(replace$replacement, suffix)
       .x
 
     })) %>%
@@ -139,19 +144,26 @@ homophones_fun <- function(d){
       names(.x) = .x
 
       replace = .h %>%
-        dplyr::filter(homophone_string %in% .x)
+        dplyr::filter(homophone_string %in% .x |
+                        paste0(homophone_string, "es") %in% .x |
+                        paste0(homophone_string, "s")  %in% .x |
+                        paste0(homophone_string, "ed") %in% .x |
+                        paste0(homophone_string, "d")  %in% .x)
 
-      what_to_replace = .h %>%
-        dplyr::mutate(in_it = homophone_string %in% .x) %>%
-        dplyr::filter(in_it) %>%
-        dplyr::pull(homophone_string)
+      suffix = rep(c("", "es", "s", "ed", "d"), each = nrow(replace))
+      which_ones = c(replace$homophone_string %in% .x,
+                     paste0(replace$homophone_string, "es") %in% .x,
+                     paste0(replace$homophone_string, "s")  %in% .x,
+                     paste0(replace$homophone_string, "ed") %in% .x,
+                     paste0(replace$homophone_string, "d")  %in% .x)
+      suffix = suffix[which_ones]
 
-      replace$what_to_replace = what_to_replace
+      replace$what_to_replace = paste0(replace$homophone_string, suffix)
 
       replace = replace %>%
         dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
 
-      .x[replace$what_to_replace] = replace$replacement
+      .x[replace$what_to_replace] = paste0(replace$replacement, suffix)
       .x
 
     }))
