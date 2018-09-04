@@ -5,7 +5,7 @@
     ## ✔ autoscore attached
     ## ✔ No potential conflicts found
 
-[![Travis-CI Build Status](https://travis-ci.org/TysonStanley/autoscore_package.svg?branch=master)](https://travis-ci.org/TysonStanley/autoscore_package) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+[![Travis-CI Build Status](https://travis-ci.org/TysonStanley/autoscore.svg?branch=master)](https://travis-ci.org/TysonStanley/autoscore) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
 `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
