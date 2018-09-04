@@ -8,4 +8,4 @@
 #'   \item{homophone}{The homophones (each line contains two or more words separated by commas).}
 #' }
 #' @source \url{http://homophonelist.com/homophones-list/}
-"homophones"
+"phones"
