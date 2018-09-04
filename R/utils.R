@@ -106,7 +106,7 @@ alternate_fun <- function(d, alternate_df, common_misspell_rule){
 homophones_fun <- function(d){
 
   ## grabs the list of homophones
-  homophones <- autoscore::homophones %>%
+  homophones <- autoscore::phones %>%
     dplyr::mutate(homophone_string = stringr::str_split(homophone, pattern = ", "))
 
   .h = homophones %>% tidyr::unnest(.)
