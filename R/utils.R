@@ -170,13 +170,16 @@ match_fun <- function(x, y, rootword_rule) {
 
 
 ## Main work horse function
-match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule,
-                                 plurals_rule, a_the_rule, rootword_rule, suffix_rule,
+match_position_basic <- function(d, alternate_df, homophone_rule, plurals_rule, plurals_add_rule,
+                                 pasttense_rule, pasttense_add_rule,
+                                 a_the_rule, rootword_rule, suffix_rule,
                                  common_misspell_rule, double_letter_rule){
 
   if (isTRUE(suffix_rule)){
     pasttense_rule <- FALSE
     plurals_rule   <- FALSE
+    pasttense_add_rule <- FALSE
+    plurals_add_rule <- FALSE
   }
 
   if (isTRUE(rootword_rule)){
@@ -209,11 +212,11 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
 
       })) %>%
       dplyr::mutate(diff_target_pre = purrr::map2(homophone_target, homophone_response, ~{
-        pasttense_plurals_fun(.x, .y, pasttense_rule, plurals_rule, rootword_rule)
+        pasttense_plurals_fun(.x, .y, pasttense_rule, pasttense_add_rule, plurals_rule, plurals_add_rule, rootword_rule)
 
       })) %>%
       dplyr::mutate(diff_response_pre = purrr::map2(homophone_response, homophone_target, ~{
-        pasttense_plurals_fun(.x, .y, pasttense_rule, plurals_rule, rootword_rule)
+        pasttense_plurals_fun(.x, .y, pasttense_rule, pasttense_add_rule, plurals_rule, plurals_add_rule, rootword_rule)
 
       }))
 
@@ -235,11 +238,11 @@ match_position_basic <- function(d, alternate_df, homophone_rule, pasttense_rule
 
       })) %>%
       dplyr::mutate(diff_target_pre = purrr::map2(target, response, ~{
-        pasttense_plurals_fun(.x, .y, pasttense_rule, plurals_rule, rootword_rule)
+        pasttense_plurals_fun(.x, .y, pasttense_rule, pasttense_add_rule, plurals_rule, plurals_add_rule, rootword_rule)
 
       })) %>%
       dplyr::mutate(diff_response_pre = purrr::map2(response, target, ~{
-        pasttense_plurals_fun(.x, .y, pasttense_rule, plurals_rule, rootword_rule)
+        pasttense_plurals_fun(.x, .y, pasttense_rule, pasttense_add_rule, plurals_rule, plurals_add_rule, rootword_rule)
 
       }))
   }
@@ -260,7 +263,18 @@ suffix_fun <- function(chr, use = TRUE){
   }
 }
 
-pasttense_plurals_fun <- function(x, y, pasttense_rule, plurals_rule, rootword_rule){
+
+
+
+pasttense_plurals_fun <- function(x, y, pasttense_rule, pasttense_add_rule, plurals_rule, plurals_add_rule, rootword_rule){
+
+  if (isTRUE(pasttense_rule)) {
+    pasttense_add_rule <- FALSE
+  }
+  if (isTRUE(plurals_rule)) {
+    plurals_add_rule <- FALSE
+  }
+
   if (isTRUE(pasttense_rule) & isTRUE(plurals_rule)){
     ed1 <- match_fun(paste0(x, "ed"), y, rootword_rule)
     ed2 <- match_fun(paste0(x, "d"), y, rootword_rule)
@@ -286,6 +300,23 @@ pasttense_plurals_fun <- function(x, y, pasttense_rule, plurals_rule, rootword_r
     ed4 <- match_fun(x, paste0(y, "d"), rootword_rule)
     reg <- match_fun(x, y, rootword_rule)
     na.omit(c(ed1, ed2, ed3, ed4, reg)) %>% unique %>% as.numeric
+  } else if (isTRUE(pasttense_add_rule) & isTRUE(plurals_add_rule)){
+    ed1 <- match_fun(paste0(x, "ed"), y, rootword_rule)
+    ed2 <- match_fun(paste0(x, "d"), y, rootword_rule)
+    es1 <- match_fun(paste0(x, "es"), y, rootword_rule)
+    es2 <- match_fun(paste0(x, "s"), y, rootword_rule)
+    reg <- match_fun(x, y, rootword_rule)
+    na.omit(c(ed1, ed2, es1, es2, reg)) %>% unique %>% as.numeric
+  } else if (isTRUE(pasttense_add_rule)) {
+    ed1 <- match_fun(paste0(x, "ed"), y, rootword_rule)
+    ed2 <- match_fun(paste0(x, "d"), y, rootword_rule)
+    reg <- match_fun(x, y, rootword_rule)
+    na.omit(c(ed1, ed2, reg)) %>% unique %>% as.numeric
+  } else if (isTRUE(plurals_add_rule)){
+    es1 <- match_fun(paste0(x, "es"), y, rootword_rule)
+    es2 <- match_fun(paste0(x, "s"), y, rootword_rule)
+    reg <- match_fun(x, y, rootword_rule)
+    na.omit(c(es1, es2, reg)) %>% unique %>% as.numeric
   } else {
     match(x, y)
   }

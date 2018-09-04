@@ -9,7 +9,8 @@
 \usage{
 autoscore(.data, acceptable_df = NULL, position_rule = 99,
   homophone_rule = TRUE, suffix_rule = FALSE, plurals_rule = TRUE,
-  pasttense_rule = TRUE, a_the_rule = TRUE, rootword_rule = FALSE,
+  plurals_add_rule = TRUE, pasttense_rule = TRUE,
+  pasttense_add_rule = TRUE, a_the_rule = TRUE, rootword_rule = FALSE,
   common_misspell_rule = TRUE, double_letter_rule = FALSE,
   output = "text")
 }
@@ -26,7 +27,11 @@ autoscore(.data, acceptable_df = NULL, position_rule = 99,
 
 \item{plurals_rule}{should the plural suffix (-s, -es) be removed? (default = TRUE)}
 
+\item{plurals_add_rule}{only if response has an additional plural (not missing plural which is part of \code{plurals_rule}) to be counted right}
+
 \item{pasttense_rule}{should the past tense suffix (-d, -ed) be removed? (default = TRUE)}
+
+\item{pasttense_add_rule}{only if response has an additional past-tense (not missing a past-tense which is part of \code{pasttense_rule}) to be counted right}
 
 \item{a_the_rule}{should "a" and "the" be considered the same? (default = TRUE)}
 

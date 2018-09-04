@@ -8,7 +8,9 @@
 #' @param homophone_rule should homophones be used? (default = TRUE)
 #' @param suffix_rule should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, plurals_rule and pasttense_rule are FALSE
 #' @param plurals_rule should the plural suffix (-s, -es) be removed? (default = TRUE)
+#' @param plurals_add_rule only if response has an additional plural (not missing plural which is part of \code{plurals_rule}) to be counted right
 #' @param pasttense_rule should the past tense suffix (-d, -ed) be removed? (default = TRUE)
+#' @param pasttense_add_rule only if response has an additional past-tense (not missing a past-tense which is part of \code{pasttense_rule}) to be counted right
 #' @param a_the_rule should "a" and "the" be considered the same? (default = TRUE)
 #' @param rootword_rule should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)
 #' @param common_misspell_rule should a large common misspellings list be used to correct spelling? default is TRUE
@@ -27,7 +29,9 @@ autoscore <- function(.data,
                       homophone_rule = TRUE,
                       suffix_rule = FALSE,
                       plurals_rule = TRUE,
+                      plurals_add_rule = TRUE,
                       pasttense_rule = TRUE,
+                      pasttense_add_rule = TRUE,
                       a_the_rule = TRUE,
                       rootword_rule = FALSE,
                       common_misspell_rule = TRUE,
@@ -44,7 +48,9 @@ autoscore <- function(.data,
     match_position_basic(alternate_df = acceptable_df,
                          homophone_rule = homophone_rule,
                          plurals_rule = plurals_rule,
+                         plurals_add_rule = plurals_add_rule,
                          pasttense_rule = pasttense_rule,
+                         pasttense_add_rule = pasttense_add_rule,
                          a_the_rule = a_the_rule,
                          rootword_rule = rootword_rule,
                          suffix_rule = suffix_rule,
