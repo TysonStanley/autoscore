@@ -48,9 +48,10 @@ The rule options are categorized into either spelling rules or grammar rules.
 #### Grammar Rules
 
 7. `pasttense_rule` = response word counted correct if it differs from the target word only by tense; `default is TRUE`
-8. `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is TRUE`
-9. `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
-
+8. `pasttense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is TRUE`
+9. `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is TRUE`
+10. `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
+11. `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is TRUE`
 
 ## Design
 
@@ -153,6 +154,6 @@ In each of these examples, it is clear that the human and "autoscore" agree the 
 
 ### Learn More
 
-Publications are forthcoming. For more information, contact Tyson S. Barrett (t.barrett@aggiemail.usu.edu).
+Peer-reviewed publications and further tutorials are forthcoming. For more information, contact Tyson S. Barrett (t.barrett@aggiemail.usu.edu).
 
 

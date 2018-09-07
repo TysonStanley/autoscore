@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
     ## Loading autoscore
 
-    ## ── autoscore 0.2.0 ─────────────────────────────────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+    ## ── autoscore 0.2.0 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
     ## ✔ autoscore attached
     ## ✔ No potential conflicts found
 
@@ -66,10 +66,14 @@ rules.
 
 1.  `pasttense_rule` = response word counted correct if it differs from
     the target word only by tense; `default is TRUE`
-2.  `a_the_rule` = substitutions between “a” and “the” to be scored as
+2.  `pasttense_add_rule` = response word counted correct if it only adds
+    a tense as compared to the target word; `default is TRUE`
+3.  `a_the_rule` = substitutions between “a” and “the” to be scored as
     correct; `default is TRUE`
-3.  `plural_rule` = response word counted correct if it differs from the
+4.  `plural_rule` = response word counted correct if it differs from the
     target word only by plurality; `default is TRUE`
+5.  `plural_add_rule` = response word counted correct if it only adds a
+    plural as compared to the target word; `default is TRUE`
 
 Design
 ------
@@ -126,12 +130,12 @@ data set provided in the package.
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
+#> ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
 #> ✔ ggplot2 3.0.0.9000      ✔ purrr   0.2.5      
 #> ✔ tibble  1.4.99.9004     ✔ dplyr   0.7.99.9000
 #> ✔ tidyr   0.8.1           ✔ stringr 1.3.1      
 #> ✔ readr   1.2.0           ✔ forcats 0.3.0
-#> ── Conflicts ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)
@@ -326,5 +330,6 @@ spellings of words as we just demonstrated).
 
 ### Learn More
 
-Publications are forthcoming. For more information, contact Tyson S.
-Barrett (<t.barrett@aggiemail.usu.edu>).
+Peer-reviewed publications and further tutorials are forthcoming. For
+more information, contact Tyson S. Barrett
+(<t.barrett@aggiemail.usu.edu>).
