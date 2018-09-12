@@ -393,7 +393,7 @@ format_output <- function(final_table, output, original_data) {
 
 error_check_alternate_df <- function(alternate_df){
   if (!is.null(alternate_df)){
-    stopifnot(is.data.frame(alternate_df))
+    stopifnot(is.data.frame(alternate_df) | is.matrix(alternate_df))
   }
 }
 

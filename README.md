@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
     ## Loading autoscore
 
-    ## ── autoscore 0.2.0 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+    ## ── autoscore 0.2.1 ──────────────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
     ## ✔ autoscore attached
     ## ✔ No potential conflicts found
 
@@ -12,7 +12,7 @@ Status](https://travis-ci.org/TysonStanley/autoscore.svg?branch=master)](https:/
 `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
 
-> R Package: 0.2.0
+> R Package: 0.2.1
 
 > Shiny App: temporary location at
 > <https://tysonstanley.shinyapps.io/autoscore/>
@@ -52,8 +52,7 @@ rules.
 3.  `acceptable_spell_rule` = use a researcher uploaded acceptable
     spelling list to be scored as correct; this rule is triggered when
     the researcher provides a data file
-4.  `suffix_rule` = stem all words (i.e., remove all suffixes);
-    `default is TRUE`
+4.  `suffix_rule` = match words without all suffixes; `default is TRUE`
 5.  `rootword_rule` = response word counted correct if the target word
     (e.g., bat, day) is embedded at either the beginning (e.g., batman)
     or end (e.g., monday) of the word; uses a partial matching
@@ -64,15 +63,15 @@ rules.
 
 #### Grammar Rules
 
-1.  `pasttense_rule` = response word counted correct if it differs from
-    the target word only by tense; `default is TRUE`
-2.  `pasttense_add_rule` = response word counted correct if it only adds
-    a tense as compared to the target word; `default is TRUE`
+1.  `ed_rule` = response word counted correct if it differs from the
+    target word only by tense; `default is TRUE`
+2.  `ed_add_rule` = response word counted correct if it only adds a
+    tense as compared to the target word; `default is TRUE`
 3.  `a_the_rule` = substitutions between “a” and “the” to be scored as
     correct; `default is TRUE`
-4.  `plural_rule` = response word counted correct if it differs from the
+4.  `s_rule` = response word counted correct if it differs from the
     target word only by plurality; `default is TRUE`
-5.  `plural_add_rule` = response word counted correct if it only adds a
+5.  `s_add_rule` = response word counted correct if it only adds a
     plural as compared to the target word; `default is TRUE`
 
 Design
@@ -130,12 +129,12 @@ data set provided in the package.
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
+#> ── Attaching packages ─────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
 #> ✔ ggplot2 3.0.0.9000      ✔ purrr   0.2.5      
 #> ✔ tibble  1.4.99.9004     ✔ dplyr   0.7.99.9000
 #> ✔ tidyr   0.8.1           ✔ stringr 1.3.1      
 #> ✔ readr   1.2.0           ✔ forcats 0.3.0
-#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)
@@ -185,7 +184,7 @@ Next, let’s change some of the rules.
 
 ``` r
 example_data %>%
-  autoscore(position_rule = 2, suffix_rule = FALSE, plurals_rule = FALSE) %>%
+  autoscore(position_rule = 2, suffix_rule = FALSE, s_rule = FALSE, ed_rule = FALSE) %>%
   as.tibble()
 #> # A tibble: 40 x 6
 #>       id target                response              human autoscore equal
