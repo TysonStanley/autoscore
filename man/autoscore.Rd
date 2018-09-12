@@ -8,8 +8,8 @@
 \title{AutoScore}
 \usage{
 autoscore(.data, acceptable_df = NULL, position_rule = 99,
-  homophone_rule = TRUE, suffix_rule = FALSE, s_rule = TRUE,
-  s_add_rule = TRUE, ed_rule = TRUE, ed_add_rule = TRUE,
+  homophone_rule = TRUE, suffix_rule = FALSE, es_rule = TRUE,
+  es_add_rule = TRUE, ed_rule = TRUE, ed_add_rule = TRUE,
   a_the_rule = TRUE, rootword_rule = FALSE, common_misspell_rule = TRUE,
   double_letter_rule = FALSE, output = "text")
 }
@@ -22,11 +22,11 @@ autoscore(.data, acceptable_df = NULL, position_rule = 99,
 
 \item{homophone_rule}{should homophones be used? (default = TRUE)}
 
-\item{suffix_rule}{should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, s_rule and ed_rule are FALSE}
+\item{suffix_rule}{should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, es_rule and ed_rule are FALSE}
 
-\item{s_rule}{if target or response added or subtracted -s and -es at the end of the word,  count as correct (default = TRUE)}
+\item{es_rule}{if target or response added or subtracted -s and -es at the end of the word,  count as correct (default = TRUE)}
 
-\item{s_add_rule}{only if response has an additional -s or -es (not missing either at the end of the word) to be counted right. Differs from \code{s_rule} since this can only be added to the end of the response word, not missing from it.}
+\item{es_add_rule}{only if response has an additional -s or -es (not missing either at the end of the word) to be counted right. Differs from \code{es_rule} since this can only be added to the end of the response word, not missing from it.}
 
 \item{ed_rule}{if target or response added or subtracted -d and -ed at the end of the word,  count as correct (default = TRUE)}
 
