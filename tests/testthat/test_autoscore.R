@@ -32,3 +32,24 @@ testthat::expect_s3_class(autoscore::autoscore(df,
 testthat::expect_s3_class(autoscore::autoscore(df,
                                                suffix_rule = TRUE,
                                                double_letter_rule = FALSE), "data.frame")
+testthat::expect_s3_class(autoscore::autoscore(df,
+                                               suffix_rule = TRUE,
+                                               ed_rule = TRUE,
+                                               double_letter_rule = FALSE), "data.frame")
+testthat::expect_s3_class(autoscore::autoscore(df,
+                                               suffix_rule = TRUE,
+                                               s_rule = TRUE,
+                                               double_letter_rule = FALSE), "data.frame")
+testthat::expect_s3_class(autoscore::autoscore(df,
+                                               suffix_rule = TRUE,
+                                               ed_rule = FALSE,
+                                               ed_add_rule = TRUE,
+                                               double_letter_rule = FALSE), "data.frame")
+testthat::expect_s3_class(autoscore::autoscore(df,
+                                               suffix_rule = TRUE,
+                                               s_rule = FALSE,
+                                               s_add_rule = TRUE,
+                                               double_letter_rule = FALSE), "data.frame")
+
+
+

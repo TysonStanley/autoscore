@@ -8,30 +8,29 @@
 \title{AutoScore}
 \usage{
 autoscore(.data, acceptable_df = NULL, position_rule = 99,
-  homophone_rule = TRUE, suffix_rule = FALSE, plurals_rule = TRUE,
-  plurals_add_rule = TRUE, pasttense_rule = TRUE,
-  pasttense_add_rule = TRUE, a_the_rule = TRUE, rootword_rule = FALSE,
-  common_misspell_rule = TRUE, double_letter_rule = FALSE,
-  output = "text")
+  homophone_rule = TRUE, suffix_rule = FALSE, s_rule = TRUE,
+  s_add_rule = TRUE, ed_rule = TRUE, ed_add_rule = TRUE,
+  a_the_rule = TRUE, rootword_rule = FALSE, common_misspell_rule = TRUE,
+  double_letter_rule = FALSE, output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
 
 \item{acceptable_df}{A user-provided data.frame of original and alternate spellings for words in the target/response lists (this is the \code{acceptable_spell_rule} and is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
 
-\item{position_rule}{the amount a word can vary from the correct position in the phrase and still be correct (default = 99)}
+\item{position_rule}{the amount a word can vary from the correct position in the phrase and be correct (default = 99)}
 
 \item{homophone_rule}{should homophones be used? (default = TRUE)}
 
-\item{suffix_rule}{should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, plurals_rule and pasttense_rule are FALSE}
+\item{suffix_rule}{should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, s_rule and ed_rule are FALSE}
 
-\item{plurals_rule}{should the plural suffix (-s, -es) be removed? (default = TRUE)}
+\item{s_rule}{if target or response added or subtracted -s and -es at the end of the word,  count as correct (default = TRUE)}
 
-\item{plurals_add_rule}{only if response has an additional plural (not missing plural which is part of \code{plurals_rule}) to be counted right}
+\item{s_add_rule}{only if response has an additional -s or -es (not missing either at the end of the word) to be counted right. Differs from \code{s_rule} since this can only be added to the end of the response word, not missing from it.}
 
-\item{pasttense_rule}{should the past tense suffix (-d, -ed) be removed? (default = TRUE)}
+\item{ed_rule}{if target or response added or subtracted -d and -ed at the end of the word,  count as correct (default = TRUE)}
 
-\item{pasttense_add_rule}{only if response has an additional past-tense (not missing a past-tense which is part of \code{pasttense_rule}) to be counted right}
+\item{ed_add_rule}{only if response has an additional -d or -ed (not missing either at the end of the word) to be counted right. Differs from \code{ed_rule} since this can only be added to the end of the response word, not missing from it.}
 
 \item{a_the_rule}{should "a" and "the" be considered the same? (default = TRUE)}
 

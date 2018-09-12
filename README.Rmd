@@ -40,18 +40,18 @@ The rule options are categorized into either spelling rules or grammar rules.
 1. `homophone_rule` = response word counted correct if it is a homophone of the target word; default is to use this rule (`default = TRUE`)
 2. `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines) to be scored as correct; `default = TRUE`
 3. `acceptable_spell_rule` = use a researcher uploaded acceptable spelling list to be scored as correct; this rule is triggered when the researcher provides a data file
-4. `suffix_rule` = stem all words (i.e., remove all suffixes); `default is TRUE`
+4. `suffix_rule` = match words without all suffixes; `default is TRUE`
 5. `rootword_rule` = response word counted correct if the target word (e.g., bat, day) is embedded at either the beginning (e.g., batman) or end (e.g., monday) of the word; uses a partial matching heuristic; `default is FALSE`
 6. `double_letter_rule` = should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; `default = FALSE`
 
 
 #### Grammar Rules
 
-7. `pasttense_rule` = response word counted correct if it differs from the target word only by tense; `default is TRUE`
-8. `pasttense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is TRUE`
+7. `ed_rule` = response word counted correct if it differs from the target word only by tense; `default is TRUE`
+8. `ed_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is TRUE`
 9. `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is TRUE`
-10. `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
-11. `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is TRUE`
+10. `s_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
+11. `s_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is TRUE`
 
 ## Design
 
@@ -101,7 +101,7 @@ example_data %>%
 Next, let's change some of the rules.
 ```{r}
 example_data %>%
-  autoscore(position_rule = 2, suffix_rule = FALSE, plurals_rule = FALSE) %>%
+  autoscore(position_rule = 2, suffix_rule = FALSE, s_rule = FALSE, ed_rule = FALSE) %>%
   as.tibble()
 ```
 
