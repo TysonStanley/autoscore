@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
     ## Loading autoscore
 
-    ## ── autoscore 0.2.1 ──────────────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+    ## ── autoscore 0.2.2 ──────────────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
     ## ✔ autoscore attached
     ## ✔ No potential conflicts found
 
@@ -12,7 +12,7 @@ Status](https://travis-ci.org/TysonStanley/autoscore.svg?branch=master)](https:/
 `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
 
-> R Package: 0.2.1
+> R Package: 0.2.2
 
 > Shiny App: temporary location at
 > <https://tysonstanley.shinyapps.io/autoscore/>
@@ -63,15 +63,15 @@ rules.
 
 #### Grammar Rules
 
-1.  `ed_rule` = response word counted correct if it differs from the
+1.  `tense_rule` = response word counted correct if it differs from the
     target word only by tense; `default is TRUE`
-2.  `ed_add_rule` = response word counted correct if it only adds a
+2.  `tense_add_rule` = response word counted correct if it only adds a
     tense as compared to the target word; `default is TRUE`
 3.  `a_the_rule` = substitutions between “a” and “the” to be scored as
     correct; `default is TRUE`
-4.  `s_rule` = response word counted correct if it differs from the
+4.  `plural_rule` = response word counted correct if it differs from the
     target word only by plurality; `default is TRUE`
-5.  `s_add_rule` = response word counted correct if it only adds a
+5.  `plural_add_rule` = response word counted correct if it only adds a
     plural as compared to the target word; `default is TRUE`
 
 Design
@@ -184,7 +184,7 @@ Next, let’s change some of the rules.
 
 ``` r
 example_data %>%
-  autoscore(position_rule = 2, suffix_rule = FALSE, s_rule = FALSE, ed_rule = FALSE) %>%
+  autoscore(position_rule = 2, suffix_rule = FALSE, plural_rule = FALSE, tense_rule = FALSE) %>%
   as.tibble()
 #> # A tibble: 40 x 6
 #>       id target                response              human autoscore equal

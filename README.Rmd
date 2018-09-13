@@ -47,11 +47,11 @@ The rule options are categorized into either spelling rules or grammar rules.
 
 #### Grammar Rules
 
-7. `ed_rule` = response word counted correct if it differs from the target word only by tense; `default is TRUE`
-8. `ed_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is TRUE`
+7. `tense_rule` = response word counted correct if it differs from the target word only by tense; `default is TRUE`
+8. `tense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is TRUE`
 9. `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is TRUE`
-10. `s_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
-11. `s_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is TRUE`
+10. `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
+11. `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is TRUE`
 
 ## Design
 
@@ -101,7 +101,7 @@ example_data %>%
 Next, let's change some of the rules.
 ```{r}
 example_data %>%
-  autoscore(position_rule = 2, suffix_rule = FALSE, s_rule = FALSE, ed_rule = FALSE) %>%
+  autoscore(position_rule = 2, suffix_rule = FALSE, plural_rule = FALSE, tense_rule = FALSE) %>%
   as.tibble()
 ```
 
