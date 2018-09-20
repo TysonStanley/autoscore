@@ -111,10 +111,11 @@ homophones_fun <- function(d){
 
   .h = homophones %>% tidyr::unnest(.)
 
-  ## Applies the homophones
+  ## Applies the homophones and removes punctuation
   d %>%
     dplyr::mutate(homophone_target = purrr::map(target, ~{
 
+      .x = stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "")
       names(.x) = .x
 
       replace = .h %>%
@@ -136,6 +137,7 @@ homophones_fun <- function(d){
     })) %>%
     dplyr::mutate(homophone_response = purrr::map(response, ~{
 
+      .x = stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "")
       names(.x) = .x
 
       replace = .h %>%
@@ -198,15 +200,13 @@ match_position_basic <- function(d, alternate_df, homophone_rule, plural_rule, p
 
     d <- d %>%
       dplyr::mutate(homophone_target = purrr::map(homophone_target, ~{
-        stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "") %>%
-          double_letter_fun(double_letter_rule) %>%
+          double_letter_fun(.x, double_letter_rule) %>%
           a_the_fun(a_the_rule) %>%
           suffix_fun(suffix_rule)
 
       })) %>%
       dplyr::mutate(homophone_response = purrr::map(homophone_response, ~{
-        stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "") %>%
-          double_letter_fun(double_letter_rule) %>%
+          double_letter_fun(.x, double_letter_rule) %>%
           a_the_fun(a_the_rule) %>%
           suffix_fun(suffix_rule)
 
@@ -325,7 +325,10 @@ pasttense_plurals_fun <- function(x, y, tense_rule, tense_add_rule, plural_rule,
 
 a_the_fun <- function(chr, use = TRUE){
   if (isTRUE(use)){
-    stringr::str_replace(chr, pattern = "^a$", replacement = "the")
+    nam = names(chr)
+    chr = stringr::str_replace(chr, pattern = "^a$", replacement = "the")
+    names(chr) = chr
+    chr
   } else {
     chr
   }
@@ -333,7 +336,10 @@ a_the_fun <- function(chr, use = TRUE){
 
 double_letter_fun <- function(chr, use = FALSE){
   if (isTRUE(use)){
-    stringr::str_replace_all(chr, pattern = "([[:alpha:]])\\1+", replacement = "\\1")
+    nam = names(chr)
+    chr = stringr::str_replace_all(chr, pattern = "([[:alpha:]])\\1+", replacement = "\\1")
+    names(chr) = chr
+    chr
   } else {
     chr
   }

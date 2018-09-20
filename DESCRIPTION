@@ -1,7 +1,7 @@
 Package: autoscore
 Type: Package
 Title: Automatically Score Word Identification in Speech Perception
-Version: 0.2.2
+Version: 0.2.3
 Date: 2018-07-27
 Authors@R: c(person("Tyson S.", "Barrett",  
                     role=c("aut","cre"), 
@@ -46,4 +46,4 @@ Suggests:
     MASS,
     sjmisc,
     covr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

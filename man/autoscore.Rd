@@ -4,41 +4,41 @@
 \name{autoscore}
 \alias{autoscore}
 \alias{autoscore-package}
-\alias{autoscore}
 \title{AutoScore}
 \usage{
 autoscore(.data, acceptable_df = NULL, position_rule = 99,
   homophone_rule = TRUE, suffix_rule = FALSE, plural_rule = TRUE,
   plural_add_rule = TRUE, tense_rule = TRUE, tense_add_rule = TRUE,
-  a_the_rule = TRUE, rootword_rule = FALSE, common_misspell_rule = TRUE,
-  double_letter_rule = FALSE, output = "text")
+  a_the_rule = TRUE, rootword_rule = FALSE,
+  common_misspell_rule = TRUE, double_letter_rule = FALSE,
+  output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
 
-\item{acceptable_df}{A user-provided data.frame of original and alternate spellings for words in the target/response lists (this is the \code{acceptable_spell_rule} and is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
+\item{acceptable_df}{A user-provided `data.frame` of original and alternate spellings for words in the target/response lists (this is the \code{acceptable_spell_rule} and is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
 
 \item{position_rule}{the amount a word can vary from the correct position in the phrase and be correct (default = 99)}
 
-\item{homophone_rule}{should homophones be used? (default = TRUE)}
+\item{homophone_rule}{should homophones be used? (default = `TRUE`)}
 
-\item{suffix_rule}{should the words be stemmed (all suffix characters removed)? (default = FALSE); if TRUE, plural_rule and tense_rule are FALSE}
+\item{suffix_rule}{should the words be stemmed (all suffix characters removed)? (default = `FALSE`); if `TRUE`, plural_rule and tense_rule are `FALSE`}
 
-\item{plural_rule}{if target or response added or subtracted -s and -es at the end of the word,  count as correct (default = TRUE)}
+\item{plural_rule}{if target or response added or subtracted -s and -es at the end of the word,  count as correct (default = `TRUE`)}
 
 \item{plural_add_rule}{only if response has an additional -s or -es (not missing either at the end of the word) to be counted right. Differs from \code{plural_rule} since this can only be added to the end of the response word, not missing from it.}
 
-\item{tense_rule}{if target or response added or subtracted -d and -ed at the end of the word,  count as correct (default = TRUE)}
+\item{tense_rule}{if target or response added or subtracted -d and -ed at the end of the word,  count as correct (default = `TRUE`)}
 
 \item{tense_add_rule}{only if response has an additional -d or -ed (not missing either at the end of the word) to be counted right. Differs from \code{tense_rule} since this can only be added to the end of the response word, not missing from it.}
 
-\item{a_the_rule}{should "a" and "the" be considered the same? (default = TRUE)}
+\item{a_the_rule}{should "a" and "the" be considered the same? (default = `TRUE`)}
 
-\item{rootword_rule}{should a word that contains the target word (either at the beginning or end of the response word) be considered correct (default = FALSE because does "partial" matching which can bring in some unexpected results)}
+\item{rootword_rule}{should a word that contains the target word at the beginning of the reponse word be considered correct (default = `FALSE` because does "partial" matching which can bring in some unexpected results)}
 
-\item{common_misspell_rule}{should a large common misspellings list be used to correct spelling? default is TRUE}
+\item{common_misspell_rule}{should a large common misspellings list be used to correct spelling? default is `TRUE`}
 
-\item{double_letter_rule}{should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = FALSE}
+\item{double_letter_rule}{should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = `FALSE`}
 
 \item{output}{the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon}
 }
@@ -51,6 +51,8 @@ Takes a data frame with target words and response words and calculates the numbe
 \dontrun{
 
 library(autoscore)
+
+
 
 
 }
