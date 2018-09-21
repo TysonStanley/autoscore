@@ -10,8 +10,8 @@ select_cols <- function(d){
     stop("More than 4 columns were selected containing 'id', 'target', 'response', or 'human'", call. = FALSE)}
   else if (ncol(d) < 3){
     stop(paste0("Less than 3 columns were selected containing 'id', 'target', 'response', or 'human'\n",
-                   " - One column should be named 'id', another named 'target', another named 'response', and",
-                   "optionally one named 'human'. Check your CSV to upload again."), call. = FALSE)}
+                " - One column should be named 'id', another named 'target', another named 'response', and",
+                "optionally one named 'human'. Check your CSV to upload again."), call. = FALSE)}
   d
 }
 
@@ -23,151 +23,114 @@ split_clean <- function(d){
                   response = stringr::str_split(response, pattern = " "))
 }
 
-combine_alts <- function(alternate_df, common_misspell_rule){
-  if (!is.null(alternate_df)){
-    ## user provided list
-    alternate_df <- alternate_df %>%
-      dplyr::rename_all(tolower) %>%
-      dplyr::rename("original" = "target",
-                    "alternate" = "acceptable_response")
-
-    if (isTRUE(common_misspell_rule)){
-      #message("Note: List of common misspellings in data(alternate_df_default) were used.")
-      ## list of 4268 common misspellings
-      alternate_df <- dplyr::bind_rows(alternate_df, autoscore::alternate_df_default)
-    }
+plurals <- function(x, suf = "es", plural_rule, plural_add_rule){
+  if (isTRUE(plural_rule) | isTRUE(plural_add_rule)){
+    paste0(x, suf)
   } else {
-
-    if (isTRUE(common_misspell_rule)){
-      #message("Note: List of common misspellings in data(alternate_df_default) were used.")
-      ## list of 4268 common misspellings
-      alternate_df <- autoscore::alternate_df_default
-    }
+    x
   }
-  alternate_df
 }
 
-alternate_fun <- function(d, alternate_df, common_misspell_rule){
 
-  common_misspell_rule <- common_misspell_rule %||% TRUE
+tenses <- function(x, suf = "ed", tense_rule, tense_add_rule){
+  if (isTRUE(tense_rule) | isTRUE(tense_add_rule)){
+    paste0(x, suf)
+  } else {
+    x
+  }
+}
 
-  if (is.null(alternate_df) & !isTRUE(common_misspell_rule)){
+
+## Acceptable Spelling List
+alternate_fun <- function(d, alternate_df,
+                          plural_rule, plural_add_rule,
+                          tense_rule, tense_add_rule){
+
+  if (is.null(alternate_df))
     return(d)
 
-  } else {
+  ## Need to make it possible to use other rules within this one
+  alternate_df <- alternate_df %>%
+    dplyr::mutate(rowname = row_number(target)) %>%
+    dplyr::mutate(alternate_string = stringr::str_split(acceptable, pattern = ", "))
 
-    alternate_df <- combine_alts(alternate_df, common_misspell_rule)
-    alternate_df <- alternate_df %>%
-      dplyr::mutate(rowname = row_number(original)) %>%
-      dplyr::mutate(alternate_string = stringr::str_split(alternate, pattern = ", ")) %>%
-      dplyr::mutate(alternate_string = stringr::str_to_lower(alternate_string))
+  .a <- alternate_df %>% tidyr::unnest(.) %>% dplyr::distinct(.)
 
-    .a = alternate_df %>% tidyr::unnest(.) %>% distinct(.)
-
-    d %>%
-      dplyr::mutate(target = purrr::map(target, ~{
-
-        names(.x) = .x
-
-        replace = .a %>%
-          dplyr::filter(alternate_string %in% .x)
-
-        what_to_replace = .a %>%
-          dplyr::mutate(in_it = alternate_string %in% .x) %>%
-          dplyr::filter(in_it) %>%
-          dplyr::pull(alternate_string)
-
-        replace$what_to_replace = what_to_replace
-
-        .x[replace$what_to_replace] = replace$original
-        .x
-
-      })) %>%
-      dplyr::mutate(response = purrr::map(response, ~{
-
-        names(.x) = .x
-
-        replace = .a %>%
-          dplyr::filter(alternate_string %in% .x)
-
-        what_to_replace = .a %>%
-          dplyr::mutate(in_it = alternate_string %in% .x) %>%
-          dplyr::filter(in_it) %>%
-          dplyr::pull(alternate_string)
-
-        replace$what_to_replace = what_to_replace
-
-        .x[replace$what_to_replace] = replace$original
-        .x
-
-      }))
-  }
-}
-
-homophones_fun <- function(d){
-
-  ## grabs the list of homophones
-  homophones <- autoscore::homophones %>%
-    dplyr::mutate(homophone_string = stringr::str_split(homophone, pattern = ", "))
-
-  .h = homophones %>% tidyr::unnest(.)
-
-  ## Applies the homophones and removes punctuation
   d %>%
-    dplyr::mutate(homophone_target = purrr::map(target, ~{
+    ## Add rules so they are accessible in the loop
+    dplyr::mutate(plural_rule = plural_rule) %>%
+    dplyr::mutate(plural_add_rule = plural_add_rule) %>%
+    dplyr::mutate(tense_rule = tense_rule) %>%
+    dplyr::mutate(tense_add_rule = tense_add_rule) %>%
+
+    ## See if there are matches in the target (per line)
+    dplyr::mutate(target = purrr::map(target, ~{
 
       .x = stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "")
       names(.x) = .x
 
-      replace = .h %>%
-        dplyr::filter(homophone_string %in% .x)
+      replace = .a %>%
+        dplyr::filter(alternate_string %in% .x)
 
-      what_to_replace = .h %>%
-        dplyr::mutate(in_it = homophone_string %in% .x) %>%
+      what_to_replace = .a %>%
+        dplyr::mutate(in_it = alternate_string %in% .x |
+                        alternate_string %in% plurals(.x, "es", plural_rule, plural_add_rule) |
+                        alternate_string %in% plurals(.x, "s", plural_rule, plural_add_rule) |
+                        alternate_string %in% tenses(.x, "ed", tense_rule, tense_add_rule) |
+                        alternate_string %in% tenses(.x, "d", tense_rule, tense_add_rule)) %>%
         dplyr::filter(in_it) %>%
-        dplyr::pull(homophone_string)
+        dplyr::pull(alternate_string)
 
       replace$what_to_replace = what_to_replace
 
-      replace = replace %>%
-        dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
-
-      .x[replace$what_to_replace] = replace$replacement
+      .x[replace$what_to_replace] = replace$target
       .x
 
     })) %>%
-    dplyr::mutate(homophone_response = purrr::map(response, ~{
+    dplyr::mutate(response = purrr::map(response, ~{
 
       .x = stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "")
       names(.x) = .x
 
-      replace = .h %>%
-        dplyr::filter(homophone_string %in% .x)
+      replace = .a %>%
+        dplyr::filter(alternate_string %in% .x)
 
-      what_to_replace = .h %>%
-        dplyr::mutate(in_it = homophone_string %in% .x) %>%
+      what_to_replace = .a %>%
+        dplyr::mutate(in_it = alternate_string %in% .x |
+                        alternate_string %in% plurals(.x, "es", plural_rule, plural_add_rule) |
+                        alternate_string %in% plurals(.x, "s", plural_rule, plural_add_rule) |
+                        alternate_string %in% tenses(.x, "ed", tense_rule, tense_add_rule) |
+                        alternate_string %in% tenses(.x, "d", tense_rule, tense_add_rule)) %>%
         dplyr::filter(in_it) %>%
-        dplyr::pull(homophone_string)
+        dplyr::pull(alternate_string)
 
       replace$what_to_replace = what_to_replace
 
-      replace = replace %>%
-        dplyr::mutate(replacement = stringr::str_replace(homophone, pattern = ", .*$", replacement = ""))
-
-      .x[replace$what_to_replace] = replace$replacement
+      .x[replace$what_to_replace] = replace$target
       .x
 
-    }))
+    })) %>%
+    dplyr::select(-plural_rule, -plural_add_rule, -tense_rule, -tense_add_rule)
+}
+
+
+
+match_fun <- function(x, y, rootword_rule) {
+
+  ## depending on rootword_rule should pmatch or match be used
+  switch(rootword_rule,
+         firstpart = pmatch(x, y),
+         no_firstpart = match(x, y))
 
 }
 
 
 ## Main work horse function
-match_position_basic <- function(d, alternate_df, homophone_rule,
+match_position_basic <- function(d, alternate_df,
                                  plural_rule, plural_add_rule,
                                  tense_rule, tense_add_rule,
-                                 a_the_rule, suffix_rule,
-                                 common_misspell_rule, double_letter_rule){
+                                 a_the_rule, rootword_rule,
+                                 suffix_rule, double_letter_rule){
 
   if (isTRUE(suffix_rule)){
     tense_rule <- FALSE
@@ -176,62 +139,40 @@ match_position_basic <- function(d, alternate_df, homophone_rule,
     plural_add_rule <- FALSE
   }
 
-  ## alternate_spell_rule
-  d <- alternate_fun(d, alternate_df, common_misspell_rule)
-
-  ## homophone_rule
-  if (isTRUE(homophone_rule)){
-    #message("Note: Homophones in data(homophones) were used.")
-    d <- homophones_fun(d)
-
-    d <- d %>%
-      dplyr::mutate(homophone_target = purrr::map(homophone_target, ~{
-          double_letter_fun(.x, double_letter_rule) %>%
-          a_the_fun(a_the_rule) %>%
-          suffix_fun(suffix_rule)
-
-      })) %>%
-      dplyr::mutate(homophone_response = purrr::map(homophone_response, ~{
-          double_letter_fun(.x, double_letter_rule) %>%
-          a_the_fun(a_the_rule) %>%
-          suffix_fun(suffix_rule)
-
-      })) %>%
-      dplyr::mutate(diff_target_pre = purrr::map2(homophone_target, homophone_response, ~{
-        pasttense_plurals_fun(.x, .y, tense_rule, tense_add_rule, plural_rule, plural_add_rule)
-
-      })) %>%
-      dplyr::mutate(diff_response_pre = purrr::map2(homophone_response, homophone_target, ~{
-        pasttense_plurals_fun(.x, .y, tense_rule, tense_add_rule, plural_rule, plural_add_rule)
-
-      }))
-
+  if (isTRUE(rootword_rule)){
+    rootword_rule <- "firstpart"
   } else {
-
-    d <- d %>%
-      dplyr::mutate(target = purrr::map(target, ~{
-        stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "") %>%
-          double_letter_fun(double_letter_rule) %>%
-          a_the_fun(a_the_rule) %>%
-          suffix_fun(suffix_rule)
-
-      })) %>%
-      dplyr::mutate(response = purrr::map(response, ~{
-        stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "") %>%
-          double_letter_fun(double_letter_rule) %>%
-          a_the_fun(a_the_rule) %>%
-          suffix_fun(suffix_rule)
-
-      })) %>%
-      dplyr::mutate(diff_target_pre = purrr::map2(target, response, ~{
-        pasttense_plurals_fun(.x, .y, tense_rule, tense_add_rule, plural_rule, plural_add_rule)
-
-      })) %>%
-      dplyr::mutate(diff_response_pre = purrr::map2(response, target, ~{
-        pasttense_plurals_fun(.x, .y, tense_rule, tense_add_rule, plural_rule, plural_add_rule)
-
-      }))
+    rootword_rule <- "no_firstpart"
   }
+
+  ## alternate_spell_rule
+  d <- alternate_fun(d, alternate_df,
+                     plural_rule, plural_add_rule,
+                     tense_rule, tense_add_rule)
+
+  d <- d %>%
+    dplyr::mutate(target = purrr::map(target, ~{
+      stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "") %>%
+        double_letter_fun(double_letter_rule) %>%
+        a_the_fun(a_the_rule) %>%
+        suffix_fun(suffix_rule)
+
+    })) %>%
+    dplyr::mutate(response = purrr::map(response, ~{
+      stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "") %>%
+        double_letter_fun(double_letter_rule) %>%
+        a_the_fun(a_the_rule) %>%
+        suffix_fun(suffix_rule)
+
+    })) %>%
+    dplyr::mutate(diff_target_pre = purrr::map2(target, response, ~{
+      pasttense_plurals_fun(.x, .y, tense_rule, tense_add_rule, plural_rule, plural_add_rule, rootword_rule)
+
+    })) %>%
+    dplyr::mutate(diff_response_pre = purrr::map2(response, target, ~{
+      pasttense_plurals_fun(.x, .y, tense_rule, tense_add_rule, plural_rule, plural_add_rule, rootword_rule)
+
+    }))
 
   d %>%
     dplyr::mutate(diff_target = purrr::map(diff_target_pre, ~.x - 1:length(.x))) %>%
@@ -252,56 +193,50 @@ suffix_fun <- function(chr, use = TRUE){
 
 
 
-pasttense_plurals_fun <- function(x, y, tense_rule, tense_add_rule, plural_rule, plural_add_rule){
 
-  if (isTRUE(tense_rule)) {
-    tense_add_rule <- FALSE
-  }
-  if (isTRUE(plural_rule)) {
-    plural_add_rule <- FALSE
-  }
+pasttense_plurals_fun <- function(x, y, tense_rule, tense_add_rule, plural_rule, plural_add_rule, rootword_rule){
 
   if (isTRUE(tense_rule) & isTRUE(plural_rule)){
-    ed1 <- match(paste0(x, "ed"), y)
-    ed2 <- match(paste0(x, "d"), y)
-    ed3 <- match(x, paste0(y, "ed"))
-    ed4 <- match(x, paste0(y, "d"))
-    es1 <- match(paste0(x, "es"), y)
-    es2 <- match(paste0(x, "s"), y)
-    es3 <- match(x, paste0(y, "es"))
-    es4 <- match(x, paste0(y, "s"))
-    reg <- match(x, y)
+    ed1 <- match_fun(paste0(x, "ed"), y, rootword_rule)
+    ed2 <- match_fun(paste0(x, "d"), y, rootword_rule)
+    ed3 <- match_fun(x, paste0(y, "ed"), rootword_rule)
+    ed4 <- match_fun(x, paste0(y, "d"), rootword_rule)
+    es1 <- match_fun(paste0(x, "es"), y, rootword_rule)
+    es2 <- match_fun(paste0(x, "s"), y, rootword_rule)
+    es3 <- match_fun(x, paste0(y, "es"), rootword_rule)
+    es4 <- match_fun(x, paste0(y, "s"), rootword_rule)
+    reg <- match_fun(x, y, rootword_rule)
     na.omit(c(ed1, ed2, ed3, ed4, es1, es2, es3, es4, reg)) %>% unique %>% as.numeric
   } else if (isTRUE(plural_rule)) {
-    es1 <- match(paste0(x, "es"), y)
-    es2 <- match(paste0(x, "s"), y)
-    es3 <- match(x, paste0(y, "es"))
-    es4 <- match(x, paste0(y, "s"))
-    reg <- match(x, y)
+    es1 <- match_fun(paste0(x, "es"), y, rootword_rule)
+    es2 <- match_fun(paste0(x, "s"), y, rootword_rule)
+    es3 <- match_fun(x, paste0(y, "es"), rootword_rule)
+    es4 <- match_fun(x, paste0(y, "s"), rootword_rule)
+    reg <- match_fun(x, y, rootword_rule)
     na.omit(c(es1, es2, es3, es4, reg)) %>% unique %>% as.numeric
   } else if (isTRUE(tense_rule)) {
-    ed1 <- match(paste0(x, "ed"), y)
-    ed2 <- match(paste0(x, "d"), y)
-    ed3 <- match(x, paste0(y, "ed"))
-    ed4 <- match(x, paste0(y, "d"))
-    reg <- match(x, y)
+    ed1 <- match_fun(paste0(x, "ed"), y, rootword_rule)
+    ed2 <- match_fun(paste0(x, "d"), y, rootword_rule)
+    ed3 <- match_fun(x, paste0(y, "ed"), rootword_rule)
+    ed4 <- match_fun(x, paste0(y, "d"), rootword_rule)
+    reg <- match_fun(x, y, rootword_rule)
     na.omit(c(ed1, ed2, ed3, ed4, reg)) %>% unique %>% as.numeric
   } else if (isTRUE(tense_add_rule) & isTRUE(plural_add_rule)){
-    ed1 <- match(paste0(x, "ed"), y)
-    ed2 <- match(paste0(x, "d"), y)
-    es1 <- match(paste0(x, "es"), y)
-    es2 <- match(paste0(x, "s"), y)
-    reg <- match(x, y)
+    ed1 <- match_fun(paste0(x, "ed"), y, rootword_rule)
+    ed2 <- match_fun(paste0(x, "d"), y, rootword_rule)
+    es1 <- match_fun(paste0(x, "es"), y, rootword_rule)
+    es2 <- match_fun(paste0(x, "s"), y, rootword_rule)
+    reg <- match_fun(x, y, rootword_rule)
     na.omit(c(ed1, ed2, es1, es2, reg)) %>% unique %>% as.numeric
   } else if (isTRUE(tense_add_rule)) {
-    ed1 <- match(paste0(x, "ed"), y)
-    ed2 <- match(paste0(x, "d"), y)
-    reg <- match(x, y)
+    ed1 <- match_fun(paste0(x, "ed"), y, rootword_rule)
+    ed2 <- match_fun(paste0(x, "d"), y, rootword_rule)
+    reg <- match_fun(x, y, rootword_rule)
     na.omit(c(ed1, ed2, reg)) %>% unique %>% as.numeric
   } else if (isTRUE(plural_add_rule)){
-    es1 <- match(paste0(x, "es"), y)
-    es2 <- match(paste0(x, "s"), y)
-    reg <- match(x, y)
+    es1 <- match_fun(paste0(x, "es"), y, rootword_rule)
+    es2 <- match_fun(paste0(x, "s"), y, rootword_rule)
+    reg <- match_fun(x, y, rootword_rule)
     na.omit(c(es1, es2, reg)) %>% unique %>% as.numeric
   } else {
     match(x, y)
