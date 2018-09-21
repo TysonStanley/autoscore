@@ -59,7 +59,8 @@ alternate_fun <- function(d, alternate_df, common_misspell_rule){
     alternate_df <- combine_alts(alternate_df, common_misspell_rule)
     alternate_df <- alternate_df %>%
       dplyr::mutate(rowname = row_number(original)) %>%
-      dplyr::mutate(alternate_string = stringr::str_split(alternate, pattern = ", "))
+      dplyr::mutate(alternate_string = stringr::str_split(alternate, pattern = ", ")) %>%
+      dplyr::mutate(alternate_string = stringr::str_to_lower(alternate_string))
 
     .a = alternate_df %>% tidyr::unnest(.) %>% distinct(.)
 
@@ -162,7 +163,8 @@ homophones_fun <- function(d){
 
 
 ## Main work horse function
-match_position_basic <- function(d, alternate_df, homophone_rule, plural_rule, plural_add_rule,
+match_position_basic <- function(d, alternate_df, homophone_rule,
+                                 plural_rule, plural_add_rule,
                                  tense_rule, tense_add_rule,
                                  a_the_rule, suffix_rule,
                                  common_misspell_rule, double_letter_rule){
