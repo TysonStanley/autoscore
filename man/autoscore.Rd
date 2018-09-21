@@ -9,9 +9,8 @@
 autoscore(.data, acceptable_df = NULL, position_rule = 99,
   homophone_rule = TRUE, suffix_rule = FALSE, plural_rule = TRUE,
   plural_add_rule = TRUE, tense_rule = TRUE, tense_add_rule = TRUE,
-  a_the_rule = TRUE, rootword_rule = FALSE,
-  common_misspell_rule = TRUE, double_letter_rule = FALSE,
-  output = "text")
+  a_the_rule = TRUE, common_misspell_rule = TRUE,
+  double_letter_rule = FALSE, output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
@@ -33,8 +32,6 @@ autoscore(.data, acceptable_df = NULL, position_rule = 99,
 \item{tense_add_rule}{only if response has an additional -d or -ed (not missing either at the end of the word) to be counted right. Differs from \code{tense_rule} since this can only be added to the end of the response word, not missing from it.}
 
 \item{a_the_rule}{should "a" and "the" be considered the same? (default = `TRUE`)}
-
-\item{rootword_rule}{should a word that contains the target word at the beginning of the reponse word be considered correct (default = `FALSE` because does "partial" matching which can bring in some unexpected results)}
 
 \item{common_misspell_rule}{should a large common misspellings list be used to correct spelling? default is `TRUE`}
 

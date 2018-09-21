@@ -12,7 +12,6 @@
 #' @param tense_rule if target or response added or subtracted -d and -ed at the end of the word,  count as correct (default = `TRUE`)
 #' @param tense_add_rule only if response has an additional -d or -ed (not missing either at the end of the word) to be counted right. Differs from \code{tense_rule} since this can only be added to the end of the response word, not missing from it.
 #' @param a_the_rule should "a" and "the" be considered the same? (default = `TRUE`)
-#' @param rootword_rule should a word that contains the target word at the beginning of the reponse word be considered correct (default = `FALSE` because does "partial" matching which can bring in some unexpected results)
 #' @param common_misspell_rule should a large common misspellings list be used to correct spelling? default is `TRUE`
 #' @param double_letter_rule should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = `FALSE`
 #' @param output the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon
@@ -33,13 +32,13 @@ autoscore <- function(.data,
                       tense_rule = TRUE,
                       tense_add_rule = TRUE,
                       a_the_rule = TRUE,
-                      rootword_rule = FALSE,
                       common_misspell_rule = TRUE,
                       double_letter_rule = FALSE,
                       output = "text") {
 
-  error_check_rules(homophone_rule, suffix_rule, plural_rule, tense_rule,
-                    a_the_rule, rootword_rule, common_misspell_rule,
+  error_check_rules(homophone_rule, suffix_rule,
+                    plural_rule, tense_rule,
+                    a_the_rule, common_misspell_rule,
                     double_letter_rule)
   error_check_alternate_df(acceptable_df)
   error_check_position(position_rule)
@@ -52,7 +51,6 @@ autoscore <- function(.data,
                          tense_rule = tense_rule,
                          tense_add_rule = tense_add_rule,
                          a_the_rule = a_the_rule,
-                         rootword_rule = rootword_rule,
                          suffix_rule = suffix_rule,
                          common_misspell_rule = common_misspell_rule,
                          double_letter_rule = double_letter_rule) %>%
