@@ -31,7 +31,9 @@
   if(getRversion() >= "2.15.1") {
     utils::globalVariables(c(".", "target", "response", "acceptable", "alternate", "acceptable_response", "diff_target",
                              "diff_response", "human", "count_target", "homophone", "diff_target_pre",
-                             "diff_response_pre", "count_target", "homophone_target", "homophone_response"))
+                             "diff_response_pre", "count_target", "homophone_target", "homophone_response",
+                             "alternate_string", "in_it1", "in_it2", "in_it3", "in_it4", "in_it5", "plural_add_rule",
+                             "plural_rule", "tense_add_rule", "tense_rule"))
   }
   invisible()
 }

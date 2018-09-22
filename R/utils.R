@@ -17,8 +17,10 @@ select_cols <- function(d){
 
 split_clean <- function(d){
   select_cols(d) %>%
-    dplyr::mutate(target = stringr::str_to_lower(target),
-                  response = stringr::str_to_lower(response)) %>%
+    dplyr::mutate(target = stringr::str_to_lower(target) %>%
+                    stringr::str_replace_all(pattern = "[[:punct:]]", replacement = ""),
+                  response = stringr::str_to_lower(response) %>%
+                    stringr::str_replace_all(pattern = "[[:punct:]]", replacement = "")) %>%
     dplyr::mutate(target = stringr::str_split(target, pattern = " "),
                   response = stringr::str_split(response, pattern = " "))
 }
@@ -38,6 +40,39 @@ tenses <- function(x, suf = "ed", tense_rule, tense_add_rule){
   } else {
     x
   }
+}
+
+
+within_the_alternate_loop <- function(.x, .a, plural_rule, plural_add_rule, tense_rule, tense_add_rule){
+  names(.x) = .x
+
+  replace = .a %>%
+    dplyr::mutate(in_it1 = alternate_string %in% .x,
+                  in_it2 = plurals(alternate_string, "es", plural_rule, plural_add_rule) %in% .x,
+                  in_it3 = plurals(alternate_string, "s", plural_rule, plural_add_rule) %in% .x,
+                  in_it4 = tenses(alternate_string, "ed", tense_rule, tense_add_rule) %in% .x,
+                  in_it5 = tenses(alternate_string, "d", tense_rule, tense_add_rule) %in% .x) %>%
+    dplyr::filter(in_it1 | in_it2 | in_it3 | in_it4 | in_it5) %>%
+    dplyr::mutate(in_it = in_it1 | in_it2 | in_it3 | in_it4 | in_it5,
+                  which_rule = dplyr::case_when(in_it1 ~ "none",
+                                                in_it2 ~ "es",
+                                                in_it3 ~ "s",
+                                                in_it4 ~ "ed",
+                                                in_it5 ~ "d"))
+
+  if (nrow(replace) > 0){
+    for (i in 1:nrow(replace)){
+      what_to_replace = switch(replace$which_rule[[i]],
+                               "none" = replace$alternate_string[[i]],
+                               "es" = plurals(replace$alternate_string[[i]], "es", plural_rule, plural_add_rule),
+                               "s"  = plurals(replace$alternate_string[[i]], "s", plural_rule, plural_add_rule),
+                               "ed" = tenses(replace$alternate_string[[i]], "ed", tense_rule, tense_add_rule),
+                               "d"  = tenses(replace$alternate_string[[i]], "d", tense_rule, tense_add_rule))
+      .x[what_to_replace] = replace$target[[i]]
+    }
+  }
+
+  .x
 }
 
 
@@ -65,49 +100,11 @@ alternate_fun <- function(d, alternate_df,
 
     ## See if there are matches in the target (per line)
     dplyr::mutate(target = purrr::map(target, ~{
-
-      .x = stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "")
-      names(.x) = .x
-
-      replace = .a %>%
-        dplyr::filter(alternate_string %in% .x)
-
-      what_to_replace = .a %>%
-        dplyr::mutate(in_it = alternate_string %in% .x |
-                        alternate_string %in% plurals(.x, "es", plural_rule, plural_add_rule) |
-                        alternate_string %in% plurals(.x, "s", plural_rule, plural_add_rule) |
-                        alternate_string %in% tenses(.x, "ed", tense_rule, tense_add_rule) |
-                        alternate_string %in% tenses(.x, "d", tense_rule, tense_add_rule)) %>%
-        dplyr::filter(in_it) %>%
-        dplyr::pull(alternate_string)
-
-      replace$what_to_replace = what_to_replace
-
-      .x[replace$what_to_replace] = replace$target
-      .x
+      within_the_alternate_loop(.x, .a, plural_rule, plural_add_rule, tense_rule, tense_add_rule)
 
     })) %>%
     dplyr::mutate(response = purrr::map(response, ~{
-
-      .x = stringr::str_replace_all(.x, pattern = "[[:punct:]]", replacement = "")
-      names(.x) = .x
-
-      replace = .a %>%
-        dplyr::filter(alternate_string %in% .x)
-
-      what_to_replace = .a %>%
-        dplyr::mutate(in_it = alternate_string %in% .x |
-                        alternate_string %in% plurals(.x, "es", plural_rule, plural_add_rule) |
-                        alternate_string %in% plurals(.x, "s", plural_rule, plural_add_rule) |
-                        alternate_string %in% tenses(.x, "ed", tense_rule, tense_add_rule) |
-                        alternate_string %in% tenses(.x, "d", tense_rule, tense_add_rule)) %>%
-        dplyr::filter(in_it) %>%
-        dplyr::pull(alternate_string)
-
-      replace$what_to_replace = what_to_replace
-
-      .x[replace$what_to_replace] = replace$target
-      .x
+      within_the_alternate_loop(.x, .a, plural_rule, plural_add_rule, tense_rule, tense_add_rule)
 
     })) %>%
     dplyr::select(-plural_rule, -plural_add_rule, -tense_rule, -tense_add_rule)
