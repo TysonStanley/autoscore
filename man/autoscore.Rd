@@ -37,18 +37,40 @@ autoscore(.data, acceptable_df = NULL, position_rule = 99,
 \item{output}{the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon}
 }
 \description{
-Description of the package and how to use it...
+The purpose of `autoscore` is to automatically score word identification in speech perception research,
+such as studies involving listener understanding of speech in background noise or disordered speech.
+The program uses a flexible number of rules that determine whether a response set of words (i.e., listener
+transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore
+counts words in the listener transcript as correct if they match the words in the target phrase exactly
+(regardless of word order), or match a homophone or common misspelling of the target word. Individual
+rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research
+lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of
+articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules
+can be added by the researcher as needed.
 
 Takes a data frame with target words and response words and calculates the number of matches based on a number of rules.
 }
 \examples{
-\dontrun{
 
+library(tidyverse)
 library(autoscore)
 
+data("example_data")
+
+## Using all the defaults
+autoscore(example_data)
+
+## Using the default acceptable spellings list
+example_data \%>\%
+  autoscore::autoscore(acceptable_df = autoscore::acceptable_spellings)
+
+## Changing some of the rules
+
+example_data \%>\%
+  autoscore::autoscore(acceptable_df = autoscore::acceptable_spellings,
+                       plural_rule = FALSE,
+                       tense_rule = FALSE)
 
 
-
-}
 
 }

@@ -15,6 +15,29 @@
 #' @param suffix_rule should the words be stemmed (all suffix characters removed)? (default = `FALSE`); if `TRUE`, plural_rule and tense_rule are `FALSE`
 #' @param output the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon
 #'
+#' @examples
+#'
+#' library(tidyverse)
+#' library(autoscore)
+#'
+#' data("example_data")
+#'
+#' ## Using all the defaults
+#' autoscore(example_data)
+#'
+#' ## Using the default acceptable spellings list
+#' example_data %>%
+#'   autoscore::autoscore(acceptable_df = autoscore::acceptable_spellings)
+#'
+#' ## Changing some of the rules
+#'
+#' example_data %>%
+#'   autoscore::autoscore(acceptable_df = autoscore::acceptable_spellings,
+#'                        plural_rule = FALSE,
+#'                        tense_rule = FALSE)
+#'
+#'
+#'
 #' @import dplyr
 #' @import tibble
 #' @importFrom stats setNames
