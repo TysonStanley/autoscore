@@ -36,22 +36,18 @@ The rule options are categorized into either spelling rules or grammar rules.
 
 #### Spelling Rules
 
-
-1. `homophone_rule` = response word counted correct if it is a homophone of the target word; default is to use this rule (`default = TRUE`)
-2. `common_misspell_rule` = use a default list of [common misspellings](https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines) to be scored as correct; `default = TRUE`
-3. `acceptable_spell_rule` = use a researcher uploaded acceptable spelling list to be scored as correct; this rule is triggered when the researcher provides a data file
-4. `suffix_rule` = match words without all suffixes; `default is TRUE`
-5. `rootword_rule` = response word counted correct if the target word (e.g., bat, day) is embedded at either the beginning (e.g., batman) or end (e.g., monday) of the word; uses a partial matching heuristic; `default is FALSE`
-6. `double_letter_rule` = should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; `default = FALSE`
+1. `acceptable_spell_rule` = use a researcher uploaded acceptable spelling list to be scored as correct; this rule is triggered when the researcher provides a data file
+2. `rootword_rule` = response word counted correct if the target word (e.g., bat, day) is embedded at either the beginning (e.g., batman) or end (e.g., monday) of the word; uses a partial matching heuristic; `default is FALSE`
+3. `double_letter_rule` = should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; `default = FALSE`
 
 
 #### Grammar Rules
 
-7. `tense_rule` = response word counted correct if it differs from the target word only by tense; `default is TRUE`
-8. `tense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is TRUE`
-9. `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is TRUE`
-10. `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
-11. `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is TRUE`
+4. `tense_rule` = response word counted correct if it differs from the target word only by tense; `default is TRUE`
+5. `tense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is TRUE`
+6. `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is TRUE`
+7. `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
+8. `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is TRUE`
 
 ## Design
 
@@ -60,8 +56,7 @@ The API of the `R` package is simple. A single call to `autoscore()` with the fo
 - `select_cols()` -- The first function which takes the data and gets it in the right format for analysis.
 - `split_clean()` -- Using the cleaned data from `select_cols()`, this uses `stringr` to turn the phrases into individual words.
 - `alternate_fun()` -- If a data.frame of alternate spellings is provided, this function will find and normalize all alternate spellings to match the original spelling as defined by the researcher.
-- `homophones_fun()` -- If homophones are used (according to the `homophone_rule`), this function finds and normalizes all homophones as found in the `data(homophones)` found in this package.
-- `match_position_basic()` -- This function is the workhorse of the package. It takes the cleaned (and possibly homophone normalized) data and does three main things: 1) applies all the rules except for the `position_rule`, 2) finds the matches between the responses and the targets, and 3) reports how far away the matches are from each other.
+- `match_position_basic()` -- This function is the workhorse of the package. It takes the cleaned data and does three main things: 1) applies all the rules except for the `position_rule`, 2) finds the matches between the responses and the targets, and 3) reports how far away the matches are from each other.
 - `count_matches()` -- Finally, this function takes the information from `match_position_basic()` and counts the number of matches based on the `position_rule`.
 
 Beyond the main analysis when using `autoscore()`, we can also call `pwc()` to get the percent words correct (based on the number of target words) for each observation.
@@ -101,7 +96,7 @@ example_data %>%
 Next, let's change some of the rules.
 ```{r}
 example_data %>%
-  autoscore(position_rule = 2, suffix_rule = FALSE, plural_rule = FALSE, tense_rule = FALSE) %>%
+  autoscore(plural_rule = FALSE, tense_rule = FALSE) %>%
   as.tibble()
 ```
 
@@ -111,44 +106,20 @@ example_data %>%
   autoscore(output = "none")
 ```
 
-To use the acceptable spelling rule, let's create a small `data.frame` that we can provide `autoscore()`. In the data frame below, the target spellings are the generally accepted spellings that are in the target list of words while the acceptable_response spellings are those that should also be counted as correct.
+To use the acceptable spelling rule, let's use the default provided in `autoscore`. . In the data frame below, the `target` spellings are the generally accepted spellings that are in the target list of words while the `acceptable` column are those that should also be counted as correct.
 
 ```{r}
-acceptable_df <- data_frame(
-  target = c("model",
-             "treason",
-             "duck"),
-  acceptable_response = c("modal, moddel",
-                          "treeson",
-                          "dock")
-)
-acceptable_df
+autoscore::acceptable_spellings
 ```
 
 Using this, we can provide it to the `autoscore()` function with the `acceptable_df` argument.
 
 ```{r}
 example_data %>%
-  autoscore::autoscore(acceptable_df = acceptable_df) %>%
+  autoscore::autoscore(acceptable_df = autoscore::acceptable_spellings) %>%
   as.tibble()
 ```
 
-We can also say `common_misspell_rule = TRUE` in conjunction with `acceptable_df = acceptable_df` if we want to use the list of 4,268 common misspellings in addition to the user provided list.
-
-```{r}
-example_data %>%
-  autoscore::autoscore(acceptable_df = acceptable_df,
-                       common_misspell_rule = TRUE) %>%
-  as.tibble()
-```
-
-If the researcher doesn't have a list of words, we can just use the common misspell rule.
-
-```{r}
-example_data %>%
-  autoscore::autoscore(common_misspell_rule = TRUE) %>%
-  as.tibble()
-```
 
 In each of these examples, it is clear that the human and "autoscore" agree the majority of the time. The times that they disagree, it is usually predictably a human error or a subjective judgement that the researcher will have to consider (for example by including alternate spellings of words as we just demonstrated).
 
