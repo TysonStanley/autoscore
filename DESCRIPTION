@@ -1,7 +1,7 @@
 Package: autoscore
 Type: Package
 Title: Automatically Score Word Identification in Speech Perception
-Version: 0.3.1
+Version: 0.3.2
 Date: 2018-09-21
 Authors@R: c(person("Tyson S.", "Barrett",  
                     role=c("aut","cre"), 

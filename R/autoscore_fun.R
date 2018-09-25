@@ -4,7 +4,6 @@
 #'
 #' @param .data The data.frame (or tbl_df) to be used to autoscore
 #' @param acceptable_df A user-provided `data.frame` of original and alternate spellings for words in the target/response lists (this is the \code{acceptable_spell_rule} and is in addition to built-in homophone list that can be seen with \code{data(homophones)})
-#' @param position_rule the amount a word can vary from the correct position in the phrase and be correct (default = 99)
 #' @param plural_rule if target or response added or subtracted -s and -es at the end of the word,  count as correct (default = `TRUE`)
 #' @param plural_add_rule only if response has an additional -s or -es (not missing either at the end of the word) to be counted right. Differs from \code{plural_rule} since this can only be added to the end of the response word, not missing from it.
 #' @param tense_rule if target or response added or subtracted -d and -ed at the end of the word,  count as correct (default = `TRUE`)
@@ -46,7 +45,6 @@
 #' @export
 autoscore <- function(.data,
                       acceptable_df = NULL,
-                      position_rule = 99,
                       plural_rule = TRUE,
                       plural_add_rule = TRUE,
                       tense_rule = TRUE,
@@ -61,7 +59,6 @@ autoscore <- function(.data,
                     a_the_rule, rootword_rule,
                     double_letter_rule)
   error_check_alternate_df(acceptable_df)
-  error_check_position(position_rule)
 
   counts <- split_clean(.data) %>%
     match_position_basic(alternate_df = acceptable_df,
@@ -73,7 +70,7 @@ autoscore <- function(.data,
                          rootword_rule = rootword_rule,
                          suffix_rule = suffix_rule,
                          double_letter_rule = double_letter_rule) %>%
-    count_matches(position_rule = position_rule)
+    count_matches()
 
   if (output == "none"){
     counts

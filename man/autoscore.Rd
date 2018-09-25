@@ -6,17 +6,15 @@
 \alias{autoscore-package}
 \title{AutoScore}
 \usage{
-autoscore(.data, acceptable_df = NULL, position_rule = 99,
-  plural_rule = TRUE, plural_add_rule = TRUE, tense_rule = TRUE,
-  tense_add_rule = TRUE, a_the_rule = TRUE, rootword_rule = FALSE,
+autoscore(.data, acceptable_df = NULL, plural_rule = TRUE,
+  plural_add_rule = TRUE, tense_rule = TRUE, tense_add_rule = TRUE,
+  a_the_rule = TRUE, rootword_rule = FALSE,
   double_letter_rule = FALSE, suffix_rule = FALSE, output = "text")
 }
 \arguments{
 \item{.data}{The data.frame (or tbl_df) to be used to autoscore}
 
 \item{acceptable_df}{A user-provided `data.frame` of original and alternate spellings for words in the target/response lists (this is the \code{acceptable_spell_rule} and is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
-
-\item{position_rule}{the amount a word can vary from the correct position in the phrase and be correct (default = 99)}
 
 \item{plural_rule}{if target or response added or subtracted -s and -es at the end of the word,  count as correct (default = `TRUE`)}
 

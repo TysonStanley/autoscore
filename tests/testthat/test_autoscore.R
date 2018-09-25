@@ -9,10 +9,7 @@ acceptable_df <- tibble::data_frame(
                           "dock")
 )
 
-testthat::expect_error(autoscore::autoscore(df, acceptable_df = "default"))
 testthat::expect_s3_class(autoscore::autoscore(df), "data.frame")
-testthat::expect_s3_class(autoscore::autoscore(df,
-                                               position_rule = 1), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
                                                acceptable_df = acceptable_df), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
@@ -42,5 +39,32 @@ testthat::expect_s3_class(autoscore::autoscore(df,
                                                plural_rule = FALSE,
                                                plural_add_rule = TRUE,
                                                double_letter_rule = FALSE), "data.frame")
+
+alternate_df <- tibble::data_frame(
+  target = c("beat",
+             "treeson"),
+  acceptable = c("beet, baet",
+                 "treason"))
+
+d <- tibble::tribble(
+  ~id, ~target, ~response, ~human,
+  1, "the coin ate it", "a coins for it", 3,
+  2, "beat the clock", "beets the clock", 3,
+  3, "beated it", "beet it", 2,
+  4, "beets the clock", "beat the clock", 3,
+  5, "beeted the clock", "beet the clock", 3,
+  6, "junkyard", "junk yard", 1,
+  7, "junk yard", "junkyard", 0
+)
+
+autoscored <- autoscore::autoscore(d, alternate_df,
+                                   plural_rule = TRUE,
+                                   tense_rule = TRUE,
+                                   rootword_rule = TRUE,
+                                   output = "text")
+
+testthat::expect_s3_class(autoscored,
+                          "data.frame")
+testthat::expect_equal(autoscored$equal, rep(TRUE, 7))
 
 
