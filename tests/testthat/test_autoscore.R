@@ -46,15 +46,15 @@ alternate_df <- tibble::data_frame(
   acceptable = c("beet, baet",
                  "treason"))
 
-d <- tibble::tribble(
+d <- tribble(
   ~id, ~target, ~response, ~human,
   1, "the coin ate it", "a coins for it", 3,
   2, "beat the clock", "beets the clock", 3,
   3, "beated it", "beet it", 2,
   4, "beets the clock", "beat the clock", 3,
   5, "beeted the clock", "beet the clock", 3,
-  6, "junkyard", "junk yard", 1,
-  7, "junk yard", "junkyard", 0
+  6, "junkyard", "junk yard", 0,
+  7, "junk yard", "junkyard", 1
 )
 
 autoscored <- autoscore::autoscore(d, alternate_df,
