@@ -119,7 +119,7 @@ match_fun <- function(x, y, rootword_rule) {
 
   ## depending on rootword_rule should pmatch or match be used
   switch(rootword_rule,
-         firstpart = pmatch(y, x),
+         firstpart = pmatch(x, y),
          no_firstpart = match(x, y))
 
 }
