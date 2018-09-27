@@ -46,7 +46,7 @@ lab. Examples of rules available in Autoscore include the ability to count as co
 articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules
 can be added by the researcher as needed.
 
-Takes a data frame with target words and response words and calculates the number of matches based on a number of rules.
+This function specifically takes a data frame with target words and response words and calculates the number of matches based on a number of scoring rules.
 }
 \examples{
 

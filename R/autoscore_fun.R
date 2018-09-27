@@ -1,6 +1,6 @@
 #' autoscore
 #'
-#' Takes a data frame with target words and response words and calculates the number of matches based on a number of rules.
+#' This function specifically takes a data frame with target words and response words and calculates the number of matches based on a number of scoring rules.
 #'
 #' @param .data The data.frame (or tbl_df) to be used to autoscore
 #' @param acceptable_df A user-provided `data.frame` of original and alternate spellings for words in the target/response lists (this is the \code{acceptable_spell_rule} and is in addition to built-in homophone list that can be seen with \code{data(homophones)})
