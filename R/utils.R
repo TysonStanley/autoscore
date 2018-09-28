@@ -22,7 +22,8 @@ split_clean <- function(d){
                   response = stringr::str_to_lower(response) %>%
                     stringr::str_replace_all(pattern = "[[:punct:]]", replacement = "")) %>%
     dplyr::mutate(target = stringr::str_split(target, pattern = " "),
-                  response = stringr::str_split(response, pattern = " "))
+                  response = stringr::str_split(response, pattern = " ") %>%
+                    purrr::map(~unique(.x)))
 }
 
 plurals <- function(x, suf = "es", plural_rule, plural_add_rule){
@@ -119,11 +120,10 @@ match_fun <- function(x, y, rootword_rule) {
 
   ## depending on rootword_rule should pmatch or match be used
   switch(rootword_rule,
-         firstpart = pmatch(x, y),
-         no_firstpart = match(x, y))
+         firstpart = pmatch(unique(x), unique(y)),
+         no_firstpart = match(unique(x), unique(y)))
 
 }
-
 
 ## Main work horse function
 match_position_basic <- function(d, alternate_df,
