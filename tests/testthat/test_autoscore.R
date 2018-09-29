@@ -46,7 +46,7 @@ alternate_df <- tibble::data_frame(
   acceptable = c("beet, baet",
                  "treason"))
 
-d <- tribble(
+d <- tibble::tribble(
   ~id, ~target, ~response, ~human,
   1, "the coin ate it", "a coins for it", 3,
   2, "beat the clock", "beets the clock", 3,
@@ -61,6 +61,7 @@ autoscored <- autoscore::autoscore(d, alternate_df,
                                    plural_rule = TRUE,
                                    tense_rule = TRUE,
                                    rootword_rule = TRUE,
+                                   a_the_rule = TRUE,
                                    output = "text")
 
 testthat::expect_s3_class(autoscored,

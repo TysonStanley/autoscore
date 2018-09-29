@@ -43,11 +43,11 @@ The rule options are categorized into either spelling rules or grammar rules.
 
 #### Grammar Rules
 
-4. `tense_rule` = response word counted correct if it differs from the target word only by tense; `default is TRUE`
-5. `tense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is TRUE`
-6. `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is TRUE`
-7. `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
-8. `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is TRUE`
+4. `tense_rule` = response word counted correct if it differs from the target word only by tense; `default is FALSE`
+5. `tense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is FALSE`
+6. `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is FALSE`
+7. `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is FALSE`
+8. `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is FALSE`
 
 ## Design
 

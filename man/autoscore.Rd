@@ -6,9 +6,9 @@
 \alias{autoscore-package}
 \title{AutoScore}
 \usage{
-autoscore(.data, acceptable_df = NULL, plural_rule = TRUE,
-  plural_add_rule = TRUE, tense_rule = TRUE, tense_add_rule = TRUE,
-  a_the_rule = TRUE, rootword_rule = FALSE,
+autoscore(.data, acceptable_df = NULL, plural_rule = FALSE,
+  plural_add_rule = FALSE, tense_rule = FALSE,
+  tense_add_rule = FALSE, a_the_rule = FALSE, rootword_rule = FALSE,
   double_letter_rule = FALSE, suffix_rule = FALSE, output = "text")
 }
 \arguments{
@@ -16,15 +16,15 @@ autoscore(.data, acceptable_df = NULL, plural_rule = TRUE,
 
 \item{acceptable_df}{A user-provided `data.frame` of original and alternate spellings for words in the target/response lists (this is the \code{acceptable_spell_rule} and is in addition to built-in homophone list that can be seen with \code{data(homophones)})}
 
-\item{plural_rule}{if target or response added or subtracted -s and -es at the end of the word,  count as correct (default = `TRUE`)}
+\item{plural_rule}{if target or response added or subtracted -s and -es at the end of the word,  count as correct (default = `FALSE`)}
 
 \item{plural_add_rule}{only if response has an additional -s or -es (not missing either at the end of the word) to be counted right. Differs from \code{plural_rule} since this can only be added to the end of the response word, not missing from it.}
 
-\item{tense_rule}{if target or response added or subtracted -d and -ed at the end of the word,  count as correct (default = `TRUE`)}
+\item{tense_rule}{if target or response added or subtracted -d and -ed at the end of the word,  count as correct (default = `FALSE`)}
 
 \item{tense_add_rule}{only if response has an additional -d or -ed (not missing either at the end of the word) to be counted right. Differs from \code{tense_rule} since this can only be added to the end of the response word, not missing from it.}
 
-\item{a_the_rule}{should "a" and "the" be considered the same? (default = `TRUE`)}
+\item{a_the_rule}{should "a" and "the" be considered the same? (default = `FALSE`)}
 
 \item{rootword_rule}{should a word that contains the target word at the beginning of the reponse word be considered correct (default = `FALSE` because does "partial" matching which can bring in some unexpected results)}
 

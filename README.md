@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
     ## Loading autoscore
 
-    ## ── autoscore 0.3.0 ──────────────────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+    ## ── autoscore 0.3.4 ────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
     ## ✔ autoscore attached
     ## ✔ No potential conflicts found
 
@@ -10,7 +10,7 @@
 `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
 
-> R Package: 0.3.0
+> R Package: 0.3.4
 
 > Shiny App: temporary location at <https://tysonstanley.shinyapps.io/autoscore/>
 
@@ -32,11 +32,11 @@ The rule options are categorized into either spelling rules or grammar rules.
 
 #### Grammar Rules
 
-1.  `tense_rule` = response word counted correct if it differs from the target word only by tense; `default is TRUE`
-2.  `tense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is TRUE`
-3.  `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is TRUE`
-4.  `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is TRUE`
-5.  `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is TRUE`
+1.  `tense_rule` = response word counted correct if it differs from the target word only by tense; `default is FALSE`
+2.  `tense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is FALSE`
+3.  `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is FALSE`
+4.  `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is FALSE`
+5.  `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is FALSE`
 
 Design
 ------
@@ -71,13 +71,13 @@ An example of the use of `autoscore` is below. We will use the example data set 
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ─────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
+#> ── Attaching packages ───────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
 #> ✔ ggplot2 3.0.0.9000     ✔ purrr   0.2.5     
 #> ✔ tibble  1.4.2          ✔ dplyr   0.7.6     
 #> ✔ tidyr   0.8.1          ✔ stringr 1.3.1     
 #> ✔ readr   1.1.1          ✔ forcats 0.3.0
 #> Warning: package 'dplyr' was built under R version 3.5.1
-#> ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(autoscore)
@@ -109,7 +109,7 @@ example_data %>%
 #> # A tibble: 40 x 6
 #>       id target                response              human autoscore equal
 #>    <dbl> <fct>                 <fct>                 <dbl>     <int> <lgl>
-#>  1     1 mate denotes a judge… made the dinner in it     1         1 TRUE 
+#>  1     1 mate denotes a judge… made the dinner in it     1         0 FALSE
 #>  2     1 rampant boasting cap… rubbed against the c…     1         1 TRUE 
 #>  3     1 resting older earring resting alert hearing     1         1 TRUE 
 #>  4     1 bolder ground from j… boulder down from dr…     2         1 FALSE
@@ -118,7 +118,7 @@ example_data %>%
 #>  7     1 support with dock an… she put the duck in …     1         0 FALSE
 #>  8     1 or spent sincere asi… earth bent spent her…     2         2 TRUE 
 #>  9     1 account for who coul… i can for hookah kno…     2         2 TRUE 
-#> 10     1 connect the beer dev… connected beard kind…     1         1 TRUE 
+#> 10     1 connect the beer dev… connected beard kind…     1         0 FALSE
 #> # ... with 30 more rows
 ```
 
@@ -131,7 +131,7 @@ example_data %>%
 #> # A tibble: 40 x 6
 #>       id target                response              human autoscore equal
 #>    <dbl> <fct>                 <fct>                 <dbl>     <int> <lgl>
-#>  1     1 mate denotes a judge… made the dinner in it     1         1 TRUE 
+#>  1     1 mate denotes a judge… made the dinner in it     1         0 FALSE
 #>  2     1 rampant boasting cap… rubbed against the c…     1         1 TRUE 
 #>  3     1 resting older earring resting alert hearing     1         1 TRUE 
 #>  4     1 bolder ground from j… boulder down from dr…     2         1 FALSE
@@ -140,7 +140,7 @@ example_data %>%
 #>  7     1 support with dock an… she put the duck in …     1         0 FALSE
 #>  8     1 or spent sincere asi… earth bent spent her…     2         2 TRUE 
 #>  9     1 account for who coul… i can for hookah kno…     2         2 TRUE 
-#> 10     1 connect the beer dev… connected beard kind…     1         1 TRUE 
+#> 10     1 connect the beer dev… connected beard kind…     1         0 FALSE
 #> # ... with 30 more rows
 ```
 
@@ -152,16 +152,16 @@ example_data %>%
 #> # A tibble: 40 x 10
 #>       id target response human diff_target_pre diff_response_p… diff_target
 #>    <dbl> <list> <list>   <dbl> <list>          <list>           <list>     
-#>  1     1 <chr … <chr [5…     1 <dbl [1]>       <dbl [1]>        <dbl [1]>  
-#>  2     1 <chr … <chr [4…     1 <dbl [1]>       <dbl [1]>        <dbl [1]>  
-#>  3     1 <chr … <chr [3…     1 <dbl [1]>       <dbl [1]>        <dbl [1]>  
-#>  4     1 <chr … <chr [4…     2 <dbl [1]>       <dbl [1]>        <dbl [1]>  
-#>  5     1 <chr … <chr [5…     3 <dbl [2]>       <dbl [2]>        <dbl [2]>  
-#>  6     1 <chr … <chr [3…     1 <dbl [1]>       <dbl [1]>        <dbl [1]>  
-#>  7     1 <chr … <chr [6…     1 <dbl [0]>       <dbl [0]>        <dbl [0]>  
-#>  8     1 <chr … <chr [5…     2 <dbl [2]>       <dbl [2]>        <dbl [2]>  
-#>  9     1 <chr … <chr [5…     2 <dbl [2]>       <dbl [2]>        <dbl [2]>  
-#> 10     1 <chr … <chr [4…     1 <dbl [1]>       <dbl [1]>        <dbl [1]>  
+#>  1     1 <chr … <chr [5…     1 <int [4]>       <int [5]>        <lgl [4]>  
+#>  2     1 <chr … <chr [4…     1 <int [3]>       <int [4]>        <lgl [3]>  
+#>  3     1 <chr … <chr [3…     1 <int [3]>       <int [3]>        <lgl [3]>  
+#>  4     1 <chr … <chr [4…     2 <int [4]>       <int [4]>        <lgl [4]>  
+#>  5     1 <chr … <chr [5…     3 <int [5]>       <int [5]>        <lgl [5]>  
+#>  6     1 <chr … <chr [3…     1 <int [4]>       <int [3]>        <lgl [4]>  
+#>  7     1 <chr … <chr [6…     1 <int [5]>       <int [6]>        <lgl [5]>  
+#>  8     1 <chr … <chr [5…     2 <int [4]>       <int [5]>        <lgl [4]>  
+#>  9     1 <chr … <chr [5…     2 <int [5]>       <int [5]>        <lgl [5]>  
+#> 10     1 <chr … <chr [4…     1 <int [4]>       <int [4]>        <lgl [4]>  
 #> # ... with 30 more rows, and 3 more variables: diff_response <list>,
 #> #   count_target <int>, count_response <int>
 ```
@@ -195,7 +195,7 @@ example_data %>%
 #> # A tibble: 40 x 6
 #>       id target                response              human autoscore equal
 #>    <dbl> <fct>                 <fct>                 <dbl>     <int> <lgl>
-#>  1     1 mate denotes a judge… made the dinner in it     1         1 TRUE 
+#>  1     1 mate denotes a judge… made the dinner in it     1         0 FALSE
 #>  2     1 rampant boasting cap… rubbed against the c…     1         1 TRUE 
 #>  3     1 resting older earring resting alert hearing     1         1 TRUE 
 #>  4     1 bolder ground from j… boulder down from dr…     2         2 TRUE 
@@ -204,7 +204,7 @@ example_data %>%
 #>  7     1 support with dock an… she put the duck in …     1         0 FALSE
 #>  8     1 or spent sincere asi… earth bent spent her…     2         2 TRUE 
 #>  9     1 account for who coul… i can for hookah kno…     2         2 TRUE 
-#> 10     1 connect the beer dev… connected beard kind…     1         1 TRUE 
+#> 10     1 connect the beer dev… connected beard kind…     1         0 FALSE
 #> # ... with 30 more rows
 ```
 
