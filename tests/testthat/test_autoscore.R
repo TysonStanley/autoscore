@@ -14,9 +14,9 @@ testthat::expect_s3_class(autoscore::autoscore(df,
                                                acceptable_df = acceptable_df), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
                                                acceptable_df = acceptable_df,
-                                               rootword_rule = TRUE), "data.frame")
+                                               root_word_rule = TRUE), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
-                                               rootword_rule = FALSE,
+                                               root_word_rule = FALSE,
                                                double_letter_rule = FALSE), "data.frame")
 testthat::expect_s3_class(autoscore::autoscore(df,
                                                suffix_rule = TRUE,
@@ -60,7 +60,7 @@ d <- tibble::tribble(
 autoscored <- autoscore::autoscore(d, alternate_df,
                                    plural_rule = TRUE,
                                    tense_rule = TRUE,
-                                   rootword_rule = TRUE,
+                                   root_word_rule = TRUE,
                                    a_the_rule = TRUE,
                                    output = "text")
 

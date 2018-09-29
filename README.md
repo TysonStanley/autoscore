@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
     ## Loading autoscore
 
-    ## ── autoscore 0.3.4 ────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
+    ## ── autoscore 0.3.5 ────────────────────────────────────────────────────────────────── learn more at tysonbarrett.com ──
     ## ✔ autoscore attached
     ## ✔ No potential conflicts found
 
@@ -10,15 +10,15 @@
 `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 ===============================================================================================
 
-> R Package: 0.3.4
+> R Package: 0.3.5
 
 > Shiny App: temporary location at <https://tysonstanley.shinyapps.io/autoscore/>
 
 *Authors:*
 
 -   *Tyson S. Barrett*
--   *Stephanie A. Borrie*
 -   *Sarah E. Yoho*
+-   *Stephanie A. Borrie*
 
 The purpose of `autoscore` is to automatically score word identification in speech perception research, such as studies involving listener understanding of speech in background noise or disordered speech. The program uses a flexible number of rules that determine whether a response set of words (i.e., listener transcriptions) match a target set of words (i.e., speech corpus). At the most basic level, Autoscore counts words in the listener transcript as correct if they match the words in the target phrase exactly (regardless of word order), or match a homophone or common misspelling of the target word. Individual rules can be applied or removed, depending on the needs of researcher and the scoring rules of the research lab. Examples of rules available in Autoscore include the ability to count as correct substitutions of articles (A for The) or differences in plural or tense (adding -s or -ed to a word). Additional rules can be added by the researcher as needed.
 
@@ -27,7 +27,7 @@ The rule options are categorized into either spelling rules or grammar rules.
 #### Spelling Rules
 
 1.  `acceptable_spell_rule` = use a researcher uploaded acceptable spelling list to be scored as correct; this rule is triggered when the researcher provides a data file
-2.  `rootword_rule` = response word counted correct if the target word (e.g., bat, day) is embedded at either the beginning (e.g., batman) or end (e.g., monday) of the word; uses a partial matching heuristic; `default is FALSE`
+2.  `root_word_rule` = response word counted correct if the target word (e.g., bat, day) is embedded at either the beginning (e.g., batman) or end (e.g., monday) of the word; uses a partial matching heuristic; `default is FALSE`
 3.  `double_letter_rule` = should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; `default = FALSE`
 
 #### Grammar Rules
@@ -212,4 +212,4 @@ In each of these examples, it is clear that the human and "autoscore" agree the 
 
 ### Learn More
 
-Peer-reviewed publications and further tutorials are forthcoming. For more information, contact Tyson S. Barrett (<t.barrett@aggiemail.usu.edu>).
+Peer-reviewed publications and further tutorials are forthcoming. For more information, contact <autoscorehelp@gmail.com>.

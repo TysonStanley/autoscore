@@ -8,7 +8,7 @@
 \usage{
 autoscore(.data, acceptable_df = NULL, plural_rule = FALSE,
   plural_add_rule = FALSE, tense_rule = FALSE,
-  tense_add_rule = FALSE, a_the_rule = FALSE, rootword_rule = FALSE,
+  tense_add_rule = FALSE, a_the_rule = FALSE, root_word_rule = FALSE,
   double_letter_rule = FALSE, suffix_rule = FALSE, output = "text")
 }
 \arguments{
@@ -26,7 +26,7 @@ autoscore(.data, acceptable_df = NULL, plural_rule = FALSE,
 
 \item{a_the_rule}{should "a" and "the" be considered the same? (default = `FALSE`)}
 
-\item{rootword_rule}{should a word that contains the target word at the beginning of the reponse word be considered correct (default = `FALSE` because does "partial" matching which can bring in some unexpected results)}
+\item{root_word_rule}{should a word that contains the target word at the beginning of the reponse word be considered correct (default = `FALSE` because does "partial" matching which can bring in some unexpected results)}
 
 \item{double_letter_rule}{should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = `FALSE`}
 

@@ -9,7 +9,7 @@
 #' @param tense_rule if target or response added or subtracted -d and -ed at the end of the word,  count as correct (default = `FALSE`)
 #' @param tense_add_rule only if response has an additional -d or -ed (not missing either at the end of the word) to be counted right. Differs from \code{tense_rule} since this can only be added to the end of the response word, not missing from it.
 #' @param a_the_rule should "a" and "the" be considered the same? (default = `FALSE`)
-#' @param rootword_rule should a word that contains the target word at the beginning of the reponse word be considered correct (default = `FALSE` because does "partial" matching which can bring in some unexpected results)
+#' @param root_word_rule should a word that contains the target word at the beginning of the reponse word be considered correct (default = `FALSE` because does "partial" matching which can bring in some unexpected results)
 #' @param double_letter_rule should double letters within a word (the t in 'attack') be considered the same as if there is only one of that latter ('atack'); some of these will be in the common_misspell_rule; default = `FALSE`
 #' @param suffix_rule should the words be stemmed (all suffix characters removed)? (default = `FALSE`); if `TRUE`, plural_rule and tense_rule are `FALSE`
 #' @param output the output type for the autoscore table; current options are "text" (provides a cleaned data set) and "none" (which provides all data); others to follow soon
@@ -50,13 +50,13 @@ autoscore <- function(.data,
                       tense_rule = FALSE,
                       tense_add_rule = FALSE,
                       a_the_rule = FALSE,
-                      rootword_rule = FALSE,
+                      root_word_rule = FALSE,
                       double_letter_rule = FALSE,
                       suffix_rule = FALSE,
                       output = "text") {
 
   error_check_rules(suffix_rule, plural_rule, tense_rule,
-                    a_the_rule, rootword_rule,
+                    a_the_rule, root_word_rule,
                     double_letter_rule)
   error_check_alternate_df(acceptable_df)
 
@@ -67,7 +67,7 @@ autoscore <- function(.data,
                          tense_rule = tense_rule,
                          tense_add_rule = tense_add_rule,
                          a_the_rule = a_the_rule,
-                         rootword_rule = rootword_rule,
+                         root_word_rule = root_word_rule,
                          suffix_rule = suffix_rule,
                          double_letter_rule = double_letter_rule) %>%
     count_matches()
