@@ -1,7 +1,7 @@
 Package: autoscore
 Type: Package
 Title: Automatically Score Word Identification in Speech Perception
-Version: 0.3.5
+Version: 0.3.6
 Date: 2018-09-21
 Authors@R: c(person("Tyson S.", "Barrett",  
                     role=c("aut","cre"), 
@@ -10,17 +10,11 @@ Authors@R: c(person("Tyson S.", "Barrett",
  	         person("Stephanie", "Borrie", role="ctr"),
  	         person("Sarah", "Leopold", role="ctr"))
 Maintainer: Tyson S. Barrett <t.barrett@aggiemail.usu.edu>
-Description: Automatically score word identification in speech 
-    perception research, such as studies involving listener understanding 
-    of speech in background noise or disordered speech. The program uses a 
-    flexible number of rules that determine whether a response set of words 
-    (i.e., listener transcriptions) match a target set of words (i.e., 
-    speech corpus). At the most basic level, Autoscore counts words in the 
-    listener transcript as correct if they match the words in the target 
-    phrase exactly (regardless of word order), or match a homophone or common 
-    misspelling of the target word. Individual rules can be applied or removed, 
-    depending on the needs of researcher and the scoring rules of the research 
-    lab.
+Description: Automatically scores orthographic listener transcripts for words correctly identified. 
+    This is useful for speech perception research, such as studies examining listener understanding 
+    of speech in background noise or disordered speech, as well as clinical disciplines where 
+    listener perception of words correct are used to determine intelligibility of client’s speech or 
+    their ability to understand speech.
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
