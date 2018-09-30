@@ -37,18 +37,18 @@ The rule options are categorized into either spelling rules or grammar rules.
 
 #### Spelling Rules
 
-1. `acceptable_spell_rule` = use a researcher uploaded acceptable spelling list to be scored as correct; this rule is triggered when the researcher provides a data file
-2. `root_word_rule` = response word counted correct if the target word (e.g., bat, day) is embedded at either the beginning (e.g., batman) or end (e.g., monday) of the word; uses a partial matching heuristic; `default is FALSE`
-3. `double_letter_rule` = should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; `default = FALSE`
+1. `acceptable_spell_rule`: Use a researcher uploaded acceptable spelling list to be scored as correct; this rule is triggered when the researcher provides a data file.
+2. `root_word_rule`: Response word counted correct if the target word (e.g., bat, day) is embedded at either the beginning (e.g., batman) or end (e.g., monday) of the word; uses a partial matching heuristic; `default is FALSE`.
+3. `double_letter_rule`: Should double letters within words be considered the same as if there was only one? E.g., "attack" is a match with "atack"; `default = FALSE`.
 
 
 #### Grammar Rules
 
-4. `tense_rule` = response word counted correct if it differs from the target word only by tense; `default is FALSE`
-5. `tense_add_rule` = response word counted correct if it only adds a tense as compared to the target word; `default is FALSE`
-6. `plural_rule` = response word counted correct if it differs from the target word only by plurality; `default is FALSE`
-7. `plural_add_rule` = response word counted correct if it only adds a plural as compared to the target word; `default is FALSE`
-8. `a_the_rule` = substitutions between “a” and “the” to be scored as correct; `default is FALSE`
+4. `tense_rule`: Response word counted correct if it differs from the target word only by tense; `default is FALSE`.
+5. `tense_add_rule`: Response word counted correct if it only adds a tense as compared to the target word; `default is FALSE`. It is also referred to as "Tense+ Rule."
+6. `plural_rule`: Response word counted correct if it differs from the target word only by plurality; `default is FALSE`.
+7. `plural_add_rule`: Response word counted correct if it only adds a plural as compared to the target word; `default is FALSE`. It is also referred to as "Plural+ Rule."
+8. `a_the_rule`: Substitutions between “a” and “the” to be scored as correct; `default is FALSE`.
 
 ## Design
 
