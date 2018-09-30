@@ -20,9 +20,7 @@ devtools::load_all()
 
 # `autoscore` <img src="man/figures/autoscore_logo.png" align="right" width="30%" height="30%" />
 
-> R Package: `r packageVersion("autoscore")`
-
-> Shiny App: temporary location at [https://tysonstanley.shinyapps.io/autoscore/](https://tysonstanley.shinyapps.io/autoscore/)
+> R Package: `r packageVersion("autoscore")` <br> Shiny App: temporary location at [https://tysonstanley.shinyapps.io/autoscore/](https://tysonstanley.shinyapps.io/autoscore/)
 
 *Authors:*
 
