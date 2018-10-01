@@ -2,8 +2,13 @@
 
 export("%>%")
 export(autoscore)
+export(pwc)
 import(dplyr)
+import(stringr)
 import(tibble)
+importFrom(dplyr,mutate)
+importFrom(dplyr,pull)
+importFrom(dplyr,rename_all)
 importFrom(magrittr,"%>%")
 importFrom(stats,na.omit)
 importFrom(stats,setNames)
